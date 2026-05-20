@@ -184,6 +184,10 @@
   .upload-btn{padding:0;background:var(--bg2);border:1px solid var(--border);border-radius:16px;color:var(--text2);font-size:18px;cursor:pointer;transition:all 0.15s;height:52px;width:52px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
   .upload-btn:hover{border-color:var(--border2);color:var(--text)}
 
+	  /* Drag & Drop */
+	  .drag-overlay{position:fixed;inset:0;z-index:200;background:rgba(var(--accent-rgb),0.06);border:3px dashed var(--accent);display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity 0.15s}
+	  .drag-overlay.show{opacity:1}
+	  .drag-hint{font-size:20px;font-weight:500;color:var(--accent);font-family:var(--sans);background:var(--bg2);padding:24px 40px;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.3)}
   /* Retract */
   .msg-retract{font-size:11px;color:var(--text3);cursor:pointer;background:none;border:none;padding:1px 5px;margin-left:6px;float:right;font-family:var(--sans);transition:color 0.15s;opacity:0}
   .msg-row.user .bubble:hover .msg-retract{opacity:0.5}
@@ -243,8 +247,10 @@
   .docs-section pre{font-family:var(--mono);font-size:10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;overflow-x:auto;color:var(--text2);line-height:1.5;white-space:pre-wrap;max-height:200px;overflow-y:auto}
 
 </style>
+<script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
 </head>
 <body>
+<div class="drag-overlay" id="dragOverlay"><div class="drag-hint" data-i18n="upload.dropHint">📂 松开以上传文件</div></div>
 <div class="app">
 <div class="api-panel">
   <div class="logo"><h1 data-i18n="logo.title">Claude · Skill</h1><p data-i18n="logo.subtitle">v2.5 · 双模型优化</p></div>
@@ -376,6 +382,21 @@
     <button class="out-btn" id="outOptimize" onclick="optimizePrompt()" title="让 AI 审查并优化工具自身的逻辑" data-i18n="out.optimize">🔧 优化工具逻辑</button>
     <button class="out-btn" onclick="resetAll()" style="color:var(--text3)" data-i18n="out.reset">↺ 重置对话</button>
   </div>
+
+  <!-- GitHub Sync -->
+  <div class="out-sec" style="border-top:1px solid var(--border);margin-top:4px;padding-top:8px">
+    <div class="sec-label" style="margin-bottom:6px;cursor:pointer" onclick="toggleGitHub()"><span data-i18n="github.label">GitHub 同步</span><span class="sec-toggle" id="githubToggle">▼</span></div>
+    <div id="githubPanel">
+      <input type="password" class="api-input" id="githubToken" data-i18n-placeholder="github.tokenPlaceholder" placeholder="GitHub Personal Access Token…" style="width:100%;font-size:10px;margin-bottom:4px" oninput="onGitHubChange()">
+      <input type="text" class="api-input" id="githubRepo" data-i18n-placeholder="github.repoPlaceholder" placeholder="用户名/仓库名，如 user/repo" style="width:100%;font-size:10px;margin-bottom:4px" oninput="onGitHubChange()">
+      <div style="display:flex;gap:4px;margin-bottom:4px">
+        <input type="text" class="api-input" id="githubBranch" data-i18n-placeholder="github.branchPlaceholder" placeholder="分支 (默认 main)" style="flex:1;font-size:10px" oninput="onGitHubChange()">
+        <input type="text" class="api-input" id="githubPath" data-i18n-placeholder="github.pathPlaceholder" placeholder="路径，如 .claude/" style="flex:1;font-size:10px" oninput="onGitHubChange()">
+      </div>
+      <button class="out-btn" id="outGitHubSync" disabled onclick="syncToGitHub()" style="width:100%;justify-content:center;font-size:11px" data-i18n="github.sync">🔄 同步到 GitHub</button>
+      <div id="githubStatus" style="font-size:9px;color:var(--text3);margin-top:3px;font-family:var(--mono)"></div>
+    </div>
+  </div>
   </div><!-- /scroll-bottom -->
 </div>
 
@@ -396,7 +417,7 @@
   <div class="chat" id="chat"></div>
   <div class="input-area">
     <textarea id="inp" rows="1" data-i18n-placeholder="topbar.inputPlaceholder" placeholder="描述你的项目…（Ctrl+Enter 发送）" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-    <input type="file" id="fileInput" style="display:none" accept=".txt,.md,.json,.xml,.yml,.yaml,.toml" onchange="handleFileUpload(event)">
+    <input type="file" id="fileInput" style="display:none" accept=".txt,.md,.json,.xml,.yml,.yaml,.toml,.docx" onchange="handleFileUpload(event)">
     <button class="upload-btn" id="uploadBtn" onclick="document.getElementById('fileInput').click()" data-i18n-title="topbar.uploadTitle" title="上传文本文件">📎</button>
     <button class="send-btn" id="sendBtn" onclick="sendMessage()" data-i18n="topbar.send">发送</button>
   </div>
@@ -1124,6 +1145,7 @@ INTERVENTION_POINTS:
 
 {"patch_id":"p1","target":"claude|skill","field":"[字段路径]","current":"[当前内容]","suggestion":"[改进后内容]","reason":"[为什么改]","confidence":"low|medium|high"}
 
+用中文回复。`;
 
 const DEFAULT_SYSTEM_PROMPT_EN = `You are a professional Claude Code project specification generation assistant. Your core mission: help users (especially programming beginners) translate their project ideas and collaboration needs into CLAUDE.md and SKILL.md files that Claude Code can precisely understand and execute.
 
@@ -1262,7 +1284,7 @@ Goal: Generate the project operating manual for Claude Code. **Content must be b
 If key information is still insufficient, **ask before generating**. Better to ask one more round than produce hollow content.
 
 #### Generation Rules
-- Wrap complete file in ``` ```markdown```
+- Wrap complete file in \`\`\`markdown
 - Every section must have actual content; mark unknowns as "[TO CONFIRM]"
 - Maximum 3 [TO CONFIRM] fields; more means information collection was insufficient — go back and ask
 - User profile must be written into CLAUDE.md (after Overview) — this is the most important context for Claude Code
@@ -1329,7 +1351,7 @@ Each patch suggestion as a single JSON line (not in a code block), specifying: t
 
 ## CLAUDE.md Template (For Stage 4)
 
-```markdown
+\`\`\`markdown
 # Project: [Project Name]
 
 @README.md  <!-- If project has README, import directly to avoid duplication -->
@@ -1366,26 +1388,26 @@ INTERVENTION_POINTS:
 - Deployment: [deployment method]
 
 ## Project Structure
-```
+\`\`\`
 project-root/
 ├── src/          -- [description]
 ├── tests/        -- [description]
 └── .claude/      -- Claude Code config
     ├── CLAUDE.md
     └── rules/    -- path-scoped rules (split here when file exceeds 200 lines)
-```
+\`\`\`
 
 ## Architecture
 - [constraint 1]
 
 ## Commands
-```bash
+\`\`\`bash
 # Start dev environment
 [specific command]
 
 # Run tests
 [specific command]
-```
+\`\`\`
 
 ## Code Style
 - [specific conventions]
@@ -1407,15 +1429,15 @@ project-root/
 - Local test data paths
 - Personal sandbox URL
 - [Other personal settings]
-```
+\`\`\`
 
 ---
 
 ## SKILL.md Template (For Stage 5)
 
-Wrap in ``` ```markdown```. Format below — triggers and anti-triggers must be keyword-specific, no vague language.
+Wrap in \`\`\`markdown. Format below — triggers and anti-triggers must be keyword-specific, no vague language.
 
-```markdown
+\`\`\`markdown
 # [skill-name-in-english-kebab-case]
 
 ## Trigger
@@ -1430,7 +1452,7 @@ Wrap in ``` ```markdown```. Format below — triggers and anti-triggers must be 
 - [Step 1: specific action description]
 - [Step 2: specific action description]
 - [Step 3: specific action description]
-```
+\`\`\`
 
 ---
 
@@ -1448,6 +1470,10 @@ let S = {
   systemPrompt: localStorage.getItem('csg_system_prompt') || ((navigator.language||'').toLowerCase().startsWith('en')?DEFAULT_SYSTEM_PROMPT_EN:DEFAULT_SYSTEM_PROMPT),
   localMd: localStorage.getItem('csg_local_md') || '',  // 个人偏好 → CLAUDE.local.md
   locale: localStorage.getItem('csg_locale') || detectLocale(),
+  githubToken: localStorage.getItem('csg_github_token') || '',
+  githubRepo: localStorage.getItem('csg_github_repo') || '',
+  githubBranch: localStorage.getItem('csg_github_branch') || 'main',
+  githubPath: localStorage.getItem('csg_github_path') || '',
   _prevClaudeMd:'', _prevSkillMd:'', _pendingClaudeMd:null, _pendingSkillMd:null,  // 对比模式用
   _justGenerated:null,  // 标记刚生成的文件类型，用于下载后触发评分弹窗
   _sessionHash: 's'+Date.now().toString(36),  // 会话标识，用于导出文件追踪
@@ -1547,13 +1573,28 @@ const I18N = {
   Z['out.optimize']='🔧 优化工具逻辑'; E['out.optimize']='🔧 Optimize Tool Logic';
   Z['out.reset']='↺ 重置对话'; E['out.reset']='↺ Reset Conversation';
 
+  // GitHub
+  Z['github.label']='GitHub 同步'; E['github.label']='GitHub Sync';
+  Z['github.tokenPlaceholder']='GitHub Personal Access Token…'; E['github.tokenPlaceholder']='GitHub Personal Access Token…';
+  Z['github.repoPlaceholder']='用户名/仓库名，如 user/repo'; E['github.repoPlaceholder']='Owner/Repo, e.g. user/repo';
+  Z['github.branchPlaceholder']='分支 (默认 main)'; E['github.branchPlaceholder']='Branch (default: main)';
+  Z['github.pathPlaceholder']='路径，如 .claude/'; E['github.pathPlaceholder']='Path, e.g. .claude/';
+  Z['github.sync']='🔄 同步到 GitHub'; E['github.sync']='🔄 Sync to GitHub';
+  Z['github.syncing']='⏳ 同步中…'; E['github.syncing']='⏳ Syncing…';
+  Z['github.syncDone']='✓ 已同步到 GitHub: {files}'; E['github.syncDone']='✓ Synced to GitHub: {files}';
+  Z['github.syncFailed']='⚠ 同步失败: {msg}'; E['github.syncFailed']='⚠ Sync failed: {msg}';
+  Z['github.noFiles']='⚠ 没有可同步的文件，先生成 CLAUDE.md 或 SKILL.md'; E['github.noFiles']='⚠ No files to sync. Generate CLAUDE.md or SKILL.md first.';
+  Z['github.noConfig']='· 请填写 Token 和仓库名'; E['github.noConfig']='· Please fill in Token and repo name';
+  Z['github.ready']='· 已配置，可同步'; E['github.ready']='· Configured, ready to sync';
+
   // Topbar
   Z['topbar.defaultInfo']='选择提供商并配置 Key 后开始'; E['topbar.defaultInfo']='Select a provider and configure Key to start';
   Z['topbar.newProject']='＋ 新建项目'; E['topbar.newProject']='＋ New Project';
   Z['topbar.clear']='清空'; E['topbar.clear']='Clear';
   Z['topbar.send']='发送'; E['topbar.send']='Send';
   Z['topbar.inputPlaceholder']='描述你的项目…（Ctrl+Enter 发送）'; E['topbar.inputPlaceholder']='Describe your project… (Ctrl+Enter to send)';
-  Z['topbar.uploadTitle']='上传文本文件'; E['topbar.uploadTitle']='Upload text file';
+  Z['topbar.uploadTitle']='上传文件 (txt/md/json/docx)'; E['topbar.uploadTitle']='Upload file (txt/md/json/docx)';
+  Z['upload.dropHint']='📂 松开以上传文件'; E['upload.dropHint']='📂 Drop to upload file';
 
   // Welcome message
   Z['welcome.message']='<div style="font-size:18px;font-weight:500;margin-bottom:6px">👋 开始生成你的 CLAUDE.md 和 SKILL.md</div>三步即可：<br><b>①</b> 左侧选 AI 提供商和模型 → 填 Key → 点「验证」确认可用<br><b>②</b> 顶部点击「＋ 新建项目」创建项目，或用默认项目<br><b>③</b> 在输入框描述你的项目，按 Ctrl+Enter 发送<br><br>我会依次帮你：分析工具和架构 → 推荐自动化策略 → 生成 CLAUDE.md → 提取 SKILL.md。';
@@ -1735,6 +1776,8 @@ const I18N = {
   Z['msg.fileTooBig']='⚠ 文件超过 2MB，请上传更小的文件'; E['msg.fileTooBig']='⚠ File exceeds 2MB, please upload a smaller file';
   Z['msg.fileLoaded']='📎 已加载文件：{name}（{size} KB）'; E['msg.fileLoaded']='📎 File loaded: {name} ({size} KB)';
   Z['msg.fileReadError']='⚠ 文件读取失败'; E['msg.fileReadError']='⚠ File read failed';
+  Z['msg.docxEmpty']='⚠ docx 文件内容为空或无法解析'; E['msg.docxEmpty']='⚠ docx file is empty or cannot be parsed';
+  Z['msg.docxParseError']='⚠ docx 文件解析失败，请确认文件未损坏'; E['msg.docxParseError']='⚠ docx parse failed, please verify the file is not corrupted';
   Z['msg.dirReady']='输出文件夹已就绪：{name} — 生成文件将自动写入项目子文件夹'; E['msg.dirReady']='Output folder ready: {name} — files will be written to project subfolder';
   Z['msg.dirFailed']='选目录失败：{msg}'; E['msg.dirFailed']='Directory selection failed: {msg}';
   Z['msg.testDone']='测试完成！已在 {proj}/ 子文件夹创建 {count} 个文件：\n{results}'; E['msg.testDone']='Test complete! {count} file(s) created in {proj}/:\n{results}';
@@ -1830,6 +1873,8 @@ function init(){
   const savedFontSize=localStorage.getItem('fontSize')||'medium';
   setFontSize(savedFontSize);
   initPrefs();
+  initGitHub();
+  setupDragDrop();
   refreshKnowledge();
   // 加载日夜主题
   const savedTheme=localStorage.getItem('csg_theme')||'dark';
@@ -2275,6 +2320,7 @@ function updateFileCards(){
   updateCard('skill');
   document.getElementById('outExport').disabled=!(S.claudeMd||S.skillMd);
   updateSkillCards();
+  updateGitHubStatus();
 }
 
 // 解析并渲染各 Skill 独立卡片
@@ -2544,24 +2590,66 @@ function md(t){
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 // ====== FILE UPLOAD ======
-function handleFileUpload(event){
-  const file = event.target.files[0];
+async function processUploadedFile(file){
   if(!file) return;
   if(file.size > 2*1024*1024){ addSysMsg(t('msg.fileTooBig')); return; }
-  const reader = new FileReader();
-  reader.onload = function(e){
-    const text = e.target.result;
-    const inp = document.getElementById('inp');
-    const current = inp.value.trim();
-    // 如果输入框已有内容，追加到后面；否则直接填入
-    inp.value = current ? current + '\n\n---\n' + file.name + '\n---\n' + text : text;
-    autoResize(inp);
-    addSysMsg(t('msg.fileLoaded',{name:file.name, size:(file.size/1024).toFixed(1)}));
-  };
-  reader.onerror = function(){ addSysMsg(t('msg.fileReadError')); };
-  reader.readAsText(file);
+  const ext = file.name.split('.').pop().toLowerCase();
+  let text = '';
+  try {
+    if(ext === 'docx'){
+      if(typeof mammoth === 'undefined'){ addSysMsg('⚠ mammoth.js 未加载，无法解析 docx，请改用 txt 格式'); return; }
+      const buf = await file.arrayBuffer();
+      const result = await mammoth.extractRawText({arrayBuffer: buf});
+      text = result.value;
+      if(!text.trim()){ addSysMsg(t('msg.docxEmpty')); return; }
+    } else {
+      text = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => resolve(e.target.result);
+        reader.onerror = () => reject(new Error('read error'));
+        reader.readAsText(file);
+      });
+    }
+  } catch(e){
+    if(ext === 'docx') addSysMsg(t('msg.docxParseError'));
+    else addSysMsg(t('msg.fileReadError'));
+    return;
+  }
+  const inp = document.getElementById('inp');
+  if(!inp) return;
+  const current = inp.value.trim();
+  inp.value = current ? current + '\n\n---\n' + file.name + '\n---\n' + text : text;
+  autoResize(inp);
+  addSysMsg(t('msg.fileLoaded',{name:file.name, size:(file.size/1024).toFixed(1)}));
+}
+
+function handleFileUpload(event){
+  const file = event.target.files[0];
+  processUploadedFile(file);
   // 重置 file input，允许重复上传同一文件
   event.target.value = '';
+}
+
+// ====== DRAG & DROP ======
+let _dragCounter = 0;
+function setupDragDrop(){
+  const overlay = document.getElementById('dragOverlay');
+  if(!overlay) return;
+  const handlers = {
+    dragenter(e){ e.preventDefault(); e.stopPropagation(); _dragCounter++; overlay.classList.add('show'); },
+    dragleave(e){ e.preventDefault(); e.stopPropagation(); _dragCounter--; if(_dragCounter <= 0){ _dragCounter = 0; overlay.classList.remove('show'); } },
+    dragover(e){ e.preventDefault(); e.stopPropagation(); },
+    drop(e){
+      e.preventDefault(); e.stopPropagation();
+      _dragCounter = 0; overlay.classList.remove('show');
+      const file = e.dataTransfer?.files?.[0];
+      if(!file) return;
+      processUploadedFile(file);
+    }
+  };
+  ['dragenter','dragleave','dragover','drop'].forEach(evt => {
+    document.addEventListener(evt, handlers[evt]);
+  });
 }
 
 // ====== SEND ======
@@ -3842,6 +3930,138 @@ function refreshKnowledge(){
       <span class="ki-tag ${k.tag}">${k.tagLabel}</span>
       ${k.text}
     </div>`).join('') + `<div class="knowledge-refresh" onclick="refreshKnowledge()">🔄 ${t('knowledge.shuffle')}</div>`;
+}
+
+// ====== GITHUB SYNC ======
+function toggleGitHub(){
+  const panel = document.getElementById('githubPanel');
+  const arrow = document.getElementById('githubToggle');
+  const collapsed = panel.style.display === 'none';
+  panel.style.display = collapsed ? '' : 'none';
+  arrow.classList.toggle('folded', !collapsed);
+  localStorage.setItem('csg_github_collapsed', collapsed ? '0' : '1');
+}
+
+function onGitHubChange(){
+  S.githubToken = document.getElementById('githubToken').value.trim();
+  S.githubRepo = document.getElementById('githubRepo').value.trim();
+  S.githubBranch = document.getElementById('githubBranch').value.trim() || 'main';
+  S.githubPath = document.getElementById('githubPath').value.trim();
+  try{ localStorage.setItem('csg_github_token', S.githubToken); }catch(e){}
+  try{ localStorage.setItem('csg_github_repo', S.githubRepo); }catch(e){}
+  try{ localStorage.setItem('csg_github_branch', S.githubBranch); }catch(e){}
+  try{ localStorage.setItem('csg_github_path', S.githubPath); }catch(e){}
+  updateGitHubStatus();
+}
+
+function updateGitHubStatus(){
+  const btn = document.getElementById('outGitHubSync');
+  const status = document.getElementById('githubStatus');
+  const hasFiles = S.claudeMd || S.skillMd;
+  const hasConfig = S.githubToken && S.githubRepo;
+  btn.disabled = !hasFiles || !hasConfig || S.loading;
+  if(!hasConfig){
+    status.textContent = t('github.noConfig');
+  } else if(!hasFiles){
+    status.textContent = t('github.noFiles');
+  } else {
+    status.textContent = t('github.ready');
+  }
+}
+
+async function syncToGitHub(){
+  if(!S.githubToken || !S.githubRepo){ addSysMsg(t('github.noConfig')); return; }
+  if(!S.claudeMd && !S.skillMd){ addSysMsg(t('github.noFiles')); return; }
+  const btn = document.getElementById('outGitHubSync');
+  const status = document.getElementById('githubStatus');
+  btn.disabled = true;
+  btn.textContent = t('github.syncing');
+  const branch = S.githubBranch || 'main';
+  const basePath = S.githubPath ? S.githubPath.replace(/\/+$/,'') + '/' : '';
+  const files = [];
+  if(S.claudeMd) files.push({path: basePath + 'CLAUDE.md', content: S.claudeMd});
+  if(S.skillMd) files.push({path: basePath + 'SKILL.md', content: S.skillMd});
+  // 从 SKILL.md 中提取独立 skill 文件
+  if(S.skillMd){
+    const re = /<skill>[\s\S]*?<\/skill>/gi;
+    let m;
+    while((m = re.exec(S.skillMd)) !== null){
+      const xml = m[0];
+      const name = (xml.match(/<name>([^<]*)<\/name>/i)||[])[1];
+      if(name){
+        files.push({path: basePath + '.claude/skills/' + name + '.skill.md', content: xml});
+      }
+    }
+  }
+
+  try{
+    let successCount = 0;
+    for(const file of files){
+      await upsertGitHubFile(file.path, file.content, branch);
+      successCount++;
+    }
+    status.textContent = t('github.syncDone', {files: successCount + '/' + files.length});
+    addSysMsg(t('github.syncDone', {files: successCount + '/' + files.length}));
+  } catch(e){
+    status.textContent = t('github.syncFailed', {msg: e.message});
+    addSysMsg(t('github.syncFailed', {msg: e.message}));
+  }
+  btn.disabled = false;
+  btn.textContent = t('github.sync');
+}
+
+async function upsertGitHubFile(path, content, branch){
+  const [owner, repo] = S.githubRepo.split('/');
+  if(!owner || !repo) throw new Error(t('github.syncFailed', {msg: 'bad repo format'}));
+  const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path}`;
+  // 先查文件是否存在，获取 sha
+  let sha = '';
+  try{
+    const checkRes = await fetch(url + '?ref=' + encodeURIComponent(branch), {
+      headers: {'Authorization': 'Bearer ' + S.githubToken, 'Accept': 'application/vnd.github+json'}
+    });
+    if(checkRes.ok){
+      const data = await checkRes.json();
+      sha = data.sha;
+    }
+  } catch(e){}
+  // 用 TextEncoder 编码 UTF-8，分块转 base64 避免栈溢出
+  const encoder = new TextEncoder();
+  const bytes = encoder.encode(content);
+  let base64 = '';
+  const chunk = 0x8000;
+  for(let i = 0; i < bytes.length; i += chunk){
+    base64 += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+  }
+  base64 = btoa(base64);
+  const body = {
+    message: sha ? 'Update ' + path : 'Add ' + path,
+    content: base64,
+    branch: branch
+  };
+  if(sha) body.sha = sha;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {'Authorization': 'Bearer ' + S.githubToken, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json'},
+    body: JSON.stringify(body)
+  });
+  if(!res.ok){
+    const err = await res.json().catch(()=>({}));
+    throw new Error(err.message || 'HTTP ' + res.status);
+  }
+}
+
+function initGitHub(){
+  document.getElementById('githubToken').value = S.githubToken;
+  document.getElementById('githubRepo').value = S.githubRepo;
+  document.getElementById('githubBranch').value = S.githubBranch;
+  document.getElementById('githubPath').value = S.githubPath;
+  const collapsed = localStorage.getItem('csg_github_collapsed');
+  if(collapsed === '1'){
+    document.getElementById('githubPanel').style.display = 'none';
+    document.getElementById('githubToggle').classList.add('folded');
+  }
+  updateGitHubStatus();
 }
 
 init();
