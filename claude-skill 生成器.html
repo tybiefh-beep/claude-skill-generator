@@ -247,61 +247,61 @@
 <body>
 <div class="app">
 <div class="api-panel">
-  <div class="logo"><h1>Claude · Skill</h1><p>v2.5 · 双模型优化</p></div>
+  <div class="logo"><h1 data-i18n="logo.title">Claude · Skill</h1><p data-i18n="logo.subtitle">v2.5 · 双模型优化</p></div>
 
   <!-- Project -->
   <div class="sec" style="padding-bottom:8px">
-    <div class="sec-label">当前项目</div>
+    <div class="sec-label" data-i18n="project.label">当前项目</div>
     <div class="proj-row">
-      <span id="projName" class="proj-name" title="点击切换项目" onclick="showProjectList()">默认项目</span>
-      <button class="proj-btn" onclick="newProject()" title="新建项目">+</button>
+      <span id="projName" class="proj-name" data-i18n-title="project.switchTitle" title="点击切换项目" onclick="showProjectList()">默认项目</span>
+      <button class="proj-btn" onclick="newProject()" data-i18n-title="project.newTitle" title="新建项目">+</button>
     </div>
   </div>
 
   <!-- Provider -->
   <div class="sec">
-    <div class="sec-label" id="providerToggle" onclick="toggleProviders()">AI 提供商<span class="sec-toggle" id="secToggle">▼</span></div>
+    <div class="sec-label" id="providerToggle" onclick="toggleProviders()"><span data-i18n="provider.label">AI 提供商</span><span class="sec-toggle" id="secToggle">▼</span></div>
     <div class="provider-list" id="providerList"></div>
   </div>
 
   <!-- Model -->
   <div class="sec" id="modelSec" style="display:none">
-    <div class="sec-label">模型版本</div>
+    <div class="sec-label" data-i18n="model.label">模型版本</div>
     <div class="model-row">
       <select class="model-select" id="modelSelect" onchange="onModelChange()"></select>
-      <button class="verify-btn" id="verifyBtn" onclick="verifyModel()">验证 ↗</button>
+      <button class="verify-btn" id="verifyBtn" onclick="verifyModel()" data-i18n="model.verify">验证 ↗</button>
     </div>
     <div id="modelCustomRow" class="model-custom-row" style="display:none">
-      <input type="text" class="api-input" id="modelCustomInput" placeholder="输入模型 ID…" style="width:100%;font-size:11px" oninput="onCustomModelInput()">
+      <input type="text" class="api-input" id="modelCustomInput" data-i18n-placeholder="model.customPlaceholder" placeholder="输入模型 ID…" style="width:100%;font-size:11px" oninput="onCustomModelInput()">
     </div>
-    <div class="model-status none" id="modelStatus">· 未验证</div>
+    <div class="model-status none" id="modelStatus" data-i18n="model.unverified">· 未验证</div>
   </div>
 
   <!-- API Key -->
   <div class="sec">
-    <div class="sec-label">API Key</div>
+    <div class="sec-label" data-i18n="apikey.label">API Key</div>
     <div class="api-row">
-      <input type="password" class="api-input" id="apiKeyInput" placeholder="粘贴 API Key…">
-      <button class="api-save" onclick="saveApiKey()">保存</button>
+      <input type="password" class="api-input" id="apiKeyInput" data-i18n-placeholder="apikey.placeholder" placeholder="粘贴 API Key…">
+      <button class="api-save" onclick="saveApiKey()" data-i18n="apikey.save">保存</button>
     </div>
-    <div class="api-status none" id="apiStatus">· 未配置</div>
+    <div class="api-status none" id="apiStatus" data-i18n="apikey.notConfigured">· 未配置</div>
     <div id="baseUrlRow" style="margin-top:5px;display:none">
-      <input type="text" class="api-input" id="baseUrlInput" placeholder="Base URL，如 http://localhost:11434/v1/…" style="width:100%;font-size:11px">
+      <input type="text" class="api-input" id="baseUrlInput" data-i18n-placeholder="apikey.baseUrlPlaceholder" placeholder="Base URL，如 http://localhost:11434/v1/…" style="width:100%;font-size:11px">
     </div>
   </div>
 </div>
 
 <div class="nav-panel">
-  <div class="logo"><p style="font-size:11px;color:var(--text3);font-family:var(--mono)">导航与文件</p></div>
+  <div class="logo"><p style="font-size:11px;color:var(--text3);font-family:var(--mono)" data-i18n="nav.label">导航与文件</p></div>
 
   <!-- Mode -->
   <div class="sec">
-    <div class="sec-label">自动化模式</div>
+    <div class="sec-label" data-i18n="mode.label">自动化模式</div>
     <div class="mode-row">
-      <button class="mode-btn" id="mode-checkpoint" onclick="setMode('checkpoint')" title="每阶段暂停确认">Check</button>
-      <button class="mode-btn" id="mode-full_auto" onclick="setMode('full_auto')" title="全自主推进">自动</button>
-      <button class="mode-btn" id="mode-compare" onclick="setMode('compare')" title="并排对比修改">对比</button>
-      <button class="mode-btn" id="mode-manual" onclick="setMode('manual')" title="仅建议">手动</button>
+      <button class="mode-btn" id="mode-checkpoint" onclick="setMode('checkpoint')" data-i18n-title="mode.checkpointTitle" title="每阶段暂停确认">Check</button>
+      <button class="mode-btn" id="mode-full_auto" onclick="setMode('full_auto')" data-i18n-title="mode.fullAutoTitle" title="全自主推进">自动</button>
+      <button class="mode-btn" id="mode-compare" onclick="setMode('compare')" data-i18n-title="mode.compareTitle" title="并排对比修改">对比</button>
+      <button class="mode-btn" id="mode-manual" onclick="setMode('manual')" data-i18n-title="mode.manualTitle" title="仅建议">手动</button>
     </div>
   </div>
 
@@ -309,24 +309,24 @@
 
   <!-- Stages -->
   <div class="stages-sec">
-    <div class="sec-label" style="margin-bottom:6px">生成阶段</div>
-    <div class="si active" id="si-0"><div class="sn">1</div>项目描述</div>
-    <div class="si" id="si-1"><div class="sn">2</div>工具架构分析</div>
-    <div class="si" id="si-2"><div class="sn">3</div>自动化识别</div>
-    <div class="si" id="si-3"><div class="sn">4</div>CLAUDE.md 生成</div>
-    <div class="si" id="si-4"><div class="sn">5</div>SKILL.md 提取</div>
-    <div class="si" id="si-5"><div class="sn">6</div>监督修补</div>
-    <div class="si" id="si-6"><div class="sn">7</div>文件就绪</div>
+    <div class="sec-label" style="margin-bottom:6px" data-i18n="stage.label">生成阶段</div>
+    <div class="si active" id="si-0"><div class="sn">1</div><span data-i18n="stage.0">项目描述</span></div>
+    <div class="si" id="si-1"><div class="sn">2</div><span data-i18n="stage.1">工具架构分析</span></div>
+    <div class="si" id="si-2"><div class="sn">3</div><span data-i18n="stage.2">自动化识别</span></div>
+    <div class="si" id="si-3"><div class="sn">4</div><span data-i18n="stage.3">CLAUDE.md 生成</span></div>
+    <div class="si" id="si-4"><div class="sn">5</div><span data-i18n="stage.4">SKILL.md 提取</span></div>
+    <div class="si" id="si-5"><div class="sn">6</div><span data-i18n="stage.5">监督修补</span></div>
+    <div class="si" id="si-6"><div class="sn">7</div><span data-i18n="stage.6">文件就绪</span></div>
   </div>
 
   <!-- 个人偏好 -->
   <div class="sec">
-    <div class="sec-label" style="cursor:pointer" onclick="togglePrefs()">个人偏好<span style="font-size:9px;color:var(--text3);margin-left:4px">(local.md)</span><span class="sec-toggle" id="prefsToggle">▼</span></div>
+    <div class="sec-label" style="cursor:pointer" onclick="togglePrefs()"><span data-i18n="prefs.label">个人偏好</span><span style="font-size:9px;color:var(--text3);margin-left:4px" data-i18n="prefs.localMd">(local.md)</span><span class="sec-toggle" id="prefsToggle">▼</span></div>
     <div id="prefsPanel">
-      <textarea id="prefsInput" placeholder="输入你的个人偏好，一行一条…&#10;例如：&#10;用中文回复&#10;不要给我列选项，直接选最优方案" style="width:100%;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:10px;font-family:var(--mono);color:var(--text);resize:vertical;min-height:60px;outline:none;line-height:1.6;transition:border-color 0.2s" oninput="onPrefsChange()"></textarea>
+      <textarea id="prefsInput" data-i18n-placeholder="prefs.placeholder" placeholder="输入你的个人偏好，一行一条…&#10;例如：&#10;用中文回复&#10;不要给我列选项，直接选最优方案" style="width:100%;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:10px;font-family:var(--mono);color:var(--text);resize:vertical;min-height:60px;outline:none;line-height:1.6;transition:border-color 0.2s" oninput="onPrefsChange()"></textarea>
       <div style="display:flex;gap:4px;margin-top:5px">
-        <button onclick="savePrefs()" style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:10px;font-family:var(--sans);color:var(--text2)">保存</button>
-        <button onclick="generateLocalMd()" style="padding:4px 8px;border-radius:6px;border:1px solid var(--accent);background:transparent;cursor:pointer;font-size:10px;font-family:var(--sans);color:var(--accent)" id="genLocalMdBtn" disabled>生成</button>
+        <button onclick="savePrefs()" style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:10px;font-family:var(--sans);color:var(--text2)" data-i18n="prefs.save">保存</button>
+        <button onclick="generateLocalMd()" style="padding:4px 8px;border-radius:6px;border:1px solid var(--accent);background:transparent;cursor:pointer;font-size:10px;font-family:var(--sans);color:var(--accent)" id="genLocalMdBtn" disabled data-i18n="prefs.generate">生成</button>
       </div>
       <div id="prefsStatus" style="font-size:9px;color:var(--text3);margin-top:3px;font-family:var(--mono)"></div>
     </div>
@@ -334,47 +334,47 @@
 
   <!-- Knowledge Panel -->
   <div class="sec" style="padding-bottom:6px">
-    <div class="sec-label" style="cursor:pointer" onclick="refreshKnowledge()">AI 动态<span style="font-size:9px;color:var(--text3);margin-left:4px">(点击刷新)</span></div>
+    <div class="sec-label" style="cursor:pointer" onclick="refreshKnowledge()"><span data-i18n="knowledge.label">AI 动态</span><span style="font-size:9px;color:var(--text3);margin-left:4px" data-i18n="knowledge.refresh">(点击刷新)</span></div>
     <div class="knowledge-panel" id="knowledgePanel"></div>
   </div>
 
   <!-- Outputs -->
   <div class="out-sec">
-    <div class="sec-label" style="margin-bottom:0">项目文件</div>
+    <div class="sec-label" style="margin-bottom:0" data-i18n="files.label">项目文件</div>
     <div class="file-card" id="fileCardClaude">
       <div class="fc-top"><span class="fc-icon">📄</span><span class="fc-name">CLAUDE.md</span></div>
-      <div class="fc-meta" id="fcMetaClaude">尚未生成</div>
+      <div class="fc-meta" id="fcMetaClaude" data-i18n="fileCard.notGenerated">尚未生成</div>
       <div class="fc-acts">
-        <button class="fc-btn" id="fcViewClaude" disabled onclick="showPreview('claude')">查看</button>
-        <button class="fc-btn" id="fcCopyClaude" disabled onclick="copyT('claude')">复制</button>
-        <button class="fc-btn" id="fcDlClaude" disabled onclick="dlFile('claude')">下载</button>
+        <button class="fc-btn" id="fcViewClaude" disabled onclick="showPreview('claude')" data-i18n="fileCard.view">${t('fileCard.view')}</button>
+        <button class="fc-btn" id="fcCopyClaude" disabled onclick="copyT('claude')" data-i18n="fileCard.copy">${t('fileCard.copy')}</button>
+        <button class="fc-btn" id="fcDlClaude" disabled onclick="dlFile('claude')" data-i18n="fileCard.download">${t('fileCard.download')}</button>
       </div>
     </div>
     <div class="file-card" id="fileCardSkill">
       <div class="fc-top"><span class="fc-icon">🔧</span><span class="fc-name">SKILL.md</span></div>
-      <div class="fc-meta" id="fcMetaSkill">尚未生成</div>
+      <div class="fc-meta" id="fcMetaSkill" data-i18n="fileCard.notGenerated">尚未生成</div>
       <div class="fc-acts">
-        <button class="fc-btn" id="fcViewSkill" disabled onclick="showPreview('skill')">查看</button>
-        <button class="fc-btn" id="fcCopySkill" disabled onclick="copyT('skill')">复制</button>
-        <button class="fc-btn" id="fcDlSkill" disabled onclick="dlFile('skill')">下载</button>
+        <button class="fc-btn" id="fcViewSkill" disabled onclick="showPreview('skill')" data-i18n="fileCard.view">${t('fileCard.view')}</button>
+        <button class="fc-btn" id="fcCopySkill" disabled onclick="copyT('skill')" data-i18n="fileCard.copy">${t('fileCard.copy')}</button>
+        <button class="fc-btn" id="fcDlSkill" disabled onclick="dlFile('skill')" data-i18n="fileCard.download">${t('fileCard.download')}</button>
       </div>
     </div>
     <!-- 各 Skill 独立卡片 -->
     <div id="skillCards"></div>
     <div class="file-card" id="fileCardLocal">
       <div class="fc-top"><span class="fc-icon">👤</span><span class="fc-name">CLAUDE.local.md</span></div>
-      <div class="fc-meta" id="fcMetaLocal">个人偏好</div>
+      <div class="fc-meta" id="fcMetaLocal" data-i18n="fileCard.localMeta">个人偏好</div>
       <div class="fc-acts">
-        <button class="fc-btn" id="fcViewLocal" disabled onclick="showLocalMdPreview()">查看</button>
-        <button class="fc-btn" id="fcDlLocal" onclick="generateLocalMd()">下载</button>
+        <button class="fc-btn" id="fcViewLocal" disabled onclick="showLocalMdPreview()" data-i18n="fileCard.view">${t('fileCard.view')}</button>
+        <button class="fc-btn" id="fcDlLocal" onclick="generateLocalMd()" data-i18n="fileCard.download">${t('fileCard.download')}</button>
       </div>
     </div>
-    <button class="out-btn" id="outSelectDir" onclick="selectOutputDir()" style="color:var(--amber)">📁 选择输出文件夹</button>
+    <button class="out-btn" id="outSelectDir" onclick="selectOutputDir()" style="color:var(--amber)" data-i18n="out.selectDir">📁 选择输出文件夹</button>
     <div id="dirPath" style="font-size:9px;color:var(--text3);padding:0 4px;font-family:var(--mono);word-break:break-all"></div>
-    <button class="out-btn" id="outTest" onclick="testFileOutput()" style="color:var(--accent);font-size:10px">🧪 测试文件输出</button>
-    <button class="out-btn" id="outExport" disabled onclick="exportAll()">⬇ 导出全部文件</button>
-    <button class="out-btn" id="outOptimize" onclick="optimizePrompt()" title="让 AI 审查并优化工具自身的逻辑">🔧 优化工具逻辑</button>
-    <button class="out-btn" onclick="resetAll()" style="color:var(--text3)">↺ 重置对话</button>
+    <button class="out-btn" id="outTest" onclick="testFileOutput()" style="color:var(--accent);font-size:10px" data-i18n="out.testOutput">🧪 测试文件输出</button>
+    <button class="out-btn" id="outExport" disabled onclick="exportAll()" data-i18n="out.exportAll">⬇ 导出全部文件</button>
+    <button class="out-btn" id="outOptimize" onclick="optimizePrompt()" title="让 AI 审查并优化工具自身的逻辑" data-i18n="out.optimize">🔧 优化工具逻辑</button>
+    <button class="out-btn" onclick="resetAll()" style="color:var(--text3)" data-i18n="out.reset">↺ 重置对话</button>
   </div>
   </div><!-- /scroll-bottom -->
 </div>
@@ -382,85 +382,86 @@
 <div class="main">
   <div class="topbar">
     <div class="topbar-info" id="topbarInfo">选择提供商并配置 Key 后开始</div>
-    <button class="topbar-newproj" onclick="newProject()" title="创建新项目">＋ 新建项目</button>
+    <button class="topbar-newproj" onclick="newProject()" data-i18n-title="project.newTitle" title="创建新项目"><span data-i18n="topbar.newProject">＋ 新建项目</span></button>
     <div class="topbar-model" id="topbarModel" style="display:none"></div>
     <div class="mode-row" style="width:auto;flex-shrink:0">
       <button class="mode-btn" id="fs-small" onclick="setFontSize('small')" style="font-size:10px">A</button>
       <button class="mode-btn active" id="fs-medium" onclick="setFontSize('medium')" style="font-size:12px">A</button>
       <button class="mode-btn" id="fs-large" onclick="setFontSize('large')" style="font-size:14px">A</button>
     </div>
+    <button class="topbar-theme" onclick="toggleLocale()" title="中文/EN" id="localeToggle">🌐</button>
     <button class="topbar-theme" onclick="toggleTheme()" title="切换日/夜模式" id="themeToggle">🌙</button>
-    <button class="clear-btn" onclick="resetAll()">清空</button>
+    <button class="clear-btn" onclick="resetAll()" data-i18n="topbar.clear">清空</button>
   </div>
   <div class="chat" id="chat"></div>
   <div class="input-area">
-    <textarea id="inp" rows="1" placeholder="描述你的项目…（Ctrl+Enter 发送）" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+    <textarea id="inp" rows="1" data-i18n-placeholder="topbar.inputPlaceholder" placeholder="描述你的项目…（Ctrl+Enter 发送）" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
     <input type="file" id="fileInput" style="display:none" accept=".txt,.md,.json,.xml,.yml,.yaml,.toml" onchange="handleFileUpload(event)">
-    <button class="upload-btn" id="uploadBtn" onclick="document.getElementById('fileInput').click()" title="上传文本文件">📎</button>
-    <button class="send-btn" id="sendBtn" onclick="sendMessage()">发送</button>
+    <button class="upload-btn" id="uploadBtn" onclick="document.getElementById('fileInput').click()" data-i18n-title="topbar.uploadTitle" title="上传文本文件">📎</button>
+    <button class="send-btn" id="sendBtn" onclick="sendMessage()" data-i18n="topbar.send">发送</button>
   </div>
 </div>
 
 <div class="docs-panel">
-  <div class="logo"><p style="font-size:11px;color:var(--text3);font-family:var(--mono)">Claude Code 参考</p></div>
+  <div class="logo"><p style="font-size:11px;color:var(--text3);font-family:var(--mono)" data-i18n="docs.title">Claude Code 参考</p></div>
   <div class="docs-scroll">
     <div class="docs-section">
-      <h3>CLAUDE.md 文件体系</h3>
-      <p>Claude Code 启动时按以下优先级加载指令文件：</p>
+      <h3 data-i18n="docs.section1.title">CLAUDE.md 文件体系</h3>
+      <p data-i18n="docs.section1.p">Claude Code 启动时按以下优先级加载指令文件：</p>
       <ul>
-        <li><code>~/.claude/CLAUDE.md</code> — 全局个人指令，所有项目生效</li>
-        <li><code>./CLAUDE.md</code> — 项目根目录指令，随 Git 提交</li>
-        <li><code>./.claude/CLAUDE.md</code> — 项目隐藏指令（建议不提交）</li>
-        <li><code>./.claude/rules/*.md</code> — 规则目录，按文件名排序加载</li>
-        <li><code>CLAUDE.local.md</code> — 个人偏好（应加入 .gitignore）</li>
+        <li data-i18n="docs.section1.li1"><code>~/.claude/CLAUDE.md</code> — 全局个人指令，所有项目生效</li>
+        <li data-i18n="docs.section1.li2"><code>./CLAUDE.md</code> — 项目根目录指令，随 Git 提交</li>
+        <li data-i18n="docs.section1.li3"><code>./.claude/CLAUDE.md</code> — 项目隐藏指令（建议不提交）</li>
+        <li data-i18n="docs.section1.li4"><code>./.claude/rules/*.md</code> — 规则目录，按文件名排序加载</li>
+        <li data-i18n="docs.section1.li5"><code>CLAUDE.local.md</code> — 个人偏好（应加入 .gitignore）</li>
       </ul>
     </div>
     <div class="docs-section">
-      <h3>CLAUDE.md 内容结构</h3>
-      <p>推荐用 Markdown 写，AI 直接读取。常见章节：</p>
+      <h3 data-i18n="docs.section2.title">CLAUDE.md 内容结构</h3>
+      <p data-i18n="docs.section2.p">推荐用 Markdown 写，AI 直接读取。常见章节：</p>
       <ul>
-        <li><b>Project</b> — 项目名称和一句话定义</li>
-        <li><b>User Profile</b> — 用户技术水平、沟通偏好</li>
-        <li><b>Tech Stack</b> — 语言、框架、运行环境</li>
-        <li><b>Architecture</b> — 目录结构、模块划分</li>
-        <li><b>Commands</b> — 构建/测试/运行命令</li>
-        <li><b>Code Style</b> — 命名规范、注释风格</li>
-        <li><b>自动模式</b> — 自主权限边界、确认点</li>
-        <li><b>Run Context</b> — 模型架构说明（壳+脑）</li>
+        <li data-i18n="docs.section2.li1"><b>Project</b> — 项目名称和一句话定义</li>
+        <li data-i18n="docs.section2.li2"><b>User Profile</b> — 用户技术水平、沟通偏好</li>
+        <li data-i18n="docs.section2.li3"><b>Tech Stack</b> — 语言、框架、运行环境</li>
+        <li data-i18n="docs.section2.li4"><b>Architecture</b> — 目录结构、模块划分</li>
+        <li data-i18n="docs.section2.li5"><b>Commands</b> — 构建/测试/运行命令</li>
+        <li data-i18n="docs.section2.li6"><b>Code Style</b> — 命名规范、注释风格</li>
+        <li data-i18n="docs.section2.li7"><b>自动模式</b> — 自主权限边界、确认点</li>
+        <li data-i18n="docs.section2.li8"><b>Run Context</b> — 模型架构说明（壳+脑）</li>
       </ul>
     </div>
     <div class="docs-section">
-      <h3>@ 导入语法</h3>
-      <p>用 <code>@文件路径</code> 导入其他文件内容，拼接到指令中：</p>
+      <h3 data-i18n="docs.section3.title">@ 导入语法</h3>
+      <p data-i18n="docs.section3.p1">用 <code>@文件路径</code> 导入其他文件内容，拼接到指令中：</p>
       <pre># Project: 我的工具
 @README.md
 @docs/architecture.md</pre>
-      <p>适合引用已有文档，避免维护两份相同内容。</p>
+      <p data-i18n="docs.section3.p2">适合引用已有文档，避免维护两份相同内容。</p>
     </div>
     <div class="docs-section">
-      <h3>.claude/rules/ 规则目录</h3>
-      <p>当 CLAUDE.md 超过 200 行，应拆分到规则目录：</p>
+      <h3 data-i18n="docs.section4.title">.claude/rules/ 规则目录</h3>
+      <p data-i18n="docs.section4.p1">当 CLAUDE.md 超过 200 行，应拆分到规则目录：</p>
       <pre>.claude/
 ├── CLAUDE.md          # 主文件，放核心指令
 └── rules/
     ├── api-design.md  # API 设计规范
     ├── testing.md     # 测试规范
     └── git.md         # Git 工作流</pre>
-      <p>规则文件自动被读取，可按文件名前缀控制排序。</p>
+      <p data-i18n="docs.section4.p2">规则文件自动被读取，可按文件名前缀控制排序。</p>
     </div>
     <div class="docs-section">
-      <h3>YAML Frontmatter</h3>
-      <p>CLAUDE.md 顶部可写 YAML frontmatter，用 <code>paths</code> 限定作用域：</p>
+      <h3 data-i18n="docs.section5.title">YAML Frontmatter</h3>
+      <p data-i18n="docs.section5.p1">CLAUDE.md 顶部可写 YAML frontmatter，用 <code>paths</code> 限定作用域：</p>
       <pre>---
 paths: "src/api/**"
 ---
 # API 模块规范
 仅在处理 src/api/ 下文件时加载此指令。</pre>
-      <p><code>paths</code> 支持 glob 模式，让规则精准匹配文件范围。</p>
+      <p data-i18n="docs.section5.p2"><code>paths</code> 支持 glob 模式，让规则精准匹配文件范围。</p>
     </div>
     <div class="docs-section">
-      <h3>SKILL.md 技能定义</h3>
-      <p>放在项目根目录或 <code>.claude/skills/</code> 下，XML 格式：</p>
+      <h3 data-i18n="docs.section6.title">SKILL.md 技能定义</h3>
+      <p data-i18n="docs.section6.p">放在项目根目录或 <code>.claude/skills/</code> 下，XML 格式：</p>
       <pre>&lt;skill&gt;
   &lt;name&gt;code-review&lt;/name&gt;
   &lt;description&gt;代码审查助手&lt;/description&gt;
@@ -475,59 +476,59 @@ paths: "src/api/**"
 &lt;/skill&gt;</pre>
     </div>
     <div class="docs-section">
-      <h3>Skill 字段说明</h3>
+      <h3 data-i18n="docs.section7.title">Skill 字段说明</h3>
       <ul>
-        <li><code>&lt;name&gt;</code> — 唯一标识，字母+连字符</li>
-        <li><code>&lt;description&gt;</code> — 一句话描述，AI 用来理解用途</li>
-        <li><code>&lt;trigger&gt;</code> — 触发关键词或正则，支持 | 分隔</li>
-        <li><code>&lt;anti-trigger&gt;</code> — 排除场景，防止误触发</li>
-        <li><code>&lt;steps&gt;</code> — 执行步骤，每步一行，顺序执行</li>
+        <li data-i18n="docs.section7.li1"><code>&lt;name&gt;</code> — 唯一标识，字母+连字符</li>
+        <li data-i18n="docs.section7.li2"><code>&lt;description&gt;</code> — 一句话描述，AI 用来理解用途</li>
+        <li data-i18n="docs.section7.li3"><code>&lt;trigger&gt;</code> — 触发关键词或正则，支持 | 分隔</li>
+        <li data-i18n="docs.section7.li4"><code>&lt;anti-trigger&gt;</code> — 排除场景，防止误触发</li>
+        <li data-i18n="docs.section7.li5"><code>&lt;steps&gt;</code> — 执行步骤，每步一行，顺序执行</li>
       </ul>
     </div>
     <div class="docs-section">
-      <h3>Skill 触发机制</h3>
-      <p>Claude Code 在每条用户消息前检查所有 skill：</p>
+      <h3 data-i18n="docs.section8.title">Skill 触发机制</h3>
+      <p data-i18n="docs.section8.p1">Claude Code 在每条用户消息前检查所有 skill：</p>
       <ul>
-        <li>用户输入匹配 trigger → 加载该 skill 的 steps</li>
-        <li>同时匹配多个 skill → 全部加载，按文件名排序</li>
-        <li>匹配 anti-trigger → 排除该 skill，即使 trigger 命中</li>
-        <li>trigger 太宽 → 干扰正常对话；太窄 → 永不触发</li>
+        <li data-i18n="docs.section8.li1">用户输入匹配 trigger → 加载该 skill 的 steps</li>
+        <li data-i18n="docs.section8.li2">同时匹配多个 skill → 全部加载，按文件名排序</li>
+        <li data-i18n="docs.section8.li3">匹配 anti-trigger → 排除该 skill，即使 trigger 命中</li>
+        <li data-i18n="docs.section8.li4">trigger 太宽 → 干扰正常对话；太窄 → 永不触发</li>
       </ul>
-      <p>关键：trigger 应足够具体，避免与系统内置行为重叠。</p>
+      <p data-i18n="docs.section8.p2">关键：trigger 应足够具体，避免与系统内置行为重叠。</p>
     </div>
     <div class="docs-section">
-      <h3>文件发现顺序</h3>
-      <p>Claude Code 按此顺序加载文件（高优先级先）：</p>
+      <h3 data-i18n="docs.section9.title">文件发现顺序</h3>
+      <p data-i18n="docs.section9.p">Claude Code 按此顺序加载文件（高优先级先）：</p>
       <ol style="padding-left:14px;font-size:10px;color:var(--text3);line-height:1.8">
-        <li><code>~/.claude/CLAUDE.md</code> — 全局用户指令</li>
-        <li><code>./CLAUDE.md</code> — 项目根目录指令</li>
-        <li><code>./.claude/CLAUDE.md</code> — 项目隐藏指令</li>
-        <li><code>./.claude/rules/*.md</code> — 规则文件</li>
-        <li><code>./SKILL.md</code> — 技能定义</li>
-        <li><code>./.claude/skills/*.skill.md</code> — 独立技能文件</li>
-        <li><code>CLAUDE.local.md</code> — 本地个人偏好</li>
+        <li data-i18n="docs.section9.li1"><code>~/.claude/CLAUDE.md</code> — 全局用户指令</li>
+        <li data-i18n="docs.section9.li2"><code>./CLAUDE.md</code> — 项目根目录指令</li>
+        <li data-i18n="docs.section9.li3"><code>./.claude/CLAUDE.md</code> — 项目隐藏指令</li>
+        <li data-i18n="docs.section9.li4"><code>./.claude/rules/*.md</code> — 规则文件</li>
+        <li data-i18n="docs.section9.li5"><code>./SKILL.md</code> — 技能定义</li>
+        <li data-i18n="docs.section9.li6"><code>./.claude/skills/*.skill.md</code> — 独立技能文件</li>
+        <li data-i18n="docs.section9.li7"><code>CLAUDE.local.md</code> — 本地个人偏好</li>
       </ol>
     </div>
     <div class="docs-section">
-      <h3>内存系统 (Memory)</h3>
-      <p>持久化记忆，存储在 <code>.claude/memory/</code>：</p>
+      <h3 data-i18n="docs.section10.title">内存系统 (Memory)</h3>
+      <p data-i18n="docs.section10.p1">持久化记忆，存储在 <code>.claude/memory/</code>：</p>
       <ul>
-        <li><code>user</code> — 用户角色、偏好、知识背景</li>
-        <li><code>feedback</code> — 用户反馈的工作方式</li>
-        <li><code>project</code> — 项目进度、目标、决策记录</li>
-        <li><code>reference</code> — 外部资源指针（文档链接等）</li>
+        <li data-i18n="docs.section10.li1"><code>user</code> — 用户角色、偏好、知识背景</li>
+        <li data-i18n="docs.section10.li2"><code>feedback</code> — 用户反馈的工作方式</li>
+        <li data-i18n="docs.section10.li3"><code>project</code> — 项目进度、目标、决策记录</li>
+        <li data-i18n="docs.section10.li4"><code>reference</code> — 外部资源指针（文档链接等）</li>
       </ul>
-      <p>AI 在对话中自动读写记忆，跨 session 持久化。</p>
+      <p data-i18n="docs.section10.p2">AI 在对话中自动读写记忆，跨 session 持久化。</p>
     </div>
     <div class="docs-section">
-      <h3>最佳实践</h3>
+      <h3 data-i18n="docs.section11.title">最佳实践</h3>
       <ul>
-        <li>CLAUDE.md 控制在 200 行内，超出拆分到 rules/</li>
-        <li>每个 skill 的 trigger 写 3-5 个核心关键词</li>
-        <li>anti-trigger 宁可多写，减少误触发</li>
-        <li>steps 每步一个动作，不合并多步骤</li>
-        <li>CLAUDE.local.md 放个人偏好，加入 .gitignore</li>
-        <li>API Key、密码等敏感信息绝不写入 CLAUDE.md</li>
+        <li data-i18n="docs.section11.li1">CLAUDE.md 控制在 200 行内，超出拆分到 rules/</li>
+        <li data-i18n="docs.section11.li2">每个 skill 的 trigger 写 3-5 个核心关键词</li>
+        <li data-i18n="docs.section11.li3">anti-trigger 宁可多写，减少误触发</li>
+        <li data-i18n="docs.section11.li4">steps 每步一个动作，不合并多步骤</li>
+        <li data-i18n="docs.section11.li5">CLAUDE.local.md 放个人偏好，加入 .gitignore</li>
+        <li data-i18n="docs.section11.li6">API Key、密码等敏感信息绝不写入 CLAUDE.md</li>
       </ul>
     </div>
   </div>
@@ -1123,15 +1124,330 @@ INTERVENTION_POINTS:
 
 {"patch_id":"p1","target":"claude|skill","field":"[字段路径]","current":"[当前内容]","suggestion":"[改进后内容]","reason":"[为什么改]","confidence":"low|medium|high"}
 
-用中文回复。`;
+
+const DEFAULT_SYSTEM_PROMPT_EN = `You are a professional Claude Code project specification generation assistant. Your core mission: help users (especially programming beginners) translate their project ideas and collaboration needs into CLAUDE.md and SKILL.md files that Claude Code can precisely understand and execute.
+
+## Core Philosophy
+
+- Users are not good at precisely describing their needs; your job is to **guide them to reveal what truly matters**
+- CLAUDE.md is not documentation — it's **an operating manual for another AI** — it must be specific, executable, and bounded
+- SKILL.md is not a feature list — it's **a triggerable workflow** — trigger design determines whether it gets used correctly
+- **The output CLAUDE.md will likely be read by the user's configured AI model**. Follow the communication style appropriate for that model
+- **SKILL.md is parsed directly by Claude Code** — triggers and key fields should be in English
+- **Understand Claude Code's latest memory system** and proactively leverage: .claude/rules/ path-scoped rules, @path file imports, CLAUDE.local.md personal preferences, auto memory
+
+## Claude Code Memory System (Reference During Generation)
+
+Claude Code has two complementary memory systems: CLAUDE.md (you write instructions) + Auto Memory (Claude accumulates experience).
+
+When generating CLAUDE.md and SKILL.md, consider these features:
+
+1. **.claude/rules/ Path-Scoped Rules**: When CLAUDE.md exceeds 200 lines, suggest splitting into modular rule files. Each file uses YAML frontmatter paths field for scope. Rules without paths apply globally.
+
+2. **@path File Import**: CLAUDE.md can use @README.md to import existing files, avoiding duplication. Prioritize this for projects with existing READMEs.
+
+3. **CLAUDE.local.md Personal Preferences**: A gitignored file in the project root for personal settings (sandbox URLs, local test data, etc.). After generating CLAUDE.md, remind users they can create this file.
+
+4. **Auto Memory**: Claude Code automatically saves experience in ~/.claude/projects/<project>/memory/. CLAUDE.md doesn't need "remember X" — that's auto memory's job.
+
+5. **AGENTS.md Compatibility**: If the project already has AGENTS.md, just write @AGENTS.md on the first line of CLAUDE.md instead of duplicating.
+
+## Core Rules (Must Follow)
+
+1. Start every reply with [STAGE:N] marker
+2. **full_auto mode**:
+   - User chose full auto = they don't want interruptions. Extract info from project description, generate CLAUDE.md + SKILL.md in one pass, review once at the end
+   - No stage-by-stage Q&A, no asking about tech choices (infer what you can, mark unknowns as [TO CONFIRM])
+   - When the user says "full auto", "I won't participate", "I don't know" — don't offer choices, just pick the best option
+3. **checkpoint mode**: Ask user to confirm at end of each stage, wait for reply before next stage
+4. **Distinguish "user describing workflow" from "user wanting automation"**:
+   - User describing daily operations (e.g., "I always have to manually do X→Y→Z") → they want those steps automated, not for you to reproduce them
+   - The INTERVENTION_POINTS in the generated CLAUDE.md should be fewer and more automated than what the user described
+   - Don't treat casually mentioned workflows as desired checkpoint count
+5. Stage 5 must strictly base skill extraction on the CLAUDE.md confirmed in Stage 4
+
+## Communication Principles
+
+- **Use concrete scenarios instead of abstract questions**. Don't ask "What's your tech stack?", ask "What language do you code in? What tools do you use to run and test?"
+- **Give specific options at each confirmation point**, don't make users think from scratch. Example: "Based on your description, I recommend checkpoint mode — since you're a beginner, you'd want confirmation at key points. What do you think? Or would you prefer fully autonomous?"
+- **When user descriptions are vague, use examples to follow up**. Example: "When you say 'deploy', do you mean upload to a server, publish to an app store, or push to GitHub Pages?"
+- **Ask only from a requirements perspective**. Use your technical knowledge to infer unstated requirements, but frame questions as "what effect do you want". Example: ✓ "After taking a screenshot, do you want it saved to a fixed desktop folder, or prompted each time?" ✗ "Should you use Tauri or Electron?"
+
+---
+
+## Stage Definitions
+
+### [STAGE:1] — Deep Discovery: Understanding You and Your Project
+Goal: Understand not just what the project does, but **how you work and how AI can help you**.
+
+#### Step 1: Build User Profile
+Learn from the user (naturally, not all at once):
+- **Skill level**: Programming beginner / familiar with a language / experienced? — determines CLAUDE.md instruction granularity
+- **AI collaboration experience**: Have you used Claude Code before? What problems did you encounter? — discover pain points
+- **Communication preferences**: Brief or detailed replies? English or other? — determines Communication Style
+- **Work rhythm**: Prefer AI to proactively advance or confirm each step? — determines automation mode
+
+#### Step 2: Understand the Project
+- What does the project do? Who is it for?
+- Tech stack (language, framework, tools)
+- Project directory structure (if user can describe it)
+
+#### Step 3: Discover Pain Points (Most Important!)
+Must ask about:
+- **Most repetitive operations?** (Things done manually every time)
+- **What does AI mess up most?** (Any past AI mistakes?)
+- **What do you wish AI "just knew"?** (Context you don't want to explain every time)
+
+#### Step 4: Scenario Validation
+Validate understanding with a concrete scenario:
+"Suppose you tell me 'fix a bug'. Based on my understanding, I should: know where to find the code (based on the directory structure you described), know how to test (based on your tools), know what boundaries to watch for (based on your constraints). Is this understanding correct?"
+
+#### End-of-Stage Output Format:
+1. User profile summary (3-4 key points)
+2. Project understanding summary (2-3 sentences)
+3. Pain points identified (2-3)
+4. **Closing question**: "Is the above understanding accurate? Anything to add? Especially your skill level and AI collaboration preferences — this affects how the files are written."
+
+---
+
+### [STAGE:2] — Tool Architecture Analysis: Goals × Tools × Best Practices
+Goal: Three-way match the user's goals, available tools/services, and current industry best practices to produce a concrete, implementable architecture.
+
+#### Analysis Framework (Complete Each Step)
+1. **Goal Clarification**: What end result does the user want? Express in one sentence. (Not "what technology", but "what outcome")
+2. **Tool Inventory**: What tools/scripts/services/platforms does the user currently have? What does each solve? What works, what doesn't?
+3. **Relationship Mapping**:
+   - Dependencies between tools? (A depends on B's output)
+   - Duplicate functionality? (Two tools doing the same thing)
+   - Combinable tools? (A+B → a more complete workflow)
+   - Redundant tools? (Unnecessary, already replaced)
+4. **Best Practice Matching**: For the user's scenario, what's the most mature current approach? Gap between existing tools and optimal solution?
+5. **Claude Code Feasibility Check**:
+   - Is the solution within Claude Code's execution capability?
+   - Any operations requiring external systems? (Mark "manual" or "external tool needed")
+
+#### Web UI Consolidation Decision (Must Give Clear Conclusions)
+For UI-related tools/functions, judge each individually:
+- ✓ **Consolidate into same Web UI**: Operations belong to same workflow, user uses them in same context, shared data and state
+- ✗ **Run independently**: Independent functionality, different usage contexts, incompatible tech stacks, separate deployment makes more sense
+- One-sentence reason for each decision
+
+#### End-of-Stage Output Format:
+1. **Goal** (one sentence)
+2. **Tool inventory and relationships** (list, one tool per line, annotated with relationships)
+3. **Recommended architecture** (including consolidation/independence decisions with reasons, implementation outline)
+4. **Claude Code feasibility conclusion** (all feasible / partial external needed / mark which need external)
+5. **Closing question**: "Does this architecture match your expectations? Any missing tools or scenarios? Confirm to proceed to automation strategy."
+
+---
+
+### [STAGE:3] — Automation Strategy: From Pain Points to Patterns
+Goal: Based on Stage 1 user profile and Stage 2 architecture, recommend specific automation strategy.
+
+- Recommend mode (full_auto / checkpoint / manual), **must explain why based on user's skill level and pain points**
+- List **specific scenarios** suitable for automation, one sentence each:
+  - Example: "When you ask me to fix a bug, I should automatically run tests instead of having you do it manually"
+- List intervention points requiring human involvement, **using scenarios**:
+  - Example: "When I modify code involving API Keys, you must review it"
+- If user is a beginner, additionally explain what each mode feels like in practice
+
+**Closing question**: "Is this automation strategy appropriate? Which operations can AI handle more autonomously, and which need your oversight?"
+
+---
+
+### [STAGE:4] — Generate CLAUDE.md
+Goal: Generate the project operating manual for Claude Code. **Content must be based on real information collected in Stages 1, 2, and 3 — no generic filler**.
+
+#### Confirm Before Generating
+If key information is still insufficient, **ask before generating**. Better to ask one more round than produce hollow content.
+
+#### Generation Rules
+- Wrap complete file in ``` ```markdown```
+- Every section must have actual content; mark unknowns as "[TO CONFIRM]"
+- Maximum 3 [TO CONFIRM] fields; more means information collection was insufficient — go back and ask
+- User profile must be written into CLAUDE.md (after Overview) — this is the most important context for Claude Code
+
+#### Post-Generation Scenario Walkthrough
+After generating, walk through a concrete scenario:
+"Using this CLAUDE.md, if you tell me 'add a new feature', I would: [know what language from Tech Stack], [know how to test from Commands], [know code style from Code Style], [know response detail from User Profile]. Does this flow look right?"
+
+**Closing question**: "Does CLAUDE.md accurately reflect your project? Pay special attention to User Profile and [TO CONFIRM] fields."
+
+---
+
+### [STAGE:5] — Extract SKILL.md
+Goal: From the confirmed CLAUDE.md, identify operations truly worth encapsulating as skills, and generate skill files that Claude Code can correctly trigger.
+
+#### Criteria: An operation is worth encapsulating as a skill ONLY if it satisfies ALL of:
+1. **Repeatability**: User will perform this operation multiple times (at least weekly)
+2. **Fixed Steps**: The operation's steps can be clearly described, not different each time
+3. **Identifiable Trigger**: User's intent can be accurately recognized by AI through keywords or context
+4. **Encapsulation Value**: Encapsulation significantly reduces user input or AI error rate
+
+#### Step 1: Candidate List Analysis [STAGE:5]
+- **Read CLAUDE.md section by section**, asking for each: "Is there an encapsulatable operation here?"
+- For each candidate skill, list: skill name, source section, one-line description, encapsulation value
+- **Must list operations you considered but excluded**, with which criteria they failed
+- Use clear hierarchical list output
+
+**Closing question**: "Is this candidate list complete? Any additions or removals?"
+
+#### Step 2: Generate Skills One at a Time [STAGE:5]
+**Generate only 1 skill at a time**. Before generating, explain your reasoning:
+- Which specific CLAUDE.md content supports this
+- Trigger condition design logic (what edge cases were considered)
+- Why steps are ordered this way
+
+#### Trigger Design Rules (Critical!):
+- ✓ Good triggers: Specific keywords + operation target. Example: "user asks to run tests", "user mentions deploying to production"
+- ✗ Bad triggers: Too broad. Example: "when working with files", "when user makes a request" — these trigger on every task
+- Each skill must have at least 2 anti-trigger conditions, explicitly stating when NOT to use this skill
+- Trigger conditions must not overlap with each other (two skills matching the same sentence)
+- Avoid conflicts with Claude Code built-in commands (e.g., /clear, /compact)
+
+#### Generation Verification
+After each skill, test trigger logic:
+"Simulation: User says '[possible trigger phrase]' → would this skill fire? User says '[false trigger phrase]' → would it be falsely triggered?"
+
+**Ask user if satisfied after each skill. When all are complete, ask whether to proceed to patch review.**
+
+---
+
+### [STAGE:6] — Patch Review
+Goal: Cross-review CLAUDE.md and SKILL.md to ensure consistency, completeness, and no contradictions.
+
+#### Review Checklist:
+1. **Reference Consistency**: Do SKILL.md references to CLAUDE.md sections actually exist?
+2. **Command Coverage**: Do all commands/workflows in CLAUDE.md have corresponding skills (or justified exclusions)?
+3. **Trigger Non-Overlap**: Are all skill trigger conditions mutually exclusive?
+4. **User Profile Match**: Does CLAUDE.md instruction granularity match user skill level?
+5. **[TO CONFIRM] Clearance**: Any unconfirmed fields remaining?
+
+Each patch suggestion as a single JSON line (not in a code block), specifying: target file, field path, current content, improvement, reason, severity.
+
+---
+
+## CLAUDE.md Template (For Stage 4)
+
+```markdown
+# Project: [Project Name]
+
+@README.md  <!-- If project has README, import directly to avoid duplication -->
+
+## Run Context (if dual-model)
+<!-- If user uses Claude Code (shell) + other model (brain) combo, must document -->
+Current setup: [e.g., Claude Code + DeepSeek]
+- CLAUDE.md is read by [model name] model — instructions should be direct and unambiguous
+- SKILL.md is parsed by Claude Code — unaffected
+
+## Overview
+[2-3 sentences: what the project does, who it's for, core value]
+
+## User Profile ⭐
+This is a user dossier for the AI, helping adjust collaboration style:
+- **Skill Level**: [beginner / familiar with X / experienced] — determines code explanation depth
+- **Communication Preference**: [brief / detailed; English / other] — determines response style
+- **AI Collaboration Pain Points**: [specific issues, e.g., "AI often ignores my test framework"]
+- **Work Rhythm**: [prefers AI to confirm each step / wants AI to proceed autonomously]
+
+## Project Goals
+- [Specific, measurable goals]
+
+## Automation Mode
+MODE: [full_auto | checkpoint | manual]
+Rationale: [why this mode, based on user profile]
+
+INTERVENTION_POINTS:
+- [ ] [Specific scenario — when user must intervene]
+
+## Tech Stack
+- Language: [language & version]
+- Framework: [framework & version]
+- Deployment: [deployment method]
+
+## Project Structure
+```
+project-root/
+├── src/          -- [description]
+├── tests/        -- [description]
+└── .claude/      -- Claude Code config
+    ├── CLAUDE.md
+    └── rules/    -- path-scoped rules (split here when file exceeds 200 lines)
+```
+
+## Architecture
+- [constraint 1]
+
+## Commands
+```bash
+# Start dev environment
+[specific command]
+
+# Run tests
+[specific command]
+```
+
+## Code Style
+- [specific conventions]
+
+## AI Collaboration Guardrails ⚠️
+- [Must NOT do 1, e.g., "Do not modify .env files"]
+- [Must NOT do 2, e.g., "Do not delete files without asking me"]
+
+## Key Dependencies
+- [package name]: [purpose]
+
+## Suggested .claude/rules/ Split (if this file exceeds 200 lines)
+<!-- When CLAUDE.md is too long, split by topic into separate rule files -->
+- .claude/rules/testing.md — paths: ["**/*.test.ts"]
+- .claude/rules/api-design.md — paths: ["src/api/**/*.ts"]
+
+## Personal Preferences
+<!-- Remind user to create CLAUDE.local.md (gitignored) for the following -->
+- Local test data paths
+- Personal sandbox URL
+- [Other personal settings]
+```
+
+---
+
+## SKILL.md Template (For Stage 5)
+
+Wrap in ``` ```markdown```. Format below — triggers and anti-triggers must be keyword-specific, no vague language.
+
+```markdown
+# [skill-name-in-english-kebab-case]
+
+## Trigger
+- [When user says something containing "XXX" keyword]
+- [When user asks to do XXX operation]
+
+## Anti-Trigger
+- [When user is just discussing XXX without intent to execute]
+- [When involving YYY — it has its own skill]
+
+## Steps
+- [Step 1: specific action description]
+- [Step 2: specific action description]
+- [Step 3: specific action description]
+```
+
+---
+
+## Patch Suggestion Format (For Stage 6, one JSON per line)
+
+{"patch_id":"p1","target":"claude|skill","field":"[field path]","current":"[current content]","suggestion":"[improved content]","reason":"[why change]","confidence":"low|medium|high"}
+
+Reply in English.`;
 
 // ====== STATE ======
 let S = {
   provider:null, mode:'full_auto', stage:0,
   history:[], claudeMd:'', skillMd:'', loading:false,
   apiKeys:{}, selectedModel:{}, verifiedModels:{},
-  systemPrompt: localStorage.getItem('csg_system_prompt') || DEFAULT_SYSTEM_PROMPT,
+  systemPrompt: localStorage.getItem('csg_system_prompt') || ((navigator.language||'').toLowerCase().startsWith('en')?DEFAULT_SYSTEM_PROMPT_EN:DEFAULT_SYSTEM_PROMPT),
   localMd: localStorage.getItem('csg_local_md') || '',  // 个人偏好 → CLAUDE.local.md
+  locale: localStorage.getItem('csg_locale') || detectLocale(),
   _prevClaudeMd:'', _prevSkillMd:'', _pendingClaudeMd:null, _pendingSkillMd:null,  // 对比模式用
   _justGenerated:null,  // 标记刚生成的文件类型，用于下载后触发评分弹窗
   _sessionHash: 's'+Date.now().toString(36),  // 会话标识，用于导出文件追踪
@@ -1142,7 +1458,358 @@ try{ S.apiKeys=JSON.parse(localStorage.getItem('csg_keys')||'{}'); }catch(e){}
 try{ S.verifiedModels=JSON.parse(localStorage.getItem('csg_verified')||'{}'); }catch(e){}
 // 如果 localStorage 没有自定义 prompt，初始化为默认值
 if(!localStorage.getItem('csg_system_prompt')){
-  try{ localStorage.setItem('csg_system_prompt', DEFAULT_SYSTEM_PROMPT); }catch(e){}
+  try{ localStorage.setItem('csg_system_prompt', S.systemPrompt); }catch(e){}
+}
+
+// ====== I18N ======
+function detectLocale(){
+  const lang=(navigator.language||'').toLowerCase();
+  if(lang.startsWith('zh')) return 'zh';
+  if(lang.startsWith('en')) return 'en';
+  return 'zh';
+}
+
+const I18N = {
+  zh:{},
+  en:{}
+};
+
+// ====== I18N DATA — HTML static text ======
+(function(){
+  const Z=I18N.zh, E=I18N.en;
+
+  // Logo
+  Z['logo.title']='Claude · Skill'; E['logo.title']='Claude · Skill';
+  Z['logo.subtitle']='v2.5 · 双模型优化'; E['logo.subtitle']='v2.5 · Dual-Model Optimized';
+
+  // API Panel
+  Z['project.label']='当前项目'; E['project.label']='Current Project';
+  Z['project.switchTitle']='点击切换项目'; E['project.switchTitle']='Click to switch project';
+  Z['project.newTitle']='新建项目'; E['project.newTitle']='New project';
+  Z['provider.label']='AI 提供商'; E['provider.label']='AI Provider';
+  Z['model.label']='模型版本'; E['model.label']='Model Version';
+  Z['model.verify']='验证 ↗'; E['model.verify']='Verify ↗';
+  Z['model.customPlaceholder']='输入模型 ID…'; E['model.customPlaceholder']='Enter model ID…';
+  Z['model.unverified']='· 未验证'; E['model.unverified']='· Not verified';
+  Z['apikey.label']='API Key'; E['apikey.label']='API Key';
+  Z['apikey.placeholder']='粘贴 API Key…'; E['apikey.placeholder']='Paste API Key…';
+  Z['apikey.save']='保存'; E['apikey.save']='Save';
+  Z['apikey.notConfigured']='· 未配置'; E['apikey.notConfigured']='· Not configured';
+  Z['apikey.baseUrlPlaceholder']='Base URL，如 http://localhost:11434/v1/…'; E['apikey.baseUrlPlaceholder']='Base URL, e.g. http://localhost:11434/v1/…';
+
+  // Nav panel
+  Z['nav.label']='导航与文件'; E['nav.label']='Navigation & Files';
+  Z['mode.label']='自动化模式'; E['mode.label']='Automation Mode';
+  Z['mode.checkpointTitle']='每阶段暂停确认'; E['mode.checkpointTitle']='Pause after each stage';
+  Z['mode.fullAutoTitle']='全自主推进'; E['mode.fullAutoTitle']='Fully autonomous';
+  Z['mode.compareTitle']='并排对比修改'; E['mode.compareTitle']='Side-by-side compare';
+  Z['mode.manualTitle']='仅建议'; E['mode.manualTitle']='Suggestions only';
+  Z['stage.label']='生成阶段'; E['stage.label']='Generation Stages';
+  Z['stage.0']='项目描述'; E['stage.0']='Project Description';
+  Z['stage.1']='工具架构分析'; E['stage.1']='Tool Architecture Analysis';
+  Z['stage.2']='自动化识别'; E['stage.2']='Automation Identification';
+  Z['stage.3']='CLAUDE.md 生成'; E['stage.3']='CLAUDE.md Generation';
+  Z['stage.4']='SKILL.md 提取'; E['stage.4']='SKILL.md Extraction';
+  Z['stage.5']='监督修补'; E['stage.5']='Supervised Patching';
+  Z['stage.6']='文件就绪'; E['stage.6']='Files Ready';
+  // Stage names used in checkpoint reply messages (differ slightly from sidebar)
+  Z['stage.reply.1']='项目理解'; E['stage.reply.1']='Project Understanding';
+  Z['stage.reply.2']='工具架构分析'; E['stage.reply.2']='Tool Architecture Analysis';
+  Z['stage.reply.3']='自动化识别'; E['stage.reply.3']='Automation Identification';
+  Z['stage.reply.4']='CLAUDE.md 生成'; E['stage.reply.4']='CLAUDE.md Generation';
+  Z['stage.reply.5']='SKILL.md 提取'; E['stage.reply.5']='SKILL.md Extraction';
+  Z['stage.reply.6']='修补审查'; E['stage.reply.6']='Patch Review';
+
+  // Preferences
+  Z['prefs.label']='个人偏好'; E['prefs.label']='Preferences';
+  Z['prefs.localMd']='(local.md)'; E['prefs.localMd']='(local.md)';
+  Z['prefs.placeholder']='输入你的个人偏好，一行一条…\n例如：\n用中文回复\n不要给我列选项，直接选最优方案'; E['prefs.placeholder']='Enter your preferences, one per line…\nExamples:\nReply in English\nUse type hints everywhere';
+  Z['prefs.save']='保存'; E['prefs.save']='Save';
+  Z['prefs.generate']='生成'; E['prefs.generate']='Generate';
+  Z['prefs.noPrefs']='个人偏好'; E['prefs.noPrefs']='Preferences';
+
+  // Knowledge
+  Z['knowledge.label']='AI 动态'; E['knowledge.label']='AI Updates';
+  Z['knowledge.refresh']='(点击刷新)'; E['knowledge.refresh']='(click to refresh)';
+
+  // File cards
+  Z['files.label']='项目文件'; E['files.label']='Project Files';
+  Z['fileCard.notGenerated']='尚未生成'; E['fileCard.notGenerated']='Not generated yet';
+  Z['fileCard.view']='查看'; E['fileCard.view']='View';
+  Z['fileCard.copy']='复制'; E['fileCard.copy']='Copy';
+  Z['fileCard.download']='下载'; E['fileCard.download']='Download';
+  Z['fileCard.localMeta']='个人偏好'; E['fileCard.localMeta']='Preferences';
+
+  // Output buttons
+  Z['out.selectDir']='📁 选择输出文件夹'; E['out.selectDir']='📁 Select Output Folder';
+  Z['out.testOutput']='🧪 测试文件输出'; E['out.testOutput']='🧪 Test File Output';
+  Z['out.exportAll']='⬇ 导出全部文件'; E['out.exportAll']='⬇ Export All Files';
+  Z['out.optimize']='🔧 优化工具逻辑'; E['out.optimize']='🔧 Optimize Tool Logic';
+  Z['out.reset']='↺ 重置对话'; E['out.reset']='↺ Reset Conversation';
+
+  // Topbar
+  Z['topbar.defaultInfo']='选择提供商并配置 Key 后开始'; E['topbar.defaultInfo']='Select a provider and configure Key to start';
+  Z['topbar.newProject']='＋ 新建项目'; E['topbar.newProject']='＋ New Project';
+  Z['topbar.clear']='清空'; E['topbar.clear']='Clear';
+  Z['topbar.send']='发送'; E['topbar.send']='Send';
+  Z['topbar.inputPlaceholder']='描述你的项目…（Ctrl+Enter 发送）'; E['topbar.inputPlaceholder']='Describe your project… (Ctrl+Enter to send)';
+  Z['topbar.uploadTitle']='上传文本文件'; E['topbar.uploadTitle']='Upload text file';
+
+  // Welcome message
+  Z['welcome.message']='<div style="font-size:18px;font-weight:500;margin-bottom:6px">👋 开始生成你的 CLAUDE.md 和 SKILL.md</div>三步即可：<br><b>①</b> 左侧选 AI 提供商和模型 → 填 Key → 点「验证」确认可用<br><b>②</b> 顶部点击「＋ 新建项目」创建项目，或用默认项目<br><b>③</b> 在输入框描述你的项目，按 Ctrl+Enter 发送<br><br>我会依次帮你：分析工具和架构 → 推荐自动化策略 → 生成 CLAUDE.md → 提取 SKILL.md。';
+  E['welcome.message']='<div style="font-size:18px;font-weight:500;margin-bottom:6px">👋 Start generating your CLAUDE.md and SKILL.md</div>Three steps:<br><b>①</b> Select an AI provider and model → enter Key → click "Verify" to confirm<br><b>②</b> Click "＋ New Project" at the top, or use the default project<br><b>③</b> Describe your project and press Ctrl+Enter to send<br><br>I\'ll guide you through: analyze tools & architecture → recommend automation strategy → generate CLAUDE.md → extract SKILL.md.';
+
+  // Docs panel
+  Z['docs.title']='Claude Code 参考'; E['docs.title']='Claude Code Reference';
+  Z['docs.section1.title']='CLAUDE.md 文件体系'; E['docs.section1.title']='CLAUDE.md File System';
+  Z['docs.section1.p']='Claude Code 启动时按以下优先级加载指令文件：'; E['docs.section1.p']='Claude Code loads instruction files in this priority order on startup:';
+  Z['docs.section1.li1']='<code>~/.claude/CLAUDE.md</code> — 全局个人指令，所有项目生效'; E['docs.section1.li1']='<code>~/.claude/CLAUDE.md</code> — Global personal instructions, applies to all projects';
+  Z['docs.section1.li2']='<code>./CLAUDE.md</code> — 项目根目录指令，随 Git 提交'; E['docs.section1.li2']='<code>./CLAUDE.md</code> — Project root instructions, committed with Git';
+  Z['docs.section1.li3']='<code>./.claude/CLAUDE.md</code> — 项目隐藏指令（建议不提交）'; E['docs.section1.li3']='<code>./.claude/CLAUDE.md</code> — Hidden project instructions (recommend not committing)';
+  Z['docs.section1.li4']='<code>./.claude/rules/*.md</code> — 规则目录，按文件名排序加载'; E['docs.section1.li4']='<code>./.claude/rules/*.md</code> — Rules directory, loaded in filename order';
+  Z['docs.section1.li5']='<code>CLAUDE.local.md</code> — 个人偏好（应加入 .gitignore）'; E['docs.section1.li5']='<code>CLAUDE.local.md</code> — Personal preferences (should be in .gitignore)';
+
+  Z['docs.section2.title']='CLAUDE.md 内容结构'; E['docs.section2.title']='CLAUDE.md Content Structure';
+  Z['docs.section2.p']='推荐用 Markdown 写，AI 直接读取。常见章节：'; E['docs.section2.p']='Use Markdown for direct AI consumption. Common sections:';
+  Z['docs.section2.li1']='<b>Project</b> — 项目名称和一句话定义'; E['docs.section2.li1']='<b>Project</b> — Project name and one-line definition';
+  Z['docs.section2.li2']='<b>User Profile</b> — 用户技术水平、沟通偏好'; E['docs.section2.li2']='<b>User Profile</b> — User skill level, communication preferences';
+  Z['docs.section2.li3']='<b>Tech Stack</b> — 语言、框架、运行环境'; E['docs.section2.li3']='<b>Tech Stack</b> — Languages, frameworks, runtime';
+  Z['docs.section2.li4']='<b>Architecture</b> — 目录结构、模块划分'; E['docs.section2.li4']='<b>Architecture</b> — Directory structure, module breakdown';
+  Z['docs.section2.li5']='<b>Commands</b> — 构建/测试/运行命令'; E['docs.section2.li5']='<b>Commands</b> — Build/test/run commands';
+  Z['docs.section2.li6']='<b>Code Style</b> — 命名规范、注释风格'; E['docs.section2.li6']='<b>Code Style</b> — Naming conventions, comment style';
+  Z['docs.section2.li7']='<b>自动模式</b> — 自主权限边界、确认点'; E['docs.section2.li7']='<b>Automation Mode</b> — Autonomy boundaries, confirmation points';
+  Z['docs.section2.li8']='<b>Run Context</b> — 模型架构说明（壳+脑）'; E['docs.section2.li8']='<b>Run Context</b> — Model architecture notes (shell + brain)';
+
+  Z['docs.section3.title']='@ 导入语法'; E['docs.section3.title']='@ Import Syntax';
+  Z['docs.section3.p1']='用 <code>@文件路径</code> 导入其他文件内容，拼接到指令中：'; E['docs.section3.p1']='Use <code>@filepath</code> to import and splice other file contents into instructions:';
+  Z['docs.section3.p2']='适合引用已有文档，避免维护两份相同内容。'; E['docs.section3.p2']='Great for referencing existing docs—avoid maintaining duplicate content.';
+
+  Z['docs.section4.title']='.claude/rules/ 规则目录'; E['docs.section4.title']='.claude/rules/ Rules Directory';
+  Z['docs.section4.p1']='当 CLAUDE.md 超过 200 行，应拆分到规则目录：'; E['docs.section4.p1']='When CLAUDE.md exceeds 200 lines, split into the rules directory:';
+  Z['docs.section4.p2']='规则文件自动被读取，可按文件名前缀控制排序。'; E['docs.section4.p2']='Rule files are read automatically; order by filename prefix.';
+
+  Z['docs.section5.title']='YAML Frontmatter'; E['docs.section5.title']='YAML Frontmatter';
+  Z['docs.section5.p1']='CLAUDE.md 顶部可写 YAML frontmatter，用 <code>paths</code> 限定作用域：'; E['docs.section5.p1']='Add YAML frontmatter at the top of CLAUDE.md with <code>paths</code> to limit scope:';
+  Z['docs.section5.p2']='<code>paths</code> 支持 glob 模式，让规则精准匹配文件范围。'; E['docs.section5.p2']='<code>paths</code> supports glob patterns for precise file matching.';
+
+  Z['docs.section6.title']='SKILL.md 技能定义'; E['docs.section6.title']='SKILL.md Skill Definition';
+  Z['docs.section6.p']='放在项目根目录或 <code>.claude/skills/</code> 下，XML 格式：'; E['docs.section6.p']='Place in project root or <code>.claude/skills/</code>, XML format:';
+
+  Z['docs.section7.title']='Skill 字段说明'; E['docs.section7.title']='Skill Field Reference';
+  Z['docs.section7.li1']='<code>&lt;name&gt;</code> — 唯一标识，字母+连字符'; E['docs.section7.li1']='<code>&lt;name&gt;</code> — Unique ID, letters + hyphens';
+  Z['docs.section7.li2']='<code>&lt;description&gt;</code> — 一句话描述，AI 用来理解用途'; E['docs.section7.li2']='<code>&lt;description&gt;</code> — One-line description for AI context';
+  Z['docs.section7.li3']='<code>&lt;trigger&gt;</code> — 触发关键词或正则，支持 | 分隔'; E['docs.section7.li3']='<code>&lt;trigger&gt;</code> — Trigger keywords or regex, | delimited';
+  Z['docs.section7.li4']='<code>&lt;anti-trigger&gt;</code> — 排除场景，防止误触发'; E['docs.section7.li4']='<code>&lt;anti-trigger&gt;</code> — Exclusion patterns to prevent false triggers';
+  Z['docs.section7.li5']='<code>&lt;steps&gt;</code> — 执行步骤，每步一行，顺序执行'; E['docs.section7.li5']='<code>&lt;steps&gt;</code> — Execution steps, one per line, sequential';
+
+  Z['docs.section8.title']='Skill 触发机制'; E['docs.section8.title']='Skill Trigger Mechanism';
+  Z['docs.section8.p1']='Claude Code 在每条用户消息前检查所有 skill：'; E['docs.section8.p1']='Claude Code checks all skills before each user message:';
+  Z['docs.section8.li1']='用户输入匹配 trigger → 加载该 skill 的 steps'; E['docs.section8.li1']='Input matches trigger → load that skill\'s steps';
+  Z['docs.section8.li2']='同时匹配多个 skill → 全部加载，按文件名排序'; E['docs.section8.li2']='Multiple skills match → all loaded, sorted by filename';
+  Z['docs.section8.li3']='匹配 anti-trigger → 排除该 skill，即使 trigger 命中'; E['docs.section8.li3']='Matches anti-trigger → exclude that skill even if trigger hits';
+  Z['docs.section8.li4']='trigger 太宽 → 干扰正常对话；太窄 → 永不触发'; E['docs.section8.li4']='Trigger too broad → disrupts conversation; too narrow → never fires';
+  Z['docs.section8.p2']='关键：trigger 应足够具体，避免与系统内置行为重叠。'; E['docs.section8.p2']='Key: triggers should be specific enough to avoid overlapping with built-in behavior.';
+
+  Z['docs.section9.title']='文件发现顺序'; E['docs.section9.title']='File Discovery Order';
+  Z['docs.section9.p']='Claude Code 按此顺序加载文件（高优先级先）：'; E['docs.section9.p']='Claude Code loads files in this order (higher priority first):';
+  Z['docs.section9.li1']='<code>~/.claude/CLAUDE.md</code> — 全局用户指令'; E['docs.section9.li1']='<code>~/.claude/CLAUDE.md</code> — Global user instructions';
+  Z['docs.section9.li2']='<code>./CLAUDE.md</code> — 项目根目录指令'; E['docs.section9.li2']='<code>./CLAUDE.md</code> — Project root instructions';
+  Z['docs.section9.li3']='<code>./.claude/CLAUDE.md</code> — 项目隐藏指令'; E['docs.section9.li3']='<code>./.claude/CLAUDE.md</code> — Hidden project instructions';
+  Z['docs.section9.li4']='<code>./.claude/rules/*.md</code> — 规则文件'; E['docs.section9.li4']='<code>./.claude/rules/*.md</code> — Rule files';
+  Z['docs.section9.li5']='<code>./SKILL.md</code> — 技能定义'; E['docs.section9.li5']='<code>./SKILL.md</code> — Skill definition';
+  Z['docs.section9.li6']='<code>./.claude/skills/*.skill.md</code> — 独立技能文件'; E['docs.section9.li6']='<code>./.claude/skills/*.skill.md</code> — Individual skill files';
+  Z['docs.section9.li7']='<code>CLAUDE.local.md</code> — 本地个人偏好'; E['docs.section9.li7']='<code>CLAUDE.local.md</code> — Local personal preferences';
+
+  Z['docs.section10.title']='内存系统 (Memory)'; E['docs.section10.title']='Memory System';
+  Z['docs.section10.p1']='持久化记忆，存储在 <code>.claude/memory/</code>：'; E['docs.section10.p1']='Persistent memory stored in <code>.claude/memory/</code>:';
+  Z['docs.section10.li1']='<code>user</code> — 用户角色、偏好、知识背景'; E['docs.section10.li1']='<code>user</code> — User role, preferences, knowledge background';
+  Z['docs.section10.li2']='<code>feedback</code> — 用户反馈的工作方式'; E['docs.section10.li2']='<code>feedback</code> — User feedback on work style';
+  Z['docs.section10.li3']='<code>project</code> — 项目进度、目标、决策记录'; E['docs.section10.li3']='<code>project</code> — Project progress, goals, decision records';
+  Z['docs.section10.li4']='<code>reference</code> — 外部资源指针（文档链接等）'; E['docs.section10.li4']='<code>reference</code> — External resource pointers (doc links, etc.)';
+  Z['docs.section10.p2']='AI 在对话中自动读写记忆，跨 session 持久化。'; E['docs.section10.p2']='AI reads and writes memory automatically during conversations, persisted across sessions.';
+
+  Z['docs.section11.title']='最佳实践'; E['docs.section11.title']='Best Practices';
+  Z['docs.section11.li1']='CLAUDE.md 控制在 200 行内，超出拆分到 rules/'; E['docs.section11.li1']='Keep CLAUDE.md under 200 lines; split into rules/ if larger';
+  Z['docs.section11.li2']='每个 skill 的 trigger 写 3-5 个核心关键词'; E['docs.section11.li2']='Write 3-5 core keywords for each skill trigger';
+  Z['docs.section11.li3']='anti-trigger 宁可多写，减少误触发'; E['docs.section11.li3']='Err on the side of more anti-triggers to reduce false matches';
+  Z['docs.section11.li4']='steps 每步一个动作，不合并多步骤'; E['docs.section11.li4']='One action per step, don\'t combine multiple steps';
+  Z['docs.section11.li5']='CLAUDE.local.md 放个人偏好，加入 .gitignore'; E['docs.section11.li5']='Put personal preferences in CLAUDE.local.md, add to .gitignore';
+  Z['docs.section11.li6']='API Key、密码等敏感信息绝不写入 CLAUDE.md'; E['docs.section11.li6']='Never write API keys, passwords, or sensitive info in CLAUDE.md';
+
+  // Mode names
+  Z['mode.checkpoint']='Check'; E['mode.checkpoint']='Check';
+  Z['mode.full_auto']='自动'; E['mode.full_auto']='Auto';
+  Z['mode.compare']='对比'; E['mode.compare']='Compare';
+  Z['mode.manual']='手动'; E['mode.manual']='Manual';
+
+  // Status
+  Z['status.saved']='· 已保存'; E['status.saved']='· Saved';
+  Z['status.notConfigured']='· 未配置'; E['status.notConfigured']='· Not configured';
+  Z['status.notVerified']='· 未验证'; E['status.notVerified']='· Not verified';
+  Z['status.verified']='· 已验证可用 ✓'; E['status.verified']='· Verified ✓';
+  Z['status.verifying']='· 验证中…'; E['status.verifying']='· Verifying…';
+  Z['status.verifyFailed']='· 验证失败'; E['status.verifyFailed']='· Verification failed';
+  Z['status.verifyFormatErr']='· 响应格式异常，详情见聊天区'; E['status.verifyFormatErr']='· Response format error, see chat for details';
+
+  // Chat
+  Z['chat.me']='我'; E['chat.me']='Me';
+  Z['chat.retract']='撤回'; E['chat.retract']='Retract';
+  Z['chat.retractTitle']='撤回此消息及后续回复'; E['chat.retractTitle']='Retract this message and subsequent replies';
+
+  // Project
+  Z['project.deleteTitle']='删除'; E['project.deleteTitle']='Delete';
+  Z['project.current']='当前'; E['project.current']='Current';
+  Z['project.msgs']='条消息'; E['project.msgs']='msgs';
+  Z['project.switch']='切换'; E['project.switch']='Switch';
+  Z['project.close']='关闭'; E['project.close']='Close';
+  Z['project.newBtn']='+ 新建项目'; E['project.newBtn']='+ New Project';
+  Z['knowledge.shuffle']='换一批'; E['knowledge.shuffle']='Refresh';
+
+  // Test file output
+  // Local MD template
+  Z['localMd.template.header']='# Personal Preferences (个人偏好)\n<!-- 此文件由 Claude·Skill 生成器自动生成 -->\n<!-- 建议添加到 .gitignore，不提交到版本控制 -->\n'; E['localMd.template.header']='# Personal Preferences\n<!-- Generated by Claude·Skill Generator -->\n<!-- Add to .gitignore, do not commit -->\n';
+  Z['localMd.template.footer']='## 说明\n以上偏好会在每次 Claude Code 会话中加载（在 CLAUDE.md 之后加载），仅对当前项目生效。\n如需在所有项目中生效，请将偏好移至 ~/.claude/CLAUDE.md。'; E['localMd.template.footer']='## Notes\nThese preferences are loaded in every Claude Code session (after CLAUDE.md), for the current project only.\nTo apply globally, move them to ~/.claude/CLAUDE.md.';
+
+  Z['test.claudeMdContent']='# 测试 CLAUDE.md\n\n## Project\n测试项目'; E['test.claudeMdContent']='# Test CLAUDE.md\n\n## Project\nTest Project';
+  Z['test.skillMdContent']='<skill>\n  <name>test-skill</name>\n  <description>测试技能</description>\n  <trigger>测试|test</trigger>\n  <steps>\n    1. 接收测试请求\n    2. 执行测试\n    3. 输出结果\n  </steps>\n</skill>'; E['test.skillMdContent']='<skill>\n  <name>test-skill</name>\n  <description>Test skill</description>\n  <trigger>test|testing</trigger>\n  <steps>\n    1. Receive test request\n    2. Execute test\n    3. Output results\n  </steps>\n</skill>';
+
+  // File card dynamic
+  Z['fileCard.lineCount']='{count} 行'; E['fileCard.lineCount']='{count} lines';
+  Z['fileCard.skillCount']='{count} 个技能: {names} · {lines} 行'; E['fileCard.skillCount']='{count} skill(s): {names} · {lines} lines';
+  Z['fileCard.prefCount']='{count} 条偏好'; E['fileCard.prefCount']='{count} preference(s)';
+
+  // Prefs status
+  Z['prefs.savedCount']='已保存 {count} 条偏好'; E['prefs.savedCount']='{count} preference(s) saved';
+  Z['prefs.savedDone']='✓ 已保存 {count} 条偏好'; E['prefs.savedDone']='✓ {count} preference(s) saved';
+  Z['prefs.notSet']='· 未设置'; E['prefs.notSet']='· Not set';
+
+  // HTTP errors
+  Z['error.http400']='请求参数错误，模型可能不支持该请求格式'; E['error.http400']='Bad request — model may not support this request format';
+  Z['error.http401']='API Key 无效或已过期，请检查并重新填写'; E['error.http401']='Invalid or expired API Key — please check and re-enter';
+  Z['error.http403']='无权访问该模型，请检查账户权限'; E['error.http403']='Access denied — please check account permissions';
+  Z['error.http404']='模型不存在或 URL 不正确，请检查模型名称'; E['error.http404']='Model not found or incorrect URL — please check model name';
+  Z['error.http429']='请求频率超限或余额不足，请稍等再试或切换模型'; E['error.http429']='Rate limit or insufficient balance — please wait or switch models';
+  Z['error.http500']='服务端内部错误，可稍后重试'; E['error.http500']='Server internal error — retry later';
+  Z['error.http502']='服务端网关错误，可稍后重试'; E['error.http502']='Server gateway error — retry later';
+  Z['error.http503']='服务端暂时不可用，可稍后重试'; E['error.http503']='Service temporarily unavailable — retry later';
+
+  // Topbar
+  Z['topbar.modeInfo']='{provider} · {mode} 模式'; E['topbar.modeInfo']='{provider} · {mode} Mode';
+
+  // Tags
+  Z['tag.recommended']='[推荐] '; E['tag.recommended']='[Recommended] ';
+  Z['tag.preview']='[预览] '; E['tag.preview']='[Preview] ';
+  Z['tag.legacy']='[旧版] '; E['tag.legacy']='[Legacy] ';
+
+  // Provider connection status
+  Z['provider.connected']='已连接'; E['provider.connected']='Connected';
+  Z['provider.hasKey']='已配Key'; E['provider.hasKey']='Key set';
+
+  // Alerts
+  Z['alert.saveApiKeyFirst']='请先保存 API Key'; E['alert.saveApiKeyFirst']='Please save API Key first';
+  Z['alert.enterModelId']='请输入模型 ID'; E['alert.enterModelId']='Please enter model ID';
+  Z['alert.selectProviderFirst']='请先选择提供商'; E['alert.selectProviderFirst']='Please select a provider first';
+  Z['alert.enterApiKey']='请输入 API Key'; E['alert.enterApiKey']='Please enter API Key';
+  Z['alert.selectAiProviderFirst']='请先选择 AI 提供商'; E['alert.selectAiProviderFirst']='Please select an AI provider first';
+  Z['alert.configureApiKey']='请配置并保存 API Key'; E['alert.configureApiKey']='Please configure and save API Key';
+  Z['alert.selectModel']='请选择或输入模型'; E['alert.selectModel']='Please select or enter a model';
+  Z['alert.noOtherProjects']='暂无其他项目'; E['alert.noOtherProjects']='No other projects';
+  Z['alert.selectOutputDirFirst']='请先点击「📁 选择输出文件夹」，选择 generated/ 目录'; E['alert.selectOutputDirFirst']='Please click "📁 Select Output Folder" and choose the generated/ directory';
+  Z['alert.selectProviderForOptimize']='请先选择 AI 提供商并配置 Key'; E['alert.selectProviderForOptimize']='Please select AI provider and configure Key';
+
+  // Confirm
+  Z['confirm.deleteProject']='确定删除项目「{name}」？此操作不可恢复。'; E['confirm.deleteProject']='Delete project "{name}"? This cannot be undone.';
+  Z['prompt.newProjectName']='请输入新项目名称：'; E['prompt.newProjectName']='Enter new project name:';
+
+  // System messages
+  Z['msg.prefsSaved']='个人偏好已保存'; E['msg.prefsSaved']='Preferences saved';
+  Z['msg.localMdDownloaded']='CLAUDE.local.md 已下载 — 放到项目根目录，记得加入 .gitignore'; E['msg.localMdDownloaded']='CLAUDE.local.md downloaded — place in project root, remember to add to .gitignore';
+  Z['msg.retracted']='已撤回'; E['msg.retracted']='Retracted';
+  Z['msg.copied']='已复制到剪贴板'; E['msg.copied']='Copied to clipboard';
+  Z['msg.copiedShort']='已复制'; E['msg.copiedShort']='Copied';
+  Z['msg.exportAllDone']='全部文件已下载 — 建议保存到项目的 generated/ 文件夹'; E['msg.exportAllDone']='All files downloaded — save to project generated/ folder';
+  Z['msg.resetDone']='已重置。请描述新项目。'; E['msg.resetDone']='Reset. Describe your new project.';
+  Z['msg.projectSwitched']='已切换到项目「{name}」（{msgs} 条消息，{files}）'; E['msg.projectSwitched']='Switched to project "{name}" ({msgs} messages, {files})';
+  Z['msg.projectCreated']='已创建并切换到项目「{name}」'; E['msg.projectCreated']='Created and switched to project "{name}"';
+  Z['msg.fileWritten']='已写入：{path}'; E['msg.fileWritten']='Written: {path}';
+  Z['msg.fileTooBig']='⚠ 文件超过 2MB，请上传更小的文件'; E['msg.fileTooBig']='⚠ File exceeds 2MB, please upload a smaller file';
+  Z['msg.fileLoaded']='📎 已加载文件：{name}（{size} KB）'; E['msg.fileLoaded']='📎 File loaded: {name} ({size} KB)';
+  Z['msg.fileReadError']='⚠ 文件读取失败'; E['msg.fileReadError']='⚠ File read failed';
+  Z['msg.dirReady']='输出文件夹已就绪：{name} — 生成文件将自动写入项目子文件夹'; E['msg.dirReady']='Output folder ready: {name} — files will be written to project subfolder';
+  Z['msg.dirFailed']='选目录失败：{msg}'; E['msg.dirFailed']='Directory selection failed: {msg}';
+  Z['msg.testDone']='测试完成！已在 {proj}/ 子文件夹创建 {count} 个文件：\n{results}'; E['msg.testDone']='Test complete! {count} file(s) created in {proj}/:\n{results}';
+  Z['msg.testFailed']='测试失败：{msg}'; E['msg.testFailed']='Test failed: {msg}';
+  Z['msg.optimizeStart']='🔧 正在让 AI 审查工具逻辑…'; E['msg.optimizeStart']='🔧 AI is reviewing tool logic…';
+  Z['msg.optimizeApplied']='✓ 已应用优化 {id}，下次对话将使用更新后的逻辑'; E['msg.optimizeApplied']='✓ Optimization {id} applied, updated logic will be used next session';
+  Z['msg.verifySuccess']='✓ {model} 连接验证成功，正在测试 [STAGE:N] 格式…'; E['msg.verifySuccess']='✓ {model} connection verified, testing [STAGE:N] format…';
+  Z['msg.verifyFormatOk']='✓ {model} [STAGE:N] 格式测试通过'; E['msg.verifyFormatOk']='✓ {model} [STAGE:N] format test passed';
+  Z['msg.verifyFormatFail']='⚠ {model} 格式测试：输出中未检测到 [STAGE:N] 标记。该模型可能不适合本生成器。\n实际输出前80字：{reply}'; E['msg.verifyFormatFail']='⚠ {model} format test: no [STAGE:N] markers detected. This model may not be suitable.\nFirst 80 chars of output: {reply}';
+  Z['msg.verifyFormatHttpErr']='⚠ 格式测试请求失败 (HTTP {status})，跳过'; E['msg.verifyFormatHttpErr']='⚠ Format test request failed (HTTP {status}), skipped';
+  Z['msg.verifyFormatErr']='⚠ 格式测试出错：{msg}'; E['msg.verifyFormatErr']='⚠ Format test error: {msg}';
+  Z['msg.verifyResponseErr']='⚠ {model} 响应格式异常。\n{detail}\n请在左侧「模型版本」中确认所选模型兼容 OpenAI chat/completions 格式。'; E['msg.verifyResponseErr']='⚠ {model} response format error.\n{detail}\nPlease verify the selected model is compatible with OpenAI chat/completions format.';
+  Z['msg.verifyFailed']='验证失败：{msg}'; E['msg.verifyFailed']='Verification failed: {msg}';
+  Z['msg.feedbackThanks']='📊 感谢反馈！已积累 {total} 条评价{extra}'; E['msg.feedbackThanks']='📊 Thanks for the feedback! {total} rating(s) collected{extra}';
+  Z['msg.feedbackLearningActive']='（学习机制已激活）'; E['msg.feedbackLearningActive']=' (learning system active)';
+  Z['msg.fullAutoPatches']='全自动：{count} 条修补已自动采纳'; E['msg.fullAutoPatches']='Auto: {count} patch(es) auto-applied';
+  Z['msg.checkpointBoth']='⏸ 阶段{s1}「{name1}」和阶段{s2}「{name2}」已同时完成 — 请检查后回复确认，或提出修改意见'; E['msg.checkpointBoth']='⏸ Stage {s1} "{name1}" and Stage {s2} "{name2}" completed — please review and confirm, or request changes';
+  Z['msg.checkpointDone']='⏸ 阶段{s}「{name}」已完成 — 请检查后回复确认，或提出修改意见'; E['msg.checkpointDone']='⏸ Stage {s} "{name}" completed — please review and confirm, or request changes';
+  Z['msg.patchAdoptedUser']='修补 {id} 已采纳（用户修改）'; E['msg.patchAdoptedUser']='Patch {id} adopted (user modified)';
+  Z['msg.patchAdoptedAi']='修补 {id} 已采纳（AI 选项）'; E['msg.patchAdoptedAi']='Patch {id} adopted (AI option)';
+  Z['msg.compareAdopted']='✓ 已采纳 {type} 更新'; E['msg.compareAdopted']='✓ {type} update adopted';
+  Z['msg.compareKept']='✗ 已保留 {type} 旧版本'; E['msg.compareKept']='✗ {type} old version kept';
+  Z['msg.noFiles']='无文件'; E['msg.noFiles']='No files';
+
+  // AI error
+  Z['error.aiRequest']='⚠️ 请求失败：{msg}\n\n检查：Key 是否正确、模型是否存在、账户是否有余额、网络是否可访问该服务。'; E['error.aiRequest']='⚠️ Request failed: {msg}\n\nCheck: Is the Key correct? Does the model exist? Does the account have credits? Is the service reachable?';
+})();
+
+function t(key, params){
+  const map = I18N[S.locale] || I18N.zh;
+  let val = map[key];
+  if(val === undefined){
+    val = (I18N.zh || {})[key];
+    if(val === undefined) return '['+key+']';
+  }
+  if(params && typeof val === 'string'){
+    return val.replace(/\{(\w+)\}/g, (_, k) =>
+      params[k] !== undefined ? String(params[k]) : '{'+k+'}'
+    );
+  }
+  return val;
+}
+
+function applyI18n(){
+  document.documentElement.setAttribute('lang', S.locale==='en'?'en':'zh');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = t(el.getAttribute('data-i18n'));
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    el.setAttribute('placeholder', t(el.getAttribute('data-i18n-placeholder')));
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    el.setAttribute('title', t(el.getAttribute('data-i18n-title')));
+  });
+}
+
+function toggleLocale(){
+  const next = S.locale==='zh'?'en':'zh';
+  S.locale = next;
+  try{ localStorage.setItem('csg_locale', next); }catch(e){}
+  // 如果是默认提示词，切换语言版本；用户自定义的保留
+  if(S.systemPrompt===DEFAULT_SYSTEM_PROMPT||S.systemPrompt===DEFAULT_SYSTEM_PROMPT_EN){
+    S.systemPrompt = next==='en'?DEFAULT_SYSTEM_PROMPT_EN:DEFAULT_SYSTEM_PROMPT;
+    try{ localStorage.setItem('csg_system_prompt', S.systemPrompt); }catch(e){}
+  }
+  applyI18n();
+  refreshKnowledge();
+  updateTopbar();
+  updateFileCards();
+  updateLocalMdCard();
+  updateSkillCards();
+  if(S.history.length===0){
+    document.getElementById('chat').innerHTML='';
+    addMsg('ai', t('welcome.message'));
+  }
 }
 
 // ====== INIT ======
@@ -1167,7 +1834,8 @@ function init(){
   // 加载日夜主题
   const savedTheme=localStorage.getItem('csg_theme')||'dark';
   applyTheme(savedTheme);
-  addMsg('ai','<div style="font-size:18px;font-weight:500;margin-bottom:6px">👋 开始生成你的 CLAUDE.md 和 SKILL.md</div>三步即可：<br><b>①</b> 左侧选 AI 提供商和模型 → 填 Key → 点「验证」确认可用<br><b>②</b> 顶部点击「＋ 新建项目」创建项目，或用默认项目<br><b>③</b> 在输入框描述你的项目，按 Ctrl+Enter 发送<br><br>我会依次帮你：分析工具和架构 → 推荐自动化策略 → 生成 CLAUDE.md → 提取 SKILL.md。');
+  applyI18n();
+  addMsg('ai', t('welcome.message'));
 }
 
 function toggleTheme(){
@@ -1201,8 +1869,8 @@ function refreshProviderGrid(){
     const vkey = p.id+':'+model;
     const verified = S.verifiedModels[vkey];
     let statusHtml = '', statusCls = '';
-    if(verified===true){ statusHtml='✓ 已连接'; statusCls='ok'; }
-    else if(hasKey){ statusHtml='• 已配Key'; statusCls='key'; }
+    if(verified===true){ statusHtml=t('provider.connected'); statusCls='ok'; }
+    else if(hasKey){ statusHtml=t('provider.hasKey'); statusCls='key'; }
 
     const isActive = S.provider && S.provider.id===p.id;
     btn.className='pb'+(isActive?' active':'');
@@ -1221,7 +1889,7 @@ function selectProvider(id){
   const saved=S.apiKeys[id]||'';
   document.getElementById('apiKeyInput').value=saved;
   document.getElementById('apiStatus').className='api-status '+(saved?'ok':'none');
-  document.getElementById('apiStatus').textContent=saved?'· 已保存':'· 未配置';
+  document.getElementById('apiStatus').textContent=saved?t('status.saved'):t('status.notConfigured');
 
   // base url for custom
   document.getElementById('baseUrlRow').style.display=(id==='custom')?'block':'none';
@@ -1241,7 +1909,7 @@ function buildModelSelect(){
   p.models.forEach(m=>{
     const opt=document.createElement('option');
     opt.value=m.id;
-    const tagMap={r:'[推荐] ',p:'[预览] ',l:'[旧版] '};
+    const tagMap={r:t('tag.recommended'),p:t('tag.preview'),l:t('tag.legacy')};
     opt.textContent=(tagMap[m.tag]||'')+m.label;
     sel.appendChild(opt);
   });
@@ -1261,9 +1929,9 @@ function onModelChange(){
 
   const key=p.id+':'+(isCustom?'__custom__':val);
   const verified=S.verifiedModels[key];
-  if(verified===true) setModelStatus('ok','· 已验证可用 ✓');
-  else if(verified===false) setModelStatus('err','· 验证失败');
-  else setModelStatus('none','· 未验证');
+  if(verified===true) setModelStatus('ok',t('status.verified'));
+  else if(verified===false) setModelStatus('err',t('status.verifyFailed'));
+  else setModelStatus('none',t('status.notVerified'));
   updateTopbar();
   refreshProviderGrid();
 }
@@ -1285,18 +1953,19 @@ function setModelStatus(type,text){
   const el=document.getElementById('modelStatus');
   el.className='model-status '+type;
   el.textContent=text;
+  el.setAttribute('data-i18n',''); // prevent applyI18n from overwriting dynamic status
 }
 
 function httpErrorMsg(status, body){
   const tips = {
-    400: '请求参数错误，模型可能不支持该请求格式',
-    401: 'API Key 无效或已过期，请检查并重新填写',
-    403: '无权访问该模型，请检查账户权限',
-    404: '模型不存在或 URL 不正确，请检查模型名称',
-    429: '请求频率超限或余额不足，请稍等再试或切换模型',
-    500: '服务端内部错误，可稍后重试',
-    502: '服务端网关错误，可稍后重试',
-    503: '服务端暂时不可用，可稍后重试'
+    400: t('error.http400'),
+    401: t('error.http401'),
+    403: t('error.http403'),
+    404: t('error.http404'),
+    429: t('error.http429'),
+    500: t('error.http500'),
+    502: t('error.http502'),
+    503: t('error.http503')
   };
   const tip = tips[status] || `HTTP ${status}`;
   const detail = body.slice(0, 200);
@@ -1306,11 +1975,11 @@ function httpErrorMsg(status, body){
 async function verifyModel(){
   const p=S.provider; if(!p) return;
   const key=S.apiKeys[p.id];
-  if(!key){alert('请先保存 API Key');return;}
+  if(!key){alert(t('alert.saveApiKeyFirst'));return;}
   const model=getActiveModel();
-  if(!model){alert('请输入模型 ID');return;}
+  if(!model){alert(t('alert.enterModelId'));return;}
 
-  setModelStatus('checking','· 验证中…');
+  setModelStatus('checking',t('status.verifying'));
   document.getElementById('verifyBtn').disabled=true;
 
   try{
@@ -1335,7 +2004,7 @@ async function verifyModel(){
 
     if(ok){
       setModelStatus('ok',`· 验证通过 ✓ — ${model}`);
-      addSysMsg(`✓ ${model} 连接验证成功，正在测试 [STAGE:N] 格式…`);
+      addSysMsg(t('msg.verifySuccess',{model}));
       // 第二层验证：测试 [STAGE:N] 标记输出格式
       try{
         const stageTestSys = '你是一个项目规范生成助手。回复必须以 [STAGE:1] 开头，然后简短确认收到指令。';
@@ -1349,15 +2018,15 @@ async function verifyModel(){
           const sReply = p.parseReply(sData);
           const hasStage = /\[STAGE:\d\]/.test(sReply);
           if(hasStage){
-            addSysMsg(`✓ ${model} [STAGE:N] 格式测试通过`);
+            addSysMsg(t('msg.verifyFormatOk',{model}));
           } else {
-            addSysMsg(`⚠ ${model} 格式测试：输出中未检测到 [STAGE:N] 标记。该模型可能不适合本生成器。\n实际输出前80字：${sReply.slice(0,80)}`);
+            addSysMsg(t('msg.verifyFormatFail',{model, reply:sReply.slice(0,80)}));
           }
         } else {
-          addSysMsg(`⚠ 格式测试请求失败 (HTTP ${sRes.status})，跳过`);
+          addSysMsg(t('msg.verifyFormatHttpErr',{status:sRes.status}));
         }
       }catch(e){
-        addSysMsg(`⚠ 格式测试出错：${e.message.slice(0,100)}`);
+        addSysMsg(t('msg.verifyFormatErr',{msg:e.message.slice(0,100)}));
       }
     } else {
       // 逐字段诊断，定位具体缺失什么
@@ -1377,14 +2046,14 @@ async function verifyModel(){
         detail.push(`data 顶层键: ${Object.keys(data).join(', ')}`);
       }
       setModelStatus('err',`· 响应格式异常，详情见聊天区`);
-      addSysMsg(`⚠ ${model} 响应格式异常。\n${detail.join('\n')}\n请在左侧「模型版本」中确认所选模型兼容 OpenAI chat/completions 格式。`);
+      addSysMsg(t('msg.verifyResponseErr',{model, detail:detail.join('\n')}));
     }
   }catch(e){
     const vkey=p.id+':'+model;
     S.verifiedModels[vkey]=false;
     localStorage.setItem('csg_verified',JSON.stringify(S.verifiedModels));
     setModelStatus('err','· 验证失败: '+e.message.slice(0,200));
-    addSysMsg('验证失败：'+e.message.slice(0,500));
+    addSysMsg(t('msg.verifyFailed',{msg:e.message.slice(0,500)}));
   }
   document.getElementById('verifyBtn').disabled=false;
   updateTopbar();
@@ -1392,9 +2061,9 @@ async function verifyModel(){
 }
 
 function saveApiKey(){
-  if(!S.provider){alert('请先选择提供商');return;}
+  if(!S.provider){alert(t('alert.selectProviderFirst'));return;}
   const key=document.getElementById('apiKeyInput').value.trim();
-  if(!key){alert('请输入 API Key');return;}
+  if(!key){alert(t('alert.enterApiKey'));return;}
   S.apiKeys[S.provider.id]=key;
   localStorage.setItem('csg_keys',JSON.stringify(S.apiKeys));
   document.getElementById('apiStatus').className='api-status ok';
@@ -1427,40 +2096,32 @@ function onPrefsChange(){
   S.localMd=document.getElementById('prefsInput').value;
   try{ localStorage.setItem('csg_local_md', S.localMd); }catch(e){}
   document.getElementById('genLocalMdBtn').disabled=!S.localMd.trim();
-  document.getElementById('prefsStatus').textContent=S.localMd.trim()?'已保存 '+(S.localMd.split('\n').filter(l=>l.trim()).length)+' 条偏好':'';
+  document.getElementById('prefsStatus').textContent=S.localMd.trim()?t('prefs.savedCount',{count:S.localMd.split('\n').filter(l=>l.trim()).length}):'';
   updateLocalMdCard();
 }
 function updateLocalMdCard(){
   const lines=S.localMd.split('\n').filter(l=>l.trim()).length;
-  document.getElementById('fcMetaLocal').textContent=lines?`${lines} 条偏好`:'个人偏好';
+  document.getElementById('fcMetaLocal').textContent=lines?t('fileCard.prefCount',{count:lines}):t('fileCard.localMeta');
   document.getElementById('fcViewLocal').disabled=!lines;
 }
 function savePrefs(){
   S.localMd=document.getElementById('prefsInput').value;
   try{ localStorage.setItem('csg_local_md', S.localMd); }catch(e){}
-  document.getElementById('prefsStatus').textContent=S.localMd.trim()?'✓ 已保存 '+(S.localMd.split('\n').filter(l=>l.trim()).length)+' 条偏好':'· 未设置';
-  addSysMsg('个人偏好已保存');
+  document.getElementById('prefsStatus').textContent=S.localMd.trim()?t('prefs.savedDone',{count:S.localMd.split('\n').filter(l=>l.trim()).length}):t('prefs.notSet');
+  addSysMsg(t('msg.prefsSaved'));
 }
 function generateLocalMd(){
   if(!S.localMd.trim()) return;
-  let content=`# Personal Preferences (个人偏好)
-<!-- 此文件由 Claude·Skill 生成器自动生成 -->
-<!-- 建议添加到 .gitignore，不提交到版本控制 -->
-
-`;
+  let content=t('localMd.template.header')+'\n';
   S.localMd.split('\n').filter(l=>l.trim()).forEach(line=>{
     content+=`- ${line.trim()}\n`;
   });
-  content+=`
-## 说明
-以上偏好会在每次 Claude Code 会话中加载（在 CLAUDE.md 之后加载），仅对当前项目生效。
-如需在所有项目中生效，请将偏好移至 ~/.claude/CLAUDE.md。
-`;
+  content+='\n'+t('localMd.template.footer')+'\n';
   // 下载
   const a=document.createElement('a');
   a.href='data:text/markdown;charset=utf-8,'+encodeURIComponent(content);
   a.download='CLAUDE.local.md';a.click();
-  addSysMsg('CLAUDE.local.md 已下载 — 放到项目根目录，记得加入 .gitignore');
+  addSysMsg(t('msg.localMdDownloaded'));
 }
 function initPrefs(){
   const input=document.getElementById('prefsInput');
@@ -1487,12 +2148,13 @@ function setFontSize(size){
 function updateTopbar(){
   const p=S.provider;
   const model=getActiveModel();
-  const modeNames={checkpoint:'Check',full_auto:'自动',compare:'对比',manual:'手动'};
   if(p&&model){
-    document.getElementById('topbarInfo').textContent=`${p.name} · ${modeNames[S.mode]||S.mode} 模式`;
+    document.getElementById('topbarInfo').textContent=t('topbar.modeInfo',{provider:p.name, mode:t('mode.'+S.mode)||S.mode});
     const tm=document.getElementById('topbarModel');
     tm.style.display='';
     tm.textContent=model;
+  } else {
+    document.getElementById('topbarInfo').textContent=t('topbar.defaultInfo');
   }
 }
 
@@ -1512,12 +2174,12 @@ function addMsg(role,html,idx){
   if(idx!==undefined) row.setAttribute('data-hidx',idx);
   const av=document.createElement('div');
   av.className='av '+(role==='ai'?'ai':'hu');
-  av.textContent=role==='ai'?'AI':'我';
+  av.textContent=role==='ai'?'AI':t('chat.me');
   const bub=document.createElement('div');
   bub.className='bubble';
   let contentHtml=md(html);
   if(role==='human'&&idx!==undefined){
-    contentHtml+=`<button class="msg-retract" onclick="retractMessage(${idx})" title="撤回此消息及后续回复">撤回</button>`;
+    contentHtml+=`<button class="msg-retract" onclick="retractMessage(${idx})" title="${t('chat.retractTitle')}">${t('chat.retract')}</button>`;
   }
   bub.innerHTML=contentHtml;
   row.appendChild(av);row.appendChild(bub);
@@ -1543,7 +2205,7 @@ function retractMessage(idx){
   // 重新评估阶段和文件状态
   reevaluateState();
   autoSaveProject();
-  addSysMsg('已撤回');
+  addSysMsg(t('msg.retracted'));
 }
 
 function reevaluateState(){
@@ -1595,13 +2257,13 @@ function updateFileCards(){
     const dl=document.getElementById('fcDl'+(type==='claude'?'Claude':'Skill'));
     if(card) card.className='file-card'+(has?' has-file':'');
     if(meta){
-      if(!has){ meta.textContent='尚未生成'; meta.className='fc-meta'; }
-      else if(type==='claude'){ meta.textContent=`${lines} 行`; meta.className='fc-meta has-file'; }
+      if(!has){ meta.textContent=t('fileCard.notGenerated'); meta.className='fc-meta'; }
+      else if(type==='claude'){ meta.textContent=t('fileCard.lineCount',{count:lines}); meta.className='fc-meta has-file'; }
       else {
         const names=[]; const re=/<skill\s[^>]*?name\s*=\s*"([^"]*)"/gi; let m;
         while((m=re.exec(content))!==null) names.push(m[1]);
-        if(names.length) meta.textContent=`${names.length} 个技能: ${names.join(', ')} · ${lines} 行`;
-        else meta.textContent=`${lines} 行`;
+        if(names.length) meta.textContent=t('fileCard.skillCount',{count:names.length, names:names.join(', '), lines:lines});
+        else meta.textContent=t('fileCard.lineCount',{count:lines});
         meta.className='fc-meta has-file';
       }
     }
@@ -1635,8 +2297,8 @@ function updateSkillCards(){
     <div class="file-card has-file" style="margin-top:4px;border-left:2px solid var(--accent);padding:6px 8px">
       <div class="fc-top"><span class="fc-icon">⚡</span><span class="fc-name" style="font-size:10px" title="${esc(sk.desc)}">${esc(sk.name)}</span></div>
       <div class="fc-acts" style="gap:2px">
-        <button class="fc-btn" style="font-size:9px;padding:2px 6px" onclick="viewSkillXml('skill_${i}')">查看</button>
-        <button class="fc-btn" style="font-size:9px;padding:2px 6px" onclick="dlSkillXml('skill_${i}')">下载</button>
+        <button class="fc-btn" style="font-size:9px;padding:2px 6px" onclick="viewSkillXml('skill_${i}')">${t('fileCard.view')}</button>
+        <button class="fc-btn" style="font-size:9px;padding:2px 6px" onclick="dlSkillXml('skill_${i}')">${t('fileCard.download')}</button>
       </div>
     </div>
   `).join('');
@@ -1657,8 +2319,8 @@ function viewSkillXml(key){
     </div>
     <div class="mc" style="font-size:11px;max-height:60vh;overflow-y:auto">${esc(sk.xml)}</div>
     <div class="mf">
-      <button class="m-btn" onclick="navigator.clipboard.writeText(this.closest('.mb').querySelector('.mc').textContent);this.textContent='已复制'" style="font-size:10px">复制</button>
-      <button class="m-btn pri" onclick="dlSkillXml('${key}');this.closest('.mo').remove()" style="font-size:10px">下载</button>
+      <button class="m-btn" onclick="navigator.clipboard.writeText(this.closest('.mb').querySelector('.mc').textContent);this.textContent=t('msg.copiedShort')" style="font-size:10px">${t('fileCard.copy')}</button>
+      <button class="m-btn pri" onclick="dlSkillXml('${key}');this.closest('.mo').remove()" style="font-size:10px">${t('fileCard.download')}</button>
     </div></div>`;
   document.body.appendChild(modal);
 }
@@ -1672,7 +2334,7 @@ function dlSkillXml(key){
   const fn = sk.name.replace(/[^a-zA-Z0-9一-鿿_-]/g, '-') + '.skill.md';
   if(S._dirHandle){
     writeFileToDir(fn, sk.xml).then(ok => {
-      if(ok) addSysMsg(`已写入：${getProjectName()}/${fn}`);
+      if(ok) addSysMsg(t('msg.fileWritten',{path:getProjectName()+'/'+fn}));
       else fallbackDownload(fn, sk.xml);
     });
   } else {
@@ -1739,11 +2401,12 @@ function loadProject(id){
       addMsg('ai',display||'（文件已生成）',i);
     }
   });
-  addSysMsg(`已切换到项目「${proj.name}」（${S.history.length} 条消息，${S.claudeMd?'CLAUDE.md ':''}${S.skillMd?'SKILL.md':''}${!S.claudeMd&&!S.skillMd?'无文件':''}）`);
+  const projFiles = S.claudeMd&&S.skillMd?'CLAUDE.md + SKILL.md':(S.claudeMd?'CLAUDE.md':(S.skillMd?'SKILL.md':t('msg.noFiles')));
+  addSysMsg(t('msg.projectSwitched',{name:proj.name, msgs:S.history.length, files:projFiles}));
 }
 
 function newProject(){
-  const name=prompt('请输入新项目名称：');
+  const name=prompt(t('prompt.newProjectName'));
   if(!name||!name.trim()) return;
   autoSaveProject();
   const id='proj_'+Date.now();
@@ -1752,13 +2415,13 @@ function newProject(){
   saveProjects(projects);
   resetAll();setActiveProjId(id);
   document.getElementById('projName').textContent=name.trim();
-  addSysMsg(`已创建并切换到项目「${name.trim()}」`);
+  addSysMsg(t('msg.projectCreated',{name:name.trim()}));
 }
 
 function showProjectList(){
   const projects=getProjects();
   const activeId=getActiveProjId();
-  if(projects.length===0){alert('暂无其他项目');return;}
+  if(projects.length===0){alert(t('alert.noOtherProjects'));return;}
   let html='';
   projects.sort((a,b)=>b.updatedAt-a.updatedAt).forEach(p=>{
     const isActive=p.id===activeId;
@@ -1770,8 +2433,8 @@ function showProjectList(){
         <div style="font-size:12px;color:var(--text);${isActive?'font-weight:600':''}">${esc(p.name)}${isActive?' <span style="font-size:9px;color:var(--accent)">当前</span>':''}</div>
         <div style="font-size:9px;color:var(--text3);margin-top:1px">${ds} · ${p.history.length}条消息${hasFiles?' · '+hasFiles:''}</div>
       </div>
-      ${!isActive?`<button onclick="(()=>{const mo=document.querySelector('.mo');mo.remove();setTimeout(()=>loadProject('${p.id}'),50);})()" style="padding:3px 8px;border-radius:5px;border:1px solid var(--border2);background:var(--bg3);cursor:pointer;font-size:10px;font-family:var(--sans);color:var(--text2)">切换</button>`:''}
-      <button onclick="if(confirm('确定删除项目「${esc(p.name)}」？此操作不可恢复。')){deleteProject('${p.id}');document.querySelector('.mo').remove();}" style="padding:3px 6px;border-radius:5px;border:1px solid transparent;background:transparent;cursor:pointer;font-size:10px;font-family:var(--sans);color:var(--text3)" title="删除">🗑</button>
+      ${!isActive?`<button onclick="(()=>{const mo=document.querySelector('.mo');mo.remove();setTimeout(()=>loadProject('${p.id}'),50);})()" style="padding:3px 8px;border-radius:5px;border:1px solid var(--border2);background:var(--bg3);cursor:pointer;font-size:10px;font-family:var(--sans);color:var(--text2)">${t('project.switch')}</button>`:''}
+      <button onclick="if(confirm(t('confirm.deleteProject',{name:esc(p.name)}))){deleteProject('${p.id}');document.querySelector('.mo').remove();}" style="padding:3px 6px;border-radius:5px;border:1px solid transparent;background:transparent;cursor:pointer;font-size:10px;font-family:var(--sans);color:var(--text3)" title="${t('project.deleteTitle')}">🗑</button>
     </div>`;
   });
   const overlay=document.createElement('div');overlay.className='mo';
@@ -1779,7 +2442,7 @@ function showProjectList(){
   overlay.innerHTML=`<div class="mb" style="width:420px">
     <div class="mh"><div class="mt">项目管理</div><button class="mc-btn" onclick="this.closest('.mo').remove()">×</button></div>
     <div class="mc" style="max-height:360px">${html||'<div style="color:var(--text3);text-align:center;padding:20px">暂无项目</div>'}</div>
-    <div class="mf"><button class="m-btn pri" onclick="newProject();document.querySelector('.mo').remove();">+ 新建项目</button><button class="m-btn" onclick="this.closest('.mo').remove()">关闭</button></div>
+    <div class="mf"><button class="m-btn pri" onclick="newProject();document.querySelector('.mo').remove();">${t('project.newBtn')}</button><button class="m-btn" onclick="this.closest('.mo').remove()">${t('project.close')}</button></div>
   </div>`;
   document.body.appendChild(overlay);
 }
@@ -1842,7 +2505,7 @@ function initProject(){
         const saved=S.apiKeys[p.id]||'';
         document.getElementById('apiKeyInput').value=saved;
         document.getElementById('apiStatus').className='api-status '+(saved?'ok':'none');
-        document.getElementById('apiStatus').textContent=saved?'· 已保存':'· 未配置';
+        document.getElementById('apiStatus').textContent=saved?t('status.saved'):t('status.notConfigured');
         document.getElementById('baseUrlRow').style.display=(p.id==='custom')?'block':'none';
         buildModelSelect();
         document.getElementById('modelSec').style.display='block';
@@ -1884,7 +2547,7 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 function handleFileUpload(event){
   const file = event.target.files[0];
   if(!file) return;
-  if(file.size > 2*1024*1024){ addSysMsg('⚠ 文件超过 2MB，请上传更小的文件'); return; }
+  if(file.size > 2*1024*1024){ addSysMsg(t('msg.fileTooBig')); return; }
   const reader = new FileReader();
   reader.onload = function(e){
     const text = e.target.result;
@@ -1893,9 +2556,9 @@ function handleFileUpload(event){
     // 如果输入框已有内容，追加到后面；否则直接填入
     inp.value = current ? current + '\n\n---\n' + file.name + '\n---\n' + text : text;
     autoResize(inp);
-    addSysMsg(`📎 已加载文件：${file.name}（${(file.size/1024).toFixed(1)} KB）`);
+    addSysMsg(t('msg.fileLoaded',{name:file.name, size:(file.size/1024).toFixed(1)}));
   };
-  reader.onerror = function(){ addSysMsg('⚠ 文件读取失败'); };
+  reader.onerror = function(){ addSysMsg(t('msg.fileReadError')); };
   reader.readAsText(file);
   // 重置 file input，允许重复上传同一文件
   event.target.value = '';
@@ -1906,11 +2569,11 @@ function handleKey(e){if(e.key==='Enter'&&(e.shiftKey||e.ctrlKey||e.metaKey)){e.
 function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,130)+'px';}
 
 async function sendMessage(){
-  if(!S.provider){alert('请先选择 AI 提供商');return;}
+  if(!S.provider){alert(t('alert.selectAiProviderFirst'));return;}
   const key=S.apiKeys[S.provider.id];
-  if(!key){alert('请配置并保存 API Key');return;}
+  if(!key){alert(t('alert.configureApiKey'));return;}
   const model=getActiveModel();
-  if(!model){alert('请选择或输入模型');return;}
+  if(!model){alert(t('alert.selectModel'));return;}
 
   const inp=document.getElementById('inp');
   const text=inp.value.trim();
@@ -1924,7 +2587,9 @@ async function sendMessage(){
 
   try{
     const p=S.provider;
-    let sys=S.systemPrompt+`\n\n当前自动化模式：${S.mode}。当前所处阶段：${S.stage}`;
+    let sys=S.systemPrompt+(S.locale==='zh'?
+      `\n\n当前自动化模式：${S.mode}。当前所处阶段：${S.stage}`:
+      `\n\nCurrent automation mode: ${S.mode}. Current stage: ${S.stage}`);
     // 注入用户个人偏好
     if(S.localMd && S.localMd.trim()){
       sys+=`\n\n=== 用户个人偏好（将写入 CLAUDE.local.md） ===\n${S.localMd}\n生成 CLAUDE.md 时请参考以上偏好调整指令风格。`;
@@ -1961,7 +2626,7 @@ async function sendMessage(){
     autoSaveProject();
   }catch(e){
     removeTyping();
-    addMsg('ai',`⚠️ 请求失败：${e.message}\n\n检查：Key 是否正确、模型是否存在、账户是否有余额、网络是否可访问该服务。`);
+    addMsg('ai',t('error.aiRequest',{msg:e.message}));
     autoSaveProject();
   }
   S.loading=false;document.getElementById('sendBtn').disabled=false;
@@ -2135,7 +2800,7 @@ window.submitFeedback = function(type, provider, model){
   const total = saveFeedbackEntry(entry);
   const modal = document.getElementById('feedbackModal');
   if(modal) modal.remove();
-  addSysMsg(`📊 感谢反馈！已积累 ${total} 条评价${total >= 20 ? '（学习机制已激活）' : ''}`);
+  addSysMsg(t('msg.feedbackThanks',{total, extra: total>=20?t('msg.feedbackLearningActive'):''}));
   delete window._feedbackRating;
   delete window.highlightStars;
   delete window.resetStars;
@@ -2527,7 +3192,7 @@ function renderReply(text,aiIdx){
   if(S._pendingSkillMd) renderFileCompare('skill',S.skillMd,S._pendingSkillMd,bub);
 
   if(patches.length){
-    if(S.mode==='full_auto'){patches.forEach(p=>{autoApply(p);});addSysMsg(`全自动：${patches.length} 条修补已自动采纳`);}
+    if(S.mode==='full_auto'){patches.forEach(p=>{autoApply(p);});addSysMsg(t('msg.fullAutoPatches',{count:patches.length}));}
     else patches.forEach(p=>renderPatch(p,bub));
   }
 
@@ -2545,7 +3210,7 @@ function renderReply(text,aiIdx){
 
   // Check模式：阶段推进后暂停提醒
   if(sm && S.mode==='checkpoint'){
-    const stageNames={1:'项目理解',2:'工具架构分析',3:'自动化识别',4:'CLAUDE.md 生成',5:'SKILL.md 提取',6:'修补审查'};
+    // stage names now via t('stage.reply.N') for i18n
     const markerStage=parseInt(sm[1]);
     const actualStage=S.stage;
     // 用实际推进到的阶段显示暂停消息
@@ -2553,9 +3218,9 @@ function renderReply(text,aiIdx){
     if(displayStage>=1 && displayStage<=5){
       // 如果阶段被自动推进了（比如同时生成了两个文件），合并提示
       if(actualStage>markerStage && markerStage>=3 && actualStage>=4){
-        addSysMsg(`⏸ 阶段${markerStage}「${stageNames[markerStage]}」和阶段${actualStage}「${stageNames[actualStage]}」已同时完成 — 请检查后回复确认，或提出修改意见`);
+        addSysMsg(t('msg.checkpointBoth',{s1:markerStage, name1:t('stage.reply.'+markerStage), s2:actualStage, name2:t('stage.reply.'+actualStage)}));
       } else {
-        addSysMsg(`⏸ 阶段${displayStage}「${stageNames[displayStage]}」已完成 — 请检查后回复确认，或提出修改意见`);
+        addSysMsg(t('msg.checkpointDone',{s:displayStage, name:t('stage.reply.'+displayStage)}));
       }
     }
   }
@@ -2608,7 +3273,7 @@ function editP(pid,p){
 }
 function confirmE(pid,p){
   const val=document.getElementById('pe-'+pid)?.value||p.suggestion;
-  p.suggestion=val;applyP(p,true,pid);addSysMsg(`修补 ${pid} 已采纳（用户修改）`);
+  p.suggestion=val;applyP(p,true,pid);addSysMsg(t('msg.patchAdoptedUser',{id:pid}));
 }
 function renderPatchActs(pid,p){
   document.getElementById('pa-'+pid).innerHTML=`
@@ -2715,7 +3380,7 @@ function selectAiOption(pid, idx){
   if(!chosenText) return;
   stored.p.suggestion = chosenText;
   applyP(stored.p, true, pid);
-  addSysMsg(`修补 ${pid} 已采纳（AI 选项）`);
+  addSysMsg(t('msg.patchAdoptedAi',{id:pid}));
   delete window._aiOpts[pid];
 }
 
@@ -2782,15 +3447,15 @@ function acceptFileCompare(type){
   saveFiles();
   const acts=document.getElementById('fcmp-acts-'+type);
   if(acts) acts.innerHTML='<span style="color:var(--green);padding:5px 11px;font-size:11px">✓ 已采纳新版</span>';
-  addSysMsg(`✓ 已采纳 ${type==='claude'?'CLAUDE.md':'SKILL.md'} 更新`);
+  addSysMsg(t('msg.compareAdopted',{type:type==='claude'?'CLAUDE.md':'SKILL.md'}));
 }
 
 function rejectFileCompare(type){
   if(type==='claude'){ S._pendingClaudeMd=null; }
   else { S._pendingSkillMd=null; }
   const acts=document.getElementById('fcmp-acts-'+type);
-  if(acts) acts.innerHTML='<span style="color:var(--red);padding:5px 11px;font-size:11px">✗ 已保留旧版</span>';
-  addSysMsg(`✗ 已保留 ${type==='claude'?'CLAUDE.md':'SKILL.md'} 旧版本`);
+  if(acts) acts.innerHTML=`<span style="color:var(--red);padding:5px 11px;font-size:11px">${t('msg.compareKept',{type:type==='claude'?'CLAUDE.md':'SKILL.md'})}</span>`;
+  addSysMsg(t('msg.compareKept',{type:type==='claude'?'CLAUDE.md':'SKILL.md'}));
 }
 
 // ====== PREVIEW / EXPORT ======
@@ -2803,8 +3468,8 @@ function showPreview(type, autoDownload=false){
     <div class="mh"><div class="mt">${title}</div><button class="mc-btn" onclick="this.closest('.mo').remove()">×</button></div>
     <div class="mc">${esc(content||'（尚未生成）')}</div>
     <div class="mf">
-      <button class="m-btn pri" onclick="copyT('${type}')">复制</button>
-      <button class="m-btn" onclick="dlFile('${type}')">下载</button>
+      <button class="m-btn pri" onclick="copyT('${type}')">${t('fileCard.copy')}</button>
+      <button class="m-btn" onclick="dlFile('${type}')">${t('fileCard.download')}</button>
       <button class="m-btn" onclick="this.closest('.mo').remove();document.getElementById('inp').focus();" style="color:var(--accent)">继续完善</button>
       <button class="m-btn" onclick="this.closest('.mo').remove()">完成 ✓</button>
     </div></div>`;
@@ -2820,13 +3485,13 @@ function showLocalMdPreview(){
     <div class="mh"><div class="mt">CLAUDE.local.md（个人偏好预览）</div><button class="mc-btn" onclick="this.closest('.mo').remove()">×</button></div>
     <div class="mc">${esc(content||'（尚未设置个人偏好）')}</div>
     <div class="mf">
-      <button class="m-btn pri" onclick="navigator.clipboard.writeText(\`${esc(content||'').replace(/`/g,'\\`')}\`);addSysMsg('已复制');">复制</button>
-      <button class="m-btn" onclick="generateLocalMd()">下载</button>
-      <button class="m-btn" onclick="this.closest('.mo').remove()">关闭</button>
+      <button class="m-btn pri" onclick="navigator.clipboard.writeText(\`${esc(content||'').replace(/`/g,'\\`')}\`);addSysMsg(t('msg.copiedShort'));">${t('fileCard.copy')}</button>
+      <button class="m-btn" onclick="generateLocalMd()">${t('fileCard.download')}</button>
+      <button class="m-btn" onclick="this.closest('.mo').remove()">${t('project.close')}</button>
     </div></div>`;
   document.body.appendChild(overlay);
 }
-function copyT(type){navigator.clipboard.writeText(type==='claude'?S.claudeMd:S.skillMd).then(()=>addSysMsg('已复制到剪贴板'));}
+function copyT(type){navigator.clipboard.writeText(type==='claude'?S.claudeMd:S.skillMd).then(()=>addSysMsg(t('msg.copied')));}
 
 // ====== File System Access API — 直接写入项目文件夹 ======
 async function selectOutputDir(){
@@ -2836,9 +3501,9 @@ async function selectOutputDir(){
     S._dirPath = handle.name;
     document.getElementById('dirPath').textContent = '📂 ' + handle.name + ' （已就绪）';
     document.getElementById('dirPath').style.color = 'var(--green)';
-    addSysMsg('输出文件夹已就绪：' + handle.name + ' — 生成文件将自动写入项目子文件夹');
+    addSysMsg(t('msg.dirReady',{name:handle.name}));
   }catch(e){
-    if(e.name !== 'AbortError') addSysMsg('选目录失败：' + e.message);
+    if(e.name !== 'AbortError') addSysMsg(t('msg.dirFailed',{msg:e.message}));
   }
 }
 
@@ -2874,7 +3539,7 @@ async function writeFileToDir(filename, content){
 }
 
 async function testFileOutput(){
-  if(!S._dirHandle){ alert('请先点击「📁 选择输出文件夹」，选择 generated/ 目录'); return; }
+  if(!S._dirHandle){ alert(t('alert.selectOutputDirFirst')); return; }
   const projName = 'test';
   const testFiles = {
     'CLAUDE.md': '# Project: test\n\n## Overview\n测试项目 — 验证文件输出功能\n\n## Tech Stack\n- HTML, CSS, JavaScript\n\n## Commands\n无构建命令',
@@ -2894,11 +3559,11 @@ async function testFileOutput(){
       await w.close();
       results.push('✓ ' + fn);
     }
-    addSysMsg(`测试完成！已在 ${projName}/ 子文件夹创建 ${results.length} 个文件：\n${results.join('\n')}`);
+    addSysMsg(t('msg.testDone',{proj:projName, count:results.length, results:results.join('\n')}));
     document.getElementById('dirPath').textContent = '📂 ' + S._dirPath + '/test/ （测试文件已写入）';
     document.getElementById('dirPath').style.color = 'var(--green)';
   }catch(e){
-    addSysMsg('测试失败：' + e.message);
+    addSysMsg(t('msg.testFailed',{msg:e.message}));
   }
 }
 
@@ -2916,7 +3581,7 @@ async function dlFile(type){
   // 优先直接写文件系统，否则触发下载
   if(S._dirHandle){
     const ok = await writeFileToDir(n, c);
-    if(ok){ addSysMsg(`已写入：${getProjectName()}/${n}`); }
+    if(ok){ addSysMsg(t('msg.fileWritten',{path:getProjectName()+'/'+n})); }
     else{ fallbackDownload(n, c); }
   } else {
     fallbackDownload(n, c);
@@ -2945,7 +3610,7 @@ function exportAll(){
       });
     }
   }
-  addSysMsg('全部文件已下载 — 建议保存到项目的 generated/ 文件夹');
+  addSysMsg(t('msg.exportAllDone'));
 }
 
 // ====== 工具自优化 ======
@@ -2967,14 +3632,14 @@ const META_OPTIMIZE_PROMPT = `你是一个 prompt 工程专家。请审查下面
 - 当前文本片段必须能在 SYSTEM_PROMPT 中精确匹配到，否则无法自动替换`;
 
 async function optimizePrompt(){
-  if(!S.provider){alert('请先选择 AI 提供商并配置 Key');return;}
+  if(!S.provider){alert(t('alert.selectProviderForOptimize'));return;}
   const key=S.apiKeys[S.provider.id];
-  if(!key){alert('请配置并保存 API Key');return;}
+  if(!key){alert(t('alert.configureApiKey'));return;}
   const model=getActiveModel();
-  if(!model){alert('请选择或输入模型');return;}
+  if(!model){alert(t('alert.selectModel'));return;}
   if(S.loading){return;}
 
-  addSysMsg('🔧 正在让 AI 审查工具逻辑…');
+  addSysMsg(t('msg.optimizeStart'));
   S.loading=true;
   document.getElementById('outOptimize').disabled=true;
   showTyping();
@@ -3064,7 +3729,7 @@ function acceptOptimize(pid){
   try{ localStorage.setItem('csg_system_prompt', S.systemPrompt); }catch(e){}
   const acts=document.getElementById('opt-acts-'+pid);
   if(acts) acts.innerHTML='<span style="color:var(--green);padding:5px 11px;font-size:11px">✓ 已应用 — 下次对话生效</span>';
-  addSysMsg(`✓ 已应用优化 ${pid}，下次对话将使用更新后的逻辑`);
+  addSysMsg(t('msg.optimizeApplied',{id:pid}));
   delete window._optPatches[pid];
 }
 
@@ -3116,32 +3781,54 @@ function resetAll(){
 }
 
 // ====== AI 知识面板 ======
-const KNOWLEDGE_ITEMS = [
-  {tag:'tip',tagLabel:'提示词技巧',text:'在 SYSTEM_PROMPT 中明确写出"禁止做的事"，比只写"应该做的事"更能防止 AI 越界。负面指令放在末尾效果更好。'},
-  {tag:'tip',tagLabel:'提示词技巧',text:'长 prompt 中，把最重要的指令放在开头和末尾（首因效应+近因效应）。中间的指令容易被 AI "遗忘"。'},
-  {tag:'tip',tagLabel:'提示词技巧',text:'给 AI 提供"好"和"坏"的输出示例，比纯文字描述格式要求有效 3 倍以上。'},
-  {tag:'tip',tagLabel:'提示词技巧',text:'触发条件设计要具体到关键词+上下文，避免"涉及文件操作时使用"这类泛泛表述——它会被所有任务触发。'},
-  {tag:'tip',tagLabel:'提示词技巧',text:'对于复杂任务，用 [STAGE:N] 标记强制 AI 按步骤执行，并在每步末尾要求确认。这能显著减少跳步和遗漏。'},
-  {tag:'news',tagLabel:'模型动态',text:'Claude Code 现在支持 .claude/rules/ 路径作用域规则，可按文件类型或目录加载不同指令，避免 CLAUDE.md 过长。'},
-  {tag:'news',tagLabel:'模型动态',text:'Claude Code 支持 auto memory（自动记忆），会自己保存调试经验和偏好到 ~/.claude/projects/ 目录。'},
-  {tag:'news',tagLabel:'模型动态',text:'CLAUDE.md 支持 @README.md 等文件导入语法，可在已有 README 的项目中避免重复内容。'},
-  {tag:'news',tagLabel:'模型动态',text:'Claude 4.7 Opus 支持 Fast Mode，输出速度更快。如果你的工具需要快速响应，优先选择 Opus 4.7。'},
-  {tag:'news',tagLabel:'模型动态',text:'CLAUDE.local.md 是 gitignored 的个人偏好文件，适合存放 sandbox URL、本地测试数据等不共享的设置。'},
-  {tag:'tip',tagLabel:'提示词技巧',text:'CLAUDE.md 超过 200 行会消耗更多上下文且降低遵循度。建议用 .claude/rules/ 按路径作用域拆分。'},
-  {tag:'tip',tagLabel:'提示词技巧',text:'双模型架构（Claude Code壳+DeepSeek脑）下，CLAUDE.md 用中文写、指令强硬；SKILL.md 由 Claude Code 解析，用英文写触发条件。'},
-  {tag:'tip',tagLabel:'提示词技巧',text:'CLAUDE.md 中的 User Profile 章节是最重要的上下文——它决定了 AI 的解释深度、回复风格和自主程度。'},
-  {tag:'warn',tagLabel:'注意',text:'不同 AI 模型对 SYSTEM_PROMPT 的理解能力差异很大。Gemini 对 systemInstruction 的遵守度低于在 messages 中直接给指令。'},
-  {tag:'warn',tagLabel:'注意',text:'API Key 存储在 localStorage 中是明文，不要在不信任的设备上使用。生产环境应使用后端代理。'},
-  {tag:'warn',tagLabel:'注意',text:'Auto memory 是机器本地的，不会跨机器共享。CLAUDE.md 才是团队共享的规范文件。'},
-];
+function getKnowledgeItems(){
+  const Z=[
+    {tag:'tip',tagLabel:'提示词技巧',text:'在 SYSTEM_PROMPT 中明确写出"禁止做的事"，比只写"应该做的事"更能防止 AI 越界。负面指令放在末尾效果更好。'},
+    {tag:'tip',tagLabel:'提示词技巧',text:'长 prompt 中，把最重要的指令放在开头和末尾（首因效应+近因效应）。中间的指令容易被 AI "遗忘"。'},
+    {tag:'tip',tagLabel:'提示词技巧',text:'给 AI 提供"好"和"坏"的输出示例，比纯文字描述格式要求有效 3 倍以上。'},
+    {tag:'tip',tagLabel:'提示词技巧',text:'触发条件设计要具体到关键词+上下文，避免"涉及文件操作时使用"这类泛泛表述——它会被所有任务触发。'},
+    {tag:'tip',tagLabel:'提示词技巧',text:'对于复杂任务，用 [STAGE:N] 标记强制 AI 按步骤执行，并在每步末尾要求确认。这能显著减少跳步和遗漏。'},
+    {tag:'news',tagLabel:'模型动态',text:'Claude Code 现在支持 .claude/rules/ 路径作用域规则，可按文件类型或目录加载不同指令，避免 CLAUDE.md 过长。'},
+    {tag:'news',tagLabel:'模型动态',text:'Claude Code 支持 auto memory（自动记忆），会自己保存调试经验和偏好到 ~/.claude/projects/ 目录。'},
+    {tag:'news',tagLabel:'模型动态',text:'CLAUDE.md 支持 @README.md 等文件导入语法，可在已有 README 的项目中避免重复内容。'},
+    {tag:'news',tagLabel:'模型动态',text:'Claude 4.7 Opus 支持 Fast Mode，输出速度更快。如果你的工具需要快速响应，优先选择 Opus 4.7。'},
+    {tag:'news',tagLabel:'模型动态',text:'CLAUDE.local.md 是 gitignored 的个人偏好文件，适合存放 sandbox URL、本地测试数据等不共享的设置。'},
+    {tag:'tip',tagLabel:'提示词技巧',text:'CLAUDE.md 超过 200 行会消耗更多上下文且降低遵循度。建议用 .claude/rules/ 按路径作用域拆分。'},
+    {tag:'tip',tagLabel:'提示词技巧',text:'双模型架构（Claude Code壳+DeepSeek脑）下，CLAUDE.md 用中文写、指令强硬；SKILL.md 由 Claude Code 解析，用英文写触发条件。'},
+    {tag:'tip',tagLabel:'提示词技巧',text:'CLAUDE.md 中的 User Profile 章节是最重要的上下文——它决定了 AI 的解释深度、回复风格和自主程度。'},
+    {tag:'warn',tagLabel:'注意',text:'不同 AI 模型对 SYSTEM_PROMPT 的理解能力差异很大。Gemini 对 systemInstruction 的遵守度低于在 messages 中直接给指令。'},
+    {tag:'warn',tagLabel:'注意',text:'API Key 存储在 localStorage 中是明文，不要在不信任的设备上使用。生产环境应使用后端代理。'},
+    {tag:'warn',tagLabel:'注意',text:'Auto memory 是机器本地的，不会跨机器共享。CLAUDE.md 才是团队共享的规范文件。'},
+  ];
+  const E=[
+    {tag:'tip',tagLabel:'Prompt Tips',text:'Explicitly write "do NOT do X" — negative constraints at the END of prompts are more effective than only stating positive rules.'},
+    {tag:'tip',tagLabel:'Prompt Tips',text:'Place the most important instructions at the beginning and end of long prompts (primacy + recency effects). Middle instructions are easily "forgotten" by AI.'},
+    {tag:'tip',tagLabel:'Prompt Tips',text:'Providing both "good" and "bad" output examples is 3x more effective than text descriptions alone for format requirements.'},
+    {tag:'tip',tagLabel:'Prompt Tips',text:'Design triggers to be keyword+context specific. Avoid vague phrases like "use when working with files" — they trigger on every task.'},
+    {tag:'tip',tagLabel:'Prompt Tips',text:'For complex tasks, use [STAGE:N] markers to force step-by-step execution with confirmation at each step. This significantly reduces skipped steps.'},
+    {tag:'news',tagLabel:'Model Updates',text:'Claude Code now supports .claude/rules/ path-scoped rules, loading different instructions by file type or directory to keep CLAUDE.md concise.'},
+    {tag:'news',tagLabel:'Model Updates',text:'Claude Code supports auto memory — it automatically saves debugging insights and preferences to ~/.claude/projects/.'},
+    {tag:'news',tagLabel:'Model Updates',text:'CLAUDE.md supports @README.md file import syntax, avoiding duplicate content in projects with existing documentation.'},
+    {tag:'news',tagLabel:'Model Updates',text:'Claude 4.7 Opus supports Fast Mode for faster output. Prefer Opus 4.7 if your tool needs quick response times.'},
+    {tag:'news',tagLabel:'Model Updates',text:'CLAUDE.local.md is a gitignored personal preferences file — ideal for sandbox URLs, local test data, and other non-shared settings.'},
+    {tag:'tip',tagLabel:'Prompt Tips',text:'CLAUDE.md exceeding 200 lines costs more context and reduces compliance. Split into .claude/rules/ by path scope.'},
+    {tag:'tip',tagLabel:'Prompt Tips',text:'In dual-model setups (Claude Code shell + DeepSeek brain), write CLAUDE.md instructions forcefully; SKILL.md is parsed by Claude Code so use English triggers.'},
+    {tag:'tip',tagLabel:'Prompt Tips',text:'The User Profile section in CLAUDE.md is the most important context — it determines AI explanation depth, response style, and autonomy level.'},
+    {tag:'warn',tagLabel:'Warning',text:'AI models vary widely in system prompt comprehension. Gemini follows systemInstruction less reliably than instructions in messages.'},
+    {tag:'warn',tagLabel:'Warning',text:'API Keys in localStorage are plaintext. Do not use on untrusted devices. Production environments should use a backend proxy.'},
+    {tag:'warn',tagLabel:'Warning',text:'Auto memory is machine-local and does not sync across devices. CLAUDE.md is your team\'s shared specification file.'},
+  ];
+  return S.locale==='en'?E:Z;
+}
 
 function refreshKnowledge(){
   const panel = document.getElementById('knowledgePanel');
   if(!panel) return;
   // 随机选 3 条，保证不同类型各一条
-  const tips = KNOWLEDGE_ITEMS.filter(k=>k.tag==='tip');
-  const news = KNOWLEDGE_ITEMS.filter(k=>k.tag==='news');
-  const warns = KNOWLEDGE_ITEMS.filter(k=>k.tag==='warn');
+  const items = getKnowledgeItems();
+  const tips = items.filter(k=>k.tag==='tip');
+  const news = items.filter(k=>k.tag==='news');
+  const warns = items.filter(k=>k.tag==='warn');
   const selected = [
     tips[Math.floor(Math.random()*tips.length)],
     news[Math.floor(Math.random()*news.length)],
@@ -3154,7 +3841,7 @@ function refreshKnowledge(){
     <div class="knowledge-item">
       <span class="ki-tag ${k.tag}">${k.tagLabel}</span>
       ${k.text}
-    </div>`).join('') + '<div class="knowledge-refresh" onclick="refreshKnowledge()">🔄 换一批</div>';
+    </div>`).join('') + `<div class="knowledge-refresh" onclick="refreshKnowledge()">🔄 ${t('knowledge.shuffle')}</div>`;
 }
 
 init();
