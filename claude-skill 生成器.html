@@ -10,7 +10,7 @@
   [data-theme="light"]{--bg:#faf9f6;--bg2:#f2f1ed;--bg3:#e9e7e2;--bg4:#ddd9d2;--border:rgba(0,0,0,0.06);--border2:rgba(0,0,0,0.10);--text:#1a1a18;--text2:#5c5c55;--text3:#8a8a82;--accent:#c56545;--accent2:#b05538;--accent-rgb:197,101,69;--green:#3d7a62;--green-rgb:61,122,98;--amber:#9e7a2e;--amber-rgb:158,122,46;--red:#c94a3a;--blue:#4a7aab;--blue-rgb:74,122,171}
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15px;-webkit-font-smoothing:antialiased}
-  .app{display:grid;grid-template-columns:280px 230px 1fr 320px;height:100vh;overflow:hidden}
+  .app{display:grid;grid-template-columns:280px 1fr 280px;height:100vh;overflow:hidden}
 
   /* API Panel — project + provider + API key */
   .api-panel{background:var(--bg2);display:flex;flex-direction:column;overflow:hidden;min-width:0}
@@ -127,6 +127,32 @@
   .topbar-newproj:hover{background:var(--accent);color:#fff}
   .topbar-theme{padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:14px;transition:all 0.15s;line-height:1}
   .topbar-theme:hover{border-color:var(--border2);background:var(--bg3)}
+
+  /* Stage Progress Bar */
+  .stage-progress{padding:8px 16px 12px;background:var(--bg2);display:flex;align-items:center;gap:0;flex-shrink:0;border-bottom:1px solid var(--border)}
+  .sp-track{display:flex;align-items:center;gap:0;flex:1;min-width:0}
+  .sp-node{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;font-family:var(--mono);flex-shrink:0;cursor:pointer;transition:all 0.2s;position:relative;background:var(--bg3);color:var(--text3);border:2px solid var(--border)}
+  .sp-node.done{background:rgba(var(--green-rgb),0.1);color:var(--green);border-color:rgba(var(--green-rgb),0.3)}
+  .sp-node.active{background:rgba(var(--accent-rgb),0.15);color:var(--accent);border-color:var(--accent);transform:scale(1.15);box-shadow:0 0 12px rgba(var(--accent-rgb),0.3)}
+  .sp-node:not(.done):not(.active):hover{border-color:var(--text3);transform:scale(1.05)}
+  .sp-node.locked{cursor:not-allowed;opacity:0.5}
+  .sp-line{flex:1;height:2px;background:var(--border);margin:0 2px;position:relative;overflow:hidden}
+  .sp-line.done{background:rgba(var(--green-rgb),0.3)}
+  .sp-line::after{content:'';position:absolute;left:0;top:0;height:100%;width:0;background:var(--green);transition:width 0.3s}
+  .sp-line.done::after{width:100%}
+  .sp-label{flex-shrink:0;font-size:12px;font-family:var(--mono);color:var(--text2);padding:0 12px;white-space:nowrap}
+  .sp-label strong{color:var(--accent);font-weight:600}
+  .sp-nav{display:flex;gap:4px;flex-shrink:0}
+  .sp-nav-btn{padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:11px;font-family:var(--sans);color:var(--text3);transition:all 0.15s}
+  .sp-nav-btn:hover{color:var(--text);border-color:var(--accent)}
+  .sp-nav-btn:disabled{opacity:0.3;cursor:not-allowed}
+
+  /* Docs Panel - 可折叠 */
+  .docs-panel{transition:width 0.25s,opacity 0.25s;overflow:hidden}
+  .docs-panel.collapsed{width:40px!important}
+  .docs-panel.collapsed .logo p,
+  .docs-panel.collapsed .docs-scroll{opacity:0;pointer-events:none}
+  .docs-panel.collapsed .logo{padding:12px 8px}
 
   /* Chat — Claude-style: centered, airy, minimal */
   .chat{flex:1;overflow-y:auto;padding:32px;display:flex;flex-direction:column;gap:24px}
@@ -295,12 +321,8 @@
       <input type="text" class="api-input" id="baseUrlInput" data-i18n-placeholder="apikey.baseUrlPlaceholder" placeholder="Base URL，如 http://localhost:11434/v1/…" style="width:100%;font-size:11px">
     </div>
   </div>
-</div>
 
-<div class="nav-panel">
-  <div class="logo"><p style="font-size:11px;color:var(--text3);font-family:var(--mono)" data-i18n="nav.label">导航与文件</p></div>
-
-  <!-- Mode -->
+  <!-- 自动化模式 -->
   <div class="sec">
     <div class="sec-label" data-i18n="mode.label">自动化模式</div>
     <div class="mode-row">
@@ -309,101 +331,76 @@
       <button class="mode-btn" id="mode-compare" onclick="setMode('compare')" data-i18n-title="mode.compareTitle" title="并排对比修改">对比</button>
       <button class="mode-btn" id="mode-manual" onclick="setMode('manual')" data-i18n-title="mode.manualTitle" title="仅建议">手动</button>
     </div>
-  </div>
-
-  <div class="scroll-bottom">
-
-  <!-- Stages -->
-  <div class="stages-sec">
-    <div class="sec-label" style="margin-bottom:6px" data-i18n="stage.label">生成阶段</div>
-    <div class="si active" id="si-0"><div class="sn">1</div><span data-i18n="stage.0">项目描述</span></div>
-    <div class="si" id="si-1"><div class="sn">2</div><span data-i18n="stage.1">工具架构分析</span></div>
-    <div class="si" id="si-2"><div class="sn">3</div><span data-i18n="stage.2">自动化识别</span></div>
-    <div class="si" id="si-3"><div class="sn">4</div><span data-i18n="stage.3">CLAUDE.md 生成</span></div>
-    <div class="si" id="si-4"><div class="sn">5</div><span data-i18n="stage.4">SKILL.md 提取</span></div>
-    <div class="si" id="si-5"><div class="sn">6</div><span data-i18n="stage.5">监督修补</span></div>
-    <div class="si" id="si-6"><div class="sn">7</div><span data-i18n="stage.6">文件就绪</span></div>
+    <div style="font-size:9px;color:var(--text3);margin-top:4px;line-height:1.4">
+      Check=每步确认 · 自动=AI自主 · 对比=版本对比 · 手动=仅建议
+    </div>
   </div>
 
   <!-- 个人偏好 -->
   <div class="sec">
     <div class="sec-label" style="cursor:pointer" onclick="togglePrefs()"><span data-i18n="prefs.label">个人偏好</span><span style="font-size:9px;color:var(--text3);margin-left:4px" data-i18n="prefs.localMd">(local.md)</span><span class="sec-toggle" id="prefsToggle">▼</span></div>
     <div id="prefsPanel">
-      <textarea id="prefsInput" data-i18n-placeholder="prefs.placeholder" placeholder="输入你的个人偏好，一行一条…&#10;例如：&#10;用中文回复&#10;不要给我列选项，直接选最优方案" style="width:100%;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:10px;font-family:var(--mono);color:var(--text);resize:vertical;min-height:60px;outline:none;line-height:1.6;transition:border-color 0.2s" oninput="onPrefsChange()"></textarea>
-      <div style="display:flex;gap:4px;margin-top:5px">
-        <button onclick="savePrefs()" style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:10px;font-family:var(--sans);color:var(--text2)" data-i18n="prefs.save">保存</button>
-        <button onclick="generateLocalMd()" style="padding:4px 8px;border-radius:6px;border:1px solid var(--accent);background:transparent;cursor:pointer;font-size:10px;font-family:var(--sans);color:var(--accent)" id="genLocalMdBtn" disabled data-i18n="prefs.generate">生成</button>
+      <textarea id="prefsInput" data-i18n-placeholder="prefs.placeholder" placeholder="输入你的个人偏好，一行一条…" style="width:100%;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:10px;font-family:var(--mono);color:var(--text);resize:vertical;min-height:50px;outline:none;line-height:1.6;transition:border-color 0.2s" oninput="onPrefsChange()"></textarea>
+      <div style="display:flex;gap:4px;margin-top:4px">
+        <button onclick="savePrefs()" style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:10px;font-family:var(--sans);color:var(--text2)">保存</button>
+        <button onclick="generateLocalMd()" style="padding:4px 8px;border-radius:6px;border:1px solid var(--accent);background:transparent;cursor:pointer;font-size:10px;font-family:var(--sans);color:var(--accent)" id="genLocalMdBtn" disabled>生成</button>
       </div>
-      <div id="prefsStatus" style="font-size:9px;color:var(--text3);margin-top:3px;font-family:var(--mono)"></div>
     </div>
   </div>
 
-  <!-- Knowledge Panel -->
-  <div class="sec" style="padding-bottom:6px">
-    <div class="sec-label" style="cursor:pointer" onclick="refreshKnowledge()"><span data-i18n="knowledge.label">AI 动态</span><span style="font-size:9px;color:var(--text3);margin-left:4px" data-i18n="knowledge.refresh">(点击刷新)</span></div>
-    <div class="knowledge-panel" id="knowledgePanel"></div>
-  </div>
-
-  <!-- Outputs -->
-  <div class="out-sec">
-    <div class="sec-label" style="margin-bottom:0" data-i18n="files.label">项目文件</div>
-    <div class="file-card" id="fileCardClaude">
+  <!-- 输出文件 -->
+  <div class="sec" style="padding-bottom:0">
+    <div class="sec-label" data-i18n="files.label">项目文件</div>
+    <div class="file-card" id="fileCardClaude" style="margin-bottom:4px">
       <div class="fc-top"><span class="fc-icon">📄</span><span class="fc-name">CLAUDE.md</span></div>
-      <div class="fc-meta" id="fcMetaClaude" data-i18n="fileCard.notGenerated">尚未生成</div>
+      <div class="fc-meta" id="fcMetaClaude">尚未生成</div>
       <div class="fc-acts">
-        <button class="fc-btn" id="fcViewClaude" disabled onclick="showPreview('claude')" data-i18n="fileCard.view">${t('fileCard.view')}</button>
-        <button class="fc-btn" id="fcCopyClaude" disabled onclick="copyT('claude')" data-i18n="fileCard.copy">${t('fileCard.copy')}</button>
-        <button class="fc-btn" id="fcDlClaude" disabled onclick="dlFile('claude')" data-i18n="fileCard.download">${t('fileCard.download')}</button>
+        <button class="fc-btn" id="fcViewClaude" disabled onclick="showPreview('claude')">查看</button>
+        <button class="fc-btn" id="fcDlClaude" disabled onclick="dlFile('claude')">下载</button>
       </div>
     </div>
-    <div class="file-card" id="fileCardSkill">
+    <div class="file-card" id="fileCardSkill" style="margin-bottom:4px">
       <div class="fc-top"><span class="fc-icon">🔧</span><span class="fc-name">SKILL.md</span></div>
-      <div class="fc-meta" id="fcMetaSkill" data-i18n="fileCard.notGenerated">尚未生成</div>
+      <div class="fc-meta" id="fcMetaSkill">尚未生成</div>
       <div class="fc-acts">
-        <button class="fc-btn" id="fcViewSkill" disabled onclick="showPreview('skill')" data-i18n="fileCard.view">${t('fileCard.view')}</button>
-        <button class="fc-btn" id="fcCopySkill" disabled onclick="copyT('skill')" data-i18n="fileCard.copy">${t('fileCard.copy')}</button>
-        <button class="fc-btn" id="fcDlSkill" disabled onclick="dlFile('skill')" data-i18n="fileCard.download">${t('fileCard.download')}</button>
+        <button class="fc-btn" id="fcViewSkill" disabled onclick="showPreview('skill')">查看</button>
+        <button class="fc-btn" id="fcDlSkill" disabled onclick="dlFile('skill')">下载</button>
       </div>
     </div>
-    <!-- 各 Skill 独立卡片 -->
     <div id="skillCards"></div>
     <div class="file-card" id="fileCardLocal">
-      <div class="fc-top"><span class="fc-icon">👤</span><span class="fc-name">CLAUDE.local.md</span></div>
-      <div class="fc-meta" id="fcMetaLocal" data-i18n="fileCard.localMeta">个人偏好</div>
+      <div class="fc-top"><span class="fc-icon">👤</span><span class="fc-name">local.md</span></div>
+      <div class="fc-meta" id="fcMetaLocal">个人偏好</div>
       <div class="fc-acts">
-        <button class="fc-btn" id="fcViewLocal" disabled onclick="showLocalMdPreview()" data-i18n="fileCard.view">${t('fileCard.view')}</button>
-        <button class="fc-btn" id="fcDlLocal" onclick="generateLocalMd()" data-i18n="fileCard.download">${t('fileCard.download')}</button>
+        <button class="fc-btn" id="fcDlLocal" onclick="generateLocalMd()">下载</button>
       </div>
     </div>
-    <button class="out-btn" id="outSelectDir" onclick="selectOutputDir()" style="color:var(--amber)" data-i18n="out.selectDir">📁 选择输出文件夹</button>
-    <div id="dirPath" style="font-size:9px;color:var(--text3);padding:0 4px;font-family:var(--mono);word-break:break-all"></div>
-    <button class="out-btn" id="outTest" onclick="testFileOutput()" style="color:var(--accent);font-size:10px" data-i18n="out.testOutput">🧪 测试文件输出</button>
-    <button class="out-btn" id="outExport" disabled onclick="exportAll()" data-i18n="out.exportAll">⬇ 导出全部文件</button>
-    <button class="out-btn" id="outOptimize" onclick="optimizePrompt()" title="让 AI 审查并优化工具自身的逻辑" data-i18n="out.optimize">🔧 优化工具逻辑</button>
-    <button class="out-btn" onclick="resetAll()" style="color:var(--text3)" data-i18n="out.reset">↺ 重置对话</button>
   </div>
 
-  <!-- GitHub Sync -->
-  <div class="out-sec" style="border-top:1px solid var(--border);margin-top:4px;padding-top:8px">
-    <div class="sec-label" style="margin-bottom:6px;cursor:pointer" onclick="toggleGitHub()"><span data-i18n="github.label">GitHub 同步</span><span class="sec-toggle" id="githubToggle">▼</span></div>
+  <!-- 操作按钮 -->
+  <div class="sec" style="padding-top:0">
+    <button class="out-btn" id="outSelectDir" onclick="selectOutputDir()" style="color:var(--amber);font-size:10px;padding:6px 10px">📁 输出目录</button>
+    <button class="out-btn" id="outExport" disabled onclick="exportAll()" style="font-size:10px;padding:6px 10px">⬇ 导出全部</button>
+    <button class="out-btn" onclick="resetAll()" style="color:var(--text3);font-size:10px;padding:6px 10px">↺ 重置</button>
+  </div>
+
+  <!-- GitHub 同步 -->
+  <div class="sec" style="border-top:1px solid var(--border);padding-top:10px;margin-top:8px">
+    <div class="sec-label" style="cursor:pointer" onclick="toggleGitHub()"><span data-i18n="github.label">GitHub 同步</span><span class="sec-toggle" id="githubToggle">▼</span></div>
     <div id="githubPanel">
-      <input type="password" class="api-input" id="githubToken" data-i18n-placeholder="github.tokenPlaceholder" placeholder="GitHub Personal Access Token…" style="width:100%;font-size:10px;margin-bottom:4px" oninput="onGitHubChange()">
-      <input type="text" class="api-input" id="githubRepo" data-i18n-placeholder="github.repoPlaceholder" placeholder="用户名/仓库名，如 user/repo" style="width:100%;font-size:10px;margin-bottom:4px" oninput="onGitHubChange()">
-      <div style="display:flex;gap:4px;margin-bottom:4px">
-        <input type="text" class="api-input" id="githubBranch" data-i18n-placeholder="github.branchPlaceholder" placeholder="分支 (默认 main)" style="flex:1;font-size:10px" oninput="onGitHubChange()">
-        <input type="text" class="api-input" id="githubPath" data-i18n-placeholder="github.pathPlaceholder" placeholder="路径，如 .claude/" style="flex:1;font-size:10px" oninput="onGitHubChange()">
-      </div>
-      <button class="out-btn" id="outGitHubSync" disabled onclick="syncToGitHub()" style="width:100%;justify-content:center;font-size:11px" data-i18n="github.sync">🔄 同步到 GitHub</button>
-      <div id="githubStatus" style="font-size:9px;color:var(--text3);margin-top:3px;font-family:var(--mono)"></div>
+      <input type="password" class="api-input" id="githubToken" placeholder="GitHub Token" style="width:100%;font-size:10px;margin-bottom:4px" oninput="onGitHubChange()">
+      <input type="text" class="api-input" id="githubRepo" placeholder="user/repo" style="width:100%;font-size:10px;margin-bottom:4px" oninput="onGitHubChange()">
+      <button class="out-btn" id="outGitHubSync" disabled onclick="syncToGitHub()" style="width:100%;justify-content:center;font-size:10px;padding:6px 10px">🔄 同步</button>
+      <div id="githubStatus" style="font-size:9px;color:var(--text3);margin-top:3px"></div>
     </div>
   </div>
-  </div><!-- /scroll-bottom -->
+
 </div>
+
 
 <div class="main">
   <div class="topbar">
     <div class="topbar-info" id="topbarInfo">选择提供商并配置 Key 后开始</div>
-    <button class="topbar-newproj" onclick="newProject()" data-i18n-title="project.newTitle" title="创建新项目"><span data-i18n="topbar.newProject">＋ 新建项目</span></button>
     <div class="topbar-model" id="topbarModel" style="display:none"></div>
     <div class="mode-row" style="width:auto;flex-shrink:0">
       <button class="mode-btn" id="fs-small" onclick="setFontSize('small')" style="font-size:10px">A</button>
@@ -414,6 +411,8 @@
     <button class="topbar-theme" onclick="toggleTheme()" title="切换日/夜模式" id="themeToggle">🌙</button>
     <button class="clear-btn" onclick="resetAll()" data-i18n="topbar.clear">清空</button>
   </div>
+  <!-- 阶段进度条 -->
+  <div class="stage-progress" id="stageProgress"></div>
   <div class="chat" id="chat"></div>
   <div class="input-area">
     <textarea id="inp" rows="1" data-i18n-placeholder="topbar.inputPlaceholder" placeholder="描述你的项目…（Ctrl+Enter 发送）" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
@@ -423,8 +422,11 @@
   </div>
 </div>
 
-<div class="docs-panel">
-  <div class="logo"><p style="font-size:11px;color:var(--text3);font-family:var(--mono)" data-i18n="docs.title">Claude Code 参考</p></div>
+<div class="docs-panel" id="docsPanel">
+  <div class="logo" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border)">
+    <p style="font-size:11px;color:var(--text3);font-family:var(--mono)" data-i18n="docs.title">Claude Code 参考</p>
+    <button class="topbar-theme" onclick="toggleDocsPanel()" title="折叠/展开" id="docsToggle" style="font-size:12px">◀</button>
+  </div>
   <div class="docs-scroll">
     <div class="docs-section">
       <h3 data-i18n="docs.section1.title">CLAUDE.md 文件体系</h3>
@@ -1887,6 +1889,13 @@ function init(){
   const savedTheme=ls('csg_theme')||'dark';
   applyTheme(savedTheme);
   applyI18n();
+  // 初始化阶段进度条
+  renderStageProgress();
+  // 恢复 docs-panel 折叠状态
+  if(ls('csg_docs_collapsed')==='1'){
+    const dp=document.getElementById('docsPanel');
+    if(dp){dp.classList.add('collapsed');document.getElementById('docsToggle').textContent='▶';}
+  }
   addMsg('ai', t('welcome.message'));
 }
 
@@ -1895,6 +1904,48 @@ function toggleTheme(){
   const next=cur==='dark'?'light':'dark';
   applyTheme(next);
   lset('csg_theme',next);
+}
+
+function toggleDocsPanel(){
+  const dp=document.getElementById('docsPanel');
+  const btn=document.getElementById('docsToggle');
+  if(!dp||!btn) return;
+  dp.classList.toggle('collapsed');
+  const isCollapsed=dp.classList.contains('collapsed');
+  btn.textContent=isCollapsed?'▶':'◀';
+  lset('csg_docs_collapsed',isCollapsed?'1':'0');
+}
+
+function renderStageProgress(){
+  const container=document.getElementById('stageProgress');
+  if(!container) return;
+  const stageNames=['',t('stage.0')||'项目描述',t('stage.1')||'工具架构',t('stage.2')||'自动化识别',t('stage.3')||'CLAUDE.md',t('stage.4')||'SKILL.md',t('stage.5')||'监督修补',t('stage.6')||'文件就绪'];
+  let html='<div class="sp-track">';
+  for(let i=1;i<=7;i++){
+    const isDone=S.stage>=i;
+    const isActive=S.stage===i;
+    const isLocked=S.stage<i;
+    const cls=isDone?'done':isActive?'active':isLocked?'locked':'';
+    const icon=isDone?'✓':i;
+    const line=i<7?'<div class="sp-line'+(S.stage>=i?' done':'')+'"></div>':'';
+    html+=`<div class="sp-node ${cls}" onclick="${isDone?"goToStage("+i+")":""}" title="${stageNames[i]}">${icon}</div>${line}`;
+  }
+  html+='</div>';
+  html+=`<span class="sp-label">阶段 <strong>${S.stage}</strong>/7: ${stageNames[S.stage]||'项目描述'}</span>`;
+  // checkpoint 模式显示导航按钮
+  if(S.mode==='checkpoint'){
+    html+=`<div class="sp-nav">
+      <button class="sp-nav-btn" onclick="goToStage(${Math.max(1,S.stage-1)})" ${S.stage<=1?'disabled':''}>← 上一阶段</button>
+      <button class="sp-nav-btn" onclick="goToStage(${Math.min(7,S.stage+1)})" ${S.stage>=7?'disabled':''}>下一阶段 →</button>
+    </div>`;
+  }
+  container.innerHTML=html;
+}
+
+function goToStage(n){
+  if(n>S.stage) return; // 不能跳到未完成阶段
+  setStage(n);
+  renderStageProgress();
 }
 
 function applyTheme(theme){
@@ -2212,10 +2263,13 @@ function updateTopbar(){
 
 function setStage(n){
   S.stage=n;
+  // 更新旧版侧边阶段指示器（兼容）
   for(let i=0;i<=6;i++){
     const el=document.getElementById('si-'+i);
-    el.className='si'+(i<n?' done':i===n?' active':'');
+    if(el) el.className='si'+(i<n?' done':i===n?' active':'');
   }
+  // 更新顶部进度条
+  renderStageProgress();
 }
 
 // ====== CHAT ======
