@@ -2264,8 +2264,13 @@ function reevaluateState(){
       if(sm) S.stage=Math.max(S.stage,parseInt(sm[1]));
       const cm=msg.content.match(/```(?:markdown)?\s*\n(#\s*Project[\s\S]*)\n```(?=\s*(?:\n|\[STAGE:\d\]|[一-鿿]|\{|$))/);
       if(cm){S._prevClaudeMd=S.claudeMd;S.claudeMd=cm[1].trim();}
-      const sm2=msg.content.match(/```(?:xml)?\s*\n(<skill[\s\S]*)\n```(?=\s*(?:\n|\[STAGE:\d\]|[一-鿿]|\{|$))/);
-      if(sm2){S._prevSkillMd=S.skillMd;S.skillMd=mergeSkill(S.skillMd,sm2[1].trim());}
+      // 提取所有 skill 代码块
+      const skillRe=/```(?:xml)?\s*\n(<skill[\s\S]*?)\n```(?=\s*(?:\n|\[STAGE:\d\]|[一-鿿]|\{|$))/gi;
+      let smMatch;
+      while((smMatch=skillRe.exec(msg.content))!==null){
+        S._prevSkillMd=S.skillMd;
+        S.skillMd=mergeSkill(S.skillMd,smMatch[1].trim());
+      }
     }
   }
   setStage(S.stage);
@@ -3220,16 +3225,17 @@ function renderReply(text,aiIdx){
     inner = inner.replace(/\n?\s*```$/,'').trim();
     codeBlocks.push({full, inner});
   }
-  let cm = null, sm2 = null;
+  let cm = null;
+  const allSkillBlocks = []; // 收集所有 skill 代码块
   for(const block of codeBlocks){
     if(!cm && (block.inner.startsWith('# Project') || block.inner.startsWith('#\x20Project'))){
       cm = [block.full, block.inner];
     }
-    if(!sm2 && block.inner.startsWith('<skill')){
-      sm2 = [block.full, block.inner];
+    if(block.inner.startsWith('<skill')){
+      allSkillBlocks.push(block);
     }
   }
-
+  
   // 对比模式：如果已有内容且新内容不同，暂存并展示对比
   if(cm&&S.mode==='compare'&&S.claudeMd&&cm[1].trim()!==S.claudeMd){
     S._pendingClaudeMd=cm[1].trim();
@@ -3239,19 +3245,30 @@ function renderReply(text,aiIdx){
     S._justGenerated='claude';
     updateFileCards();
   }
-  if(sm2&&S.mode==='compare'&&S.skillMd&&sm2[1].trim()!==S.skillMd){
-    S._pendingSkillMd=sm2[1].trim();
-  } else if(sm2){
-    S._prevSkillMd=S.skillMd;
-    S.skillMd = mergeSkill(S.skillMd, sm2[1].trim());
-    S._justGenerated='skill';
-    updateFileCards();
+  // 处理所有 skill 代码块
+  const hasNewSkills = allSkillBlocks.length > 0;
+  if(hasNewSkills){
+    if(S.mode==='compare' && S.skillMd){
+      // 对比模式：检查是否有新内容
+      const allNewSkills = allSkillBlocks.map(b => b.inner).join('\n\n');
+      if(allNewSkills.trim() !== S.skillMd.trim()){
+        S._pendingSkillMd = allNewSkills.trim();
+      }
+    } else {
+      // 普通模式：逐个合并所有 skill
+      S._prevSkillMd = S.skillMd;
+      for(const block of allSkillBlocks){
+        S.skillMd = mergeSkill(S.skillMd, block.inner.trim());
+      }
+      S._justGenerated = 'skill';
+      updateFileCards();
+    }
   }
-  if(cm||sm2){ saveFiles(); }
+  if(cm||hasNewSkills){ saveFiles(); }
   // 全自动模式：生成后自动下载文件
   if(S.mode==='full_auto'){
     if(cm) setTimeout(() => dlFile('claude'), 400);
-    if(sm2) setTimeout(() => dlFile('skill'), 700);
+    if(hasNewSkills) setTimeout(() => dlFile('skill'), 700);
   }
 
   // 如果同时提取到了 SKILL.md，确保阶段至少推进到 4
@@ -3285,13 +3302,13 @@ function renderReply(text,aiIdx){
   }
 
   // SKILL.md 更新后，自动生成触发验证清单
-  if(sm2){
+  if(hasNewSkills){
     const checklist = generateSkillChecklist(S.skillMd);
     if(checklist) renderSkillChecklist(checklist, bub);
   }
 
   // 两个文件都就绪时，触发生成后自检
-  if(S.claudeMd && S.skillMd && (cm || sm2)){
+  if(S.claudeMd && S.skillMd && (cm || hasNewSkills)){
     const selfCheck = generateSelfCheck(S.claudeMd, S.skillMd);
     if(selfCheck && selfCheck.issues.length > 0) renderSelfCheck(selfCheck, bub);
   }
@@ -3315,7 +3332,7 @@ function renderReply(text,aiIdx){
 
   // 自动弹出新生成的文件预览（对比模式不弹，用对比卡片替代）
   if(!S._pendingClaudeMd && !S._pendingSkillMd){
-    if(sm2) showPreview('skill', true);
+    if(hasNewSkills) showPreview('skill', true);
     else if(cm) showPreview('claude', true);
   }
 }
