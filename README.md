@@ -39,10 +39,10 @@
 
 ### 方法 1：直接下载（推荐）
 
-1. **下载** `claude-skill 生成器.html` 文件
+1. **下载** `项目罗盘.html` 文件
    ```
    • 点击 Files 标签页
-   • 找到 claude-skill 生成器.html
+   • 找到 项目罗盘.html
    • 点右键 → Save Link As
    ```
 
@@ -147,7 +147,7 @@
 
 ```
 project-compass/
-├── claude-skill 生成器.html    # 📦 主程序（单文件，即用）
+├── 项目罗盘.html    # 📦 主程序（单文件，即用）
 ├── skills/                      # 📚 7 个内置 SKILL.md 模板
 │   ├── ai-failure-pattern-collector/
 │   ├── ai-persistent-memory-system/
