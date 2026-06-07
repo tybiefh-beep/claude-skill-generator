@@ -6,27 +6,28 @@
 <title>Claude·Skill 文件生成器</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
-  :root{--bg:#1c1c1e;--bg-rgb:28,28,30;--bg2:#2c2c2e;--bg3:#3a3a3c;--bg4:#48484a;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.12);--text:#f5f5f7;--text2:#aeaeb2;--text3:#8e8e93;--accent:#ff8c5a;--accent2:#ff7a3e;--accent-rgb:255,140,90;--green:#30d158;--green-rgb:48,209,88;--amber:#ffd60a;--amber-rgb:255,214,10;--red:#ff453a;--blue:#0a84ff;--blue-rgb:10,132,255;--mono:'JetBrains Mono','SF Mono',monospace;--sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",sans-serif;--chat-font:16px;--input-font:17px}
-  [data-theme="light"]{--bg:#fbfbfd;--bg-rgb:251,251,253;--bg2:#f5f5f7;--bg3:#ececef;--bg4:#e3e3e6;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.12);--text:#1d1d1f;--text2:#6e6e73;--text3:#98989d;--accent:#ff8c5a;--accent2:#ff7a3e;--accent-rgb:255,140,90;--green:#34c759;--green-rgb:52,199,89;--amber:#ff9f0a;--amber-rgb:255,159,10;--red:#ff3b30;--blue:#0a84ff;--blue-rgb:10,132,255}
-  *{box-sizing:border-box;margin:0;padding:0;transition:background-color 0.25s cubic-bezier(0.4,0,0.2,1),border-color 0.25s cubic-bezier(0.4,0,0.2,1),color 0.25s cubic-bezier(0.4,0,0.2,1),box-shadow 0.25s cubic-bezier(0.4,0,0.2,1),transform 0.2s cubic-bezier(0.4,0,0.2,1)}
-  html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",sans-serif;background:var(--bg);color:var(--text);font-size:15px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;letter-spacing:-0.01em}
-  /* v3.1 Apple 风格：圆角加大、字体系统化、阴影多层、磨砂背景 */
+  :root{--bg:#141413;--bg2:#1a1a18;--bg3:#20201e;--bg4:#282826;--border:rgba(255,255,255,0.05);--border2:rgba(255,255,255,0.08);--text:#f5f4f1;--text2:#989890;--text3:#6b6b65;--accent:#d97757;--accent2:#c56545;--accent-rgb:217,119,87;--green:#5fa88b;--green-rgb:95,168,139;--amber:#d4a853;--amber-rgb:212,168,83;--red:#d9695a;--blue:#6b9ac4;--blue-rgb:107,154,196;--mono:'JetBrains Mono',monospace;--sans:'DM Sans',sans-serif;--chat-font:16px;--input-font:17px}
+  [data-theme="light"]{--bg:#faf9f6;--bg2:#f2f1ed;--bg3:#e9e7e2;--bg4:#ddd9d2;--border:rgba(0,0,0,0.06);--border2:rgba(0,0,0,0.10);--text:#1a1a18;--text2:#5c5c55;--text3:#8a8a82;--accent:#c56545;--accent2:#b05538;--accent-rgb:197,101,69;--green:#3d7a62;--green-rgb:61,122,98;--amber:#9e7a2e;--amber-rgb:158,122,46;--red:#c94a3a;--blue:#4a7aab;--blue-rgb:74,122,171}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15px;-webkit-font-smoothing:antialiased}
+  .app{display:grid;grid-template-columns:280px 1fr 280px;grid-template-rows:100vh;height:100vh;overflow:hidden}
+  .app.docs-collapsed{grid-template-columns:280px 1fr 40px}
 
   /* API Panel — project + provider + API key */
-  .api-panel{background:rgba(var(--bg-rgb,28,28,30),0.72);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);display:flex;flex-direction:column;overflow-y:auto;min-width:0}
+  .api-panel{background:var(--bg2);display:flex;flex-direction:column;overflow-y:auto;min-width:0}
   .api-panel::-webkit-scrollbar{width:4px}
   .api-panel::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
   /* Nav Panel — mode, stages, prefs, files */
-  .nav-panel{background:rgba(var(--bg-rgb,28,28,30),0.72);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);display:flex;flex-direction:column;overflow:hidden;min-width:0;border-left:1px solid var(--border)}
+  .nav-panel{background:var(--bg2);display:flex;flex-direction:column;overflow:hidden;min-width:0;border-left:1px solid var(--border)}
   /* Docs Panel — Claude docs + reference */
-  .docs-panel{background:rgba(var(--bg-rgb,28,28,30),0.72);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);display:flex;flex-direction:column;overflow:hidden;min-width:0;border-left:1px solid var(--border)}
-  .logo{padding:22px 18px 18px;flex-shrink:0}
-  .logo h1{font-size:15px;font-weight:600;letter-spacing:-0.3px}
-  .logo p{font-size:11px;color:var(--text3);margin-top:3px;font-family:var(--mono);font-weight:500}
-  .sec{padding:0 16px;margin-bottom:18px;flex-shrink:0}
-  .sec-label{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;text-transform:uppercase;letter-spacing:0.05em}
+  .docs-panel{background:var(--bg2);display:flex;flex-direction:column;overflow:hidden;min-width:0;border-left:1px solid var(--border)}
+  .logo{padding:18px 14px 14px;flex-shrink:0}
+  .logo h1{font-size:14px;font-weight:500;letter-spacing:-0.2px}
+  .logo p{font-size:10px;color:var(--text3);margin-top:2px;font-family:var(--mono)}
+  .sec{padding:0 12px;margin-bottom:12px;flex-shrink:0}
+  .sec-label{font-size:12px;font-weight:500;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:5px;cursor:pointer;user-select:none}
   .sec-label:hover{color:var(--text2)}
-  .sec-toggle{font-size:10px;transition:transform 0.25s cubic-bezier(0.4,0,0.2,1);display:inline-block}
+  .sec-toggle{font-size:11px;transition:transform 0.2s;display:inline-block}
   .sec-toggle.folded{transform:rotate(-90deg)}
 
   /* Provider list */
@@ -34,7 +35,7 @@
   .provider-list.collapsed{max-height:0;overflow:hidden}
   .provider-list::-webkit-scrollbar{width:4px}
   .provider-list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-  .pb{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;border:none;background:transparent;cursor:pointer;font-size:13px;font-family:var(--sans);color:var(--text2);text-align:left;transition:all 0.25s cubic-bezier(0.4,0,0.2,1)}
+  .pb{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:8px;border:none;background:transparent;cursor:pointer;font-size:13px;font-family:var(--sans);color:var(--text2);text-align:left;transition:all 0.15s}
   .pb:hover{background:var(--bg3);color:var(--text)}
   .pb.active{background:rgba(var(--accent-rgb),0.1);color:var(--text)}
   .pb-name{flex:1;min-width:0;font-weight:400}
@@ -53,12 +54,10 @@
 
   /* Model selector */
   .model-row{display:flex;gap:4px;align-items:center}
-  .model-select{flex:1;padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-size:12px;font-family:var(--mono);color:var(--text);outline:none;cursor:pointer;appearance:none;min-width:0;transition:border-color 0.25s cubic-bezier(0.4,0,0.2,1),box-shadow 0.25s cubic-bezier(0.4,0,0.2,1)}
-  .model-select:focus{border-color:rgba(var(--accent-rgb),0.4);box-shadow:0 0 0 3px rgba(var(--accent-rgb),0.08)}
+  .model-select{flex:1;padding:8px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:var(--mono);color:var(--text);outline:none;cursor:pointer;appearance:none;min-width:0;transition:border-color 0.2s}
   .model-select:focus{border-color:var(--accent)}
   .model-select option{background:var(--bg3)}
-  .verify-btn{padding:8px 12px;border-radius:10px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:11px;font-family:var(--sans);color:var(--text2);white-space:nowrap;transition:all 0.25s cubic-bezier(0.4,0,0.2,1);font-weight:500}
-  .verify-btn:hover{border-color:var(--accent);color:var(--text);background:rgba(var(--accent-rgb),0.06)}
+  .verify-btn{padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:11px;font-family:var(--sans);color:var(--text2);white-space:nowrap;transition:all 0.15s}
   .verify-btn:hover{border-color:var(--accent);color:var(--accent)}
   .verify-btn:disabled{opacity:0.3;cursor:not-allowed}
   .model-custom-row{margin-top:5px}
@@ -74,12 +73,10 @@
 
   /* API key */
   .api-row{display:flex;gap:4px}
-  .api-input{flex:1;padding:9px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-size:12px;font-family:var(--mono);color:var(--text);outline:none;min-width:0;transition:border-color 0.25s cubic-bezier(0.4,0,0.2,1),box-shadow 0.25s cubic-bezier(0.4,0,0.2,1)}
-  .api-input:focus{border-color:rgba(var(--accent-rgb),0.4);box-shadow:0 0 0 3px rgba(var(--accent-rgb),0.08)}
+  .api-input{flex:1;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:var(--mono);color:var(--text);outline:none;min-width:0;transition:border-color 0.2s}
   .api-input:focus{border-color:var(--accent)}
   .api-input::placeholder{color:var(--text3);font-size:11px}
-  .api-save{padding:8px 16px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:10px;color:#fff;font-size:12px;font-weight:600;font-family:var(--sans);cursor:pointer;white-space:nowrap;transition:all 0.25s cubic-bezier(0.4,0,0.2,1);box-shadow:0 1px 4px rgba(var(--accent-rgb),0.25)}
-  .api-save:hover{transform:scale(1.03);box-shadow:0 2px 8px rgba(var(--accent-rgb),0.35)}
+  .api-save{padding:8px 14px;background:var(--accent);border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:500;font-family:var(--sans);cursor:pointer;white-space:nowrap;transition:background 0.15s}
   .api-save:hover{background:var(--accent2)}
   .api-status{font-size:10px;margin-top:4px;font-family:var(--mono)}
   .api-status.ok{color:var(--green)}
@@ -105,13 +102,12 @@
 
   /* Output */
   .out-sec{padding:10px 16px 16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px}
-  .out-btn{padding:9px 13px;border-radius:10px;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:12px;font-family:var(--sans);color:var(--text2);text-align:left;display:flex;align-items:center;gap:7px;transition:all 0.25s cubic-bezier(0.4,0,0.2,1)}
+  .out-btn{padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:12px;font-family:var(--sans);color:var(--text2);text-align:left;display:flex;align-items:center;gap:7px;transition:all 0.15s}
   .out-btn:hover:not(:disabled){border-color:var(--border2);color:var(--text);background:var(--bg3)}
   .out-btn:disabled{opacity:0.25;cursor:not-allowed}
 
   /* File cards */
-  .file-card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:11px 13px;transition:all 0.25s cubic-bezier(0.4,0,0.2,1)}
-  .file-card:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+  .file-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:9px 11px;transition:all 0.15s}
   .file-card.has-file{border-color:rgba(var(--green-rgb),0.15);background:rgba(var(--green-rgb),0.02)}
   .fc-top{display:flex;align-items:center;gap:6px;margin-bottom:3px}
   .fc-icon{font-size:13px;flex-shrink:0}
@@ -136,22 +132,22 @@
   .topbar-theme:hover{border-color:var(--border2);background:var(--bg3)}
 
   /* Stage Progress Bar */
-  .stage-progress{padding:14px 20px 16px;background:rgba(var(--bg-rgb,28,28,30),0.72);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);display:flex;align-items:center;gap:0;flex-shrink:0;border-bottom:1px solid var(--border)}
+  .stage-progress{padding:8px 16px 12px;background:var(--bg2);display:flex;align-items:center;gap:0;flex-shrink:0;border-bottom:1px solid var(--border)}
   .sp-track{display:flex;align-items:center;gap:0;flex:1;min-width:0}
-  .sp-node{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;font-family:var(--mono);flex-shrink:0;cursor:pointer;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);position:relative;background:var(--bg3);color:var(--text3);border:2px solid var(--border)}
-  .sp-node.done{background:rgba(var(--green-rgb),0.12);color:var(--green);border-color:rgba(var(--green-rgb),0.4)}
-  .sp-node.active{background:linear-gradient(135deg,rgba(var(--accent-rgb),0.25),rgba(var(--accent-rgb),0.1));color:var(--accent);border-color:var(--accent);transform:scale(1.2);box-shadow:0 0 0 4px rgba(var(--accent-rgb),0.15),0 4px 12px rgba(var(--accent-rgb),0.3)}
-  .sp-node:not(.done):not(.active):hover{border-color:var(--text3);transform:scale(1.08)}
+  .sp-node{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;font-family:var(--mono);flex-shrink:0;cursor:pointer;transition:all 0.2s;position:relative;background:var(--bg3);color:var(--text3);border:2px solid var(--border)}
+  .sp-node.done{background:rgba(var(--green-rgb),0.1);color:var(--green);border-color:rgba(var(--green-rgb),0.3)}
+  .sp-node.active{background:rgba(var(--accent-rgb),0.15);color:var(--accent);border-color:var(--accent);transform:scale(1.15);box-shadow:0 0 12px rgba(var(--accent-rgb),0.3)}
+  .sp-node:not(.done):not(.active):hover{border-color:var(--text3);transform:scale(1.05)}
   .sp-node.locked{cursor:not-allowed;opacity:0.5}
-  .sp-line{flex:1;height:3px;background:var(--border);margin:0 4px;position:relative;overflow:hidden;border-radius:2px}
-  .sp-line.done{background:linear-gradient(90deg,var(--green),rgba(var(--green-rgb),0.4))}
-  .sp-line::after{content:'';position:absolute;left:0;top:0;height:100%;width:0;background:var(--green);transition:width 0.4s cubic-bezier(0.4,0,0.2,1);border-radius:2px}
+  .sp-line{flex:1;height:2px;background:var(--border);margin:0 2px;position:relative;overflow:hidden}
+  .sp-line.done{background:rgba(var(--green-rgb),0.3)}
+  .sp-line::after{content:'';position:absolute;left:0;top:0;height:100%;width:0;background:var(--green);transition:width 0.3s}
   .sp-line.done::after{width:100%}
-  .sp-label{flex-shrink:0;font-size:12px;font-family:var(--mono);color:var(--text2);padding:0 14px;white-space:nowrap}
+  .sp-label{flex-shrink:0;font-size:12px;font-family:var(--mono);color:var(--text2);padding:0 12px;white-space:nowrap}
   .sp-label strong{color:var(--accent);font-weight:600}
-  .sp-nav{display:flex;gap:6px;flex-shrink:0}
-  .sp-nav-btn{padding:5px 12px;border-radius:8px;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:11px;font-family:var(--sans);color:var(--text3);transition:all 0.25s cubic-bezier(0.4,0,0.2,1);font-weight:500}
-  .sp-nav-btn:hover{color:var(--text);border-color:var(--accent);background:rgba(var(--accent-rgb),0.06)}
+  .sp-nav{display:flex;gap:4px;flex-shrink:0}
+  .sp-nav-btn{padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:11px;font-family:var(--sans);color:var(--text3);transition:all 0.15s}
+  .sp-nav-btn:hover{color:var(--text);border-color:var(--accent)}
   .sp-nav-btn:disabled{opacity:0.3;cursor:not-allowed}
 
   /* Docs Panel - 可折叠 */
@@ -170,13 +166,13 @@
   .chat::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
   .msg-row{display:flex;gap:12px;max-width:720px;margin:0 auto;width:100%}
   .msg-row.user{flex-direction:row-reverse}
-  .av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;margin-top:2px}
-  .av.ai{background:linear-gradient(135deg,rgba(var(--accent-rgb),0.15),rgba(var(--accent-rgb),0.05));color:var(--accent);border:1px solid rgba(var(--accent-rgb),0.2)}
-  .av.hu{background:linear-gradient(135deg,rgba(var(--blue-rgb),0.15),rgba(var(--blue-rgb),0.05));color:var(--blue);border:1px solid rgba(var(--blue-rgb),0.2)}
-  .bubble{max-width:75%;background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:11px 15px;font-size:var(--chat-font);line-height:1.65;color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,0.04)}
-  .msg-row.user .bubble{background:linear-gradient(135deg,rgba(var(--blue-rgb),0.18),rgba(var(--blue-rgb),0.08));border-color:rgba(var(--blue-rgb),0.25)}
-  .bubble code{font-family:var(--mono);font-size:13px;background:var(--bg3);padding:1px 6px;border-radius:5px}
-  .bubble pre{font-family:var(--mono);font-size:13px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:10px 0;overflow-x:auto;line-height:1.6;color:var(--text2);white-space:pre-wrap}
+  .av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;margin-top:2px}
+  .av.ai{background:rgba(var(--accent-rgb),0.1);color:var(--accent)}
+  .av.hu{background:rgba(var(--blue-rgb),0.1);color:var(--blue)}
+  .bubble{max-width:75%;background:transparent;border:none;border-radius:0;padding:0;font-size:var(--chat-font);line-height:1.75;color:var(--text)}
+  .msg-row.user .bubble{background:transparent;border:none}
+  .bubble code{font-family:var(--mono);font-size:13px;background:var(--bg3);padding:1px 6px;border-radius:4px}
+  .bubble pre{font-family:var(--mono);font-size:13px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:10px 0;overflow-x:auto;line-height:1.6;color:var(--text2);white-space:pre-wrap}
   .sys-msg{text-align:center;font-size:12px;color:var(--text3);font-family:var(--mono);padding:4px 0;align-self:center}
 
   /* Patch */
@@ -208,18 +204,16 @@
   @keyframes pu{0%,80%,100%{opacity:.15}40%{opacity:.6}}
 
   /* Input — Claude-style: prominent, rounded, clean */
-  .input-area{border-top:1px solid var(--border);background:rgba(var(--bg-rgb,28,28,30),0.72);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);padding:16px 24px 20px;display:flex;gap:10px;align-items:flex-end;flex-shrink:0}
-  textarea#inp{flex:1;padding:14px 18px;background:var(--bg2);border:1px solid var(--border);border-radius:18px;font-size:var(--input-font);font-family:var(--sans);color:var(--text);outline:none;resize:none;min-height:52px;max-height:180px;line-height:1.5;transition:border-color 0.25s cubic-bezier(0.4,0,0.2,1),box-shadow 0.25s cubic-bezier(0.4,0,0.2,1)}
-  textarea#inp:focus{border-color:rgba(var(--accent-rgb),0.4);box-shadow:0 0 0 4px rgba(var(--accent-rgb),0.08)}
+  .input-area{border-top:1px solid var(--border);background:var(--bg);padding:16px 24px 20px;display:flex;gap:10px;align-items:flex-end;flex-shrink:0}
+  textarea#inp{flex:1;padding:13px 18px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;font-size:var(--input-font);font-family:var(--sans);color:var(--text);outline:none;resize:none;min-height:52px;max-height:180px;line-height:1.5;transition:border-color 0.2s}
+  textarea#inp:focus{border-color:var(--border2)}
   textarea#inp::placeholder{color:var(--text3);font-size:var(--input-font)}
-  .send-btn{padding:10px 22px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:18px;color:#fff;font-size:15px;font-weight:600;font-family:var(--sans);cursor:pointer;white-space:nowrap;transition:all 0.25s cubic-bezier(0.4,0,0.2,1);height:52px;box-shadow:0 2px 8px rgba(var(--accent-rgb),0.3)}
-  .send-btn:hover{transform:scale(1.03);box-shadow:0 4px 16px rgba(var(--accent-rgb),0.4)}
-  .send-btn:active{transform:scale(0.98)}
-  .send-btn:disabled{opacity:0.3;cursor:not-allowed;transform:none}
+  .send-btn{padding:10px 22px;background:var(--accent);border:none;border-radius:16px;color:#fff;font-size:16px;font-weight:500;font-family:var(--sans);cursor:pointer;white-space:nowrap;transition:background 0.15s;height:52px}
+  .send-btn:hover{background:var(--accent2)}
+  .send-btn:disabled{opacity:0.3;cursor:not-allowed}
 
   /* Upload */
-  .upload-btn{padding:0;background:var(--bg2);border:1px solid var(--border);border-radius:18px;color:var(--text2);font-size:18px;cursor:pointer;transition:all 0.25s cubic-bezier(0.4,0,0.2,1);height:52px;width:52px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-  .upload-btn:hover{border-color:var(--border2);color:var(--text);transform:scale(1.05)}
+  .upload-btn{padding:0;background:var(--bg2);border:1px solid var(--border);border-radius:16px;color:var(--text2);font-size:18px;cursor:pointer;transition:all 0.15s;height:52px;width:52px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
   .upload-btn:hover{border-color:var(--border2);color:var(--text)}
 
 	  /* Drag & Drop */
@@ -232,10 +226,8 @@
   .msg-retract:hover{color:var(--red)!important;opacity:1!important}
 
   /* Modal */
-  .mo{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);animation:moFade 0.3s cubic-bezier(0.4,0,0.2,1)}
-  @keyframes moFade{from{opacity:0}to{opacity:1}}
-  .mb{background:var(--bg2);border:1px solid var(--border);border-radius:20px;width:700px;max-width:95vw;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(0,0,0,0.04),0 8px 24px rgba(0,0,0,0.12),0 24px 80px rgba(0,0,0,0.24);animation:mbIn 0.35s cubic-bezier(0.34,1.56,0.64,1)}
-  @keyframes mbIn{from{opacity:0;transform:scale(0.96) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+  .mo{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(16px)}
+  .mb{background:var(--bg2);border:1px solid var(--border);border-radius:14px;width:700px;max-width:95vw;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,0.6)}
   .mh{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
   .mt{font-size:14px;font-weight:500;font-family:var(--mono);color:var(--accent)}
   .mc-btn{width:28px;height:28px;border-radius:50%;border:none;background:transparent;cursor:pointer;color:var(--text2);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
@@ -246,15 +238,6 @@
   .mf{padding:12px 20px;border-top:1px solid var(--border);display:flex;gap:8px}
   .m-btn{padding:8px 18px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:13px;font-family:var(--sans);color:var(--text2);transition:all 0.15s}
   .m-btn:hover{border-color:var(--border2);color:var(--text);background:var(--bg4)}
-
-  /* STAGE 0 元问询 */
-  .s0q{margin-bottom:18px}
-  .s0q-label{font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px;letter-spacing:-0.01em}
-  .s0q-opts{display:flex;flex-direction:column;gap:8px}
-  .s0opt{padding:11px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-size:12px;color:var(--text2);transition:all 0.25s cubic-bezier(0.4,0,0.2,1);position:relative}
-  .s0opt:hover{border-color:var(--border2);color:var(--text);background:var(--bg4)}
-  .s0opt.selected{background:rgba(var(--accent-rgb),0.12);border-color:var(--accent);color:var(--text)}
-  .s0opt[data-recommend="1"]::after{content:"推荐";position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:9px;color:var(--accent);background:rgba(var(--accent-rgb),0.15);padding:2px 6px;border-radius:4px}
   .m-btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
   .m-btn.pri:hover{background:var(--accent2)}
   ::-webkit-scrollbar{width:4px}
@@ -294,6 +277,15 @@
   .docs-section ul{padding-left:14px}
   .docs-section code{font-family:var(--mono);font-size:10px;background:var(--bg3);padding:1px 5px;border-radius:3px;color:var(--text2)}
   .docs-section pre{font-family:var(--mono);font-size:10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;overflow-x:auto;color:var(--text2);line-height:1.5;white-space:pre-wrap;max-height:200px;overflow-y:auto}
+
+  /* v3.1 STAGE 0 元问询 */
+  .s0q{margin-bottom:16px}
+  .s0q-label{font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px}
+  .s0q-opts{display:flex;flex-direction:column;gap:6px}
+  .s0opt{padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:12px;color:var(--text2);position:relative}
+  .s0opt:hover{border-color:var(--border2);color:var(--text)}
+  .s0opt.selected{background:rgba(var(--accent-rgb),0.12);border-color:var(--accent);color:var(--text)}
+  .s0opt[data-recommend="1"]::after{content:"推荐";position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:9px;color:var(--accent);background:rgba(var(--accent-rgb),0.15);padding:2px 6px;border-radius:4px}
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
@@ -359,19 +351,14 @@
     </div>
   </div>
 
-  <!-- 个人偏好（v3.1 Apple 风格：图标+文字+计数） -->
+  <!-- 个人偏好 -->
   <div class="sec">
-    <div class="sec-label" style="cursor:pointer;display:flex;align-items:center;gap:6px" onclick="togglePrefs()">
-      <span style="font-size:13px">⚙</span>
-      <span>偏好</span>
-      <span id="prefsCount" style="font-size:10px;font-weight:500;color:var(--text3);background:var(--bg3);padding:1px 6px;border-radius:8px">0 条</span>
-      <span class="sec-toggle" id="prefsToggle" style="margin-left:auto">▼</span>
-    </div>
+    <div class="sec-label" style="cursor:pointer" onclick="togglePrefs()"><span data-i18n="prefs.label">个人偏好</span><span style="font-size:9px;color:var(--text3);margin-left:4px" data-i18n="prefs.localMd">(local.md)</span><span class="sec-toggle" id="prefsToggle">▼</span></div>
     <div id="prefsPanel">
-      <textarea id="prefsInput" data-i18n-placeholder="prefs.placeholder" placeholder="一行一条偏好，AI 生成时参考…" style="width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-size:11px;font-family:var(--mono);color:var(--text);resize:vertical;min-height:60px;outline:none;line-height:1.6;transition:border-color 0.25s cubic-bezier(0.4,0,0.2,1),box-shadow 0.25s cubic-bezier(0.4,0,0.2,1)" oninput="onPrefsChange()"></textarea>
-      <div style="display:flex;gap:6px;margin-top:6px">
-        <button onclick="savePrefs()" style="padding:5px 12px;border-radius:8px;border:none;background:var(--accent);color:#fff;cursor:pointer;font-size:11px;font-weight:600;font-family:var(--sans)">保存</button>
-        <button onclick="generateLocalMd()" style="padding:5px 12px;border-radius:8px;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:11px;font-family:var(--sans);color:var(--text2)" id="genLocalMdBtn" disabled>导出 local.md</button>
+      <textarea id="prefsInput" data-i18n-placeholder="prefs.placeholder" placeholder="输入你的个人偏好，一行一条…" style="width:100%;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:10px;font-family:var(--mono);color:var(--text);resize:vertical;min-height:50px;outline:none;line-height:1.6;transition:border-color 0.2s" oninput="onPrefsChange()"></textarea>
+      <div style="display:flex;gap:4px;margin-top:4px">
+        <button onclick="savePrefs()" style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:10px;font-family:var(--sans);color:var(--text2)">保存</button>
+        <button onclick="generateLocalMd()" style="padding:4px 8px;border-radius:6px;border:1px solid var(--accent);background:transparent;cursor:pointer;font-size:10px;font-family:var(--sans);color:var(--accent)" id="genLocalMdBtn" disabled>生成</button>
       </div>
     </div>
   </div>
@@ -1923,106 +1910,6 @@ function toggleLocale(){
 }
 
 // ====== INIT ======
-/* === v3.1 STAGE 0 元问询 === */
-function showStage0(){
-  const mo = document.createElement('div');
-  mo.className = 'mo';
-  mo.id = 'stage0Modal';
-  mo.innerHTML = `
-    <div class="mb" style="width:560px">
-      <div class="mh"><div class="mt">开始前，4 个关键问题</div><button class="mc-btn" onclick="skipStage0()">×</button></div>
-      <div class="mc" style="font-family:var(--sans);line-height:1.6">
-        <p style="color:var(--text3);font-size:12px;margin-bottom:18px">填完自动进入 STAGE 1，开始描述你的项目。</p>
-        <div class="s0q">
-          <div class="s0q-label">1. 这个项目主要是哪种？</div>
-          <div class="s0q-opts" data-key="projectType">
-            <div class="s0opt" data-val="界面型">界面型 — 小工具、原型、自己点着玩</div>
-            <div class="s0opt" data-val="命令行型">命令行型 — CLI、脚本、批处理</div>
-            <div class="s0opt" data-val="自动化型">自动化型 — 监控、自动回复、定时任务</div>
-            <div class="s0opt" data-val="协作型">协作型 — 团队 SOP、流程规范</div>
-            <div class="s0opt" data-val="模板型">模板型 — 周报、报告、文档生成</div>
-          </div>
-        </div>
-        <div class="s0q">
-          <div class="s0q-label">2. 平时谁会用？</div>
-          <div class="s0q-opts" data-key="operator">
-            <div class="s0opt" data-val="我自己用">我自己用</div>
-            <div class="s0opt" data-val="Claude Code 用">Claude Code 用 — 写代码时触发</div>
-            <div class="s0opt" data-val="Agent 用">Agent 用 — AI 自动跑流程</div>
-            <div class="s0opt" data-val="团队用">团队用 — 其他人也会用到</div>
-          </div>
-        </div>
-        <div class="s0q">
-          <div class="s0q-label">3. SKILL.md 里的 skill 怎么来？</div>
-          <div class="s0q-opts" data-key="skillSource">
-            <div class="s0opt" data-val="优先模板">优先模板 — 库里有就套</div>
-            <div class="s0opt" data-val="AI 现写">AI 现写 — 每次按需生成</div>
-            <div class="s0opt" data-val="混合" data-recommend="1">混合（推荐）— 先查库，缺啥 AI 补</div>
-          </div>
-        </div>
-        <div class="s0q">
-          <div class="s0q-label">4. AI 生成时要不要停下来问？</div>
-          <div class="s0q-opts" data-key="autoLevel">
-            <div class="s0opt" data-val="一口气跑完">一口气跑完 — 中间不打断</div>
-            <div class="s0opt" data-val="关键步骤问">关键步骤问 — STAGE 4/5 停下确认</div>
-            <div class="s0opt" data-val="每步都问">每步都问 — 慢但稳</div>
-          </div>
-        </div>
-      </div>
-      <div class="mf">
-        <button class="m-btn" onclick="skipStage0()">跳过</button>
-        <button class="m-btn" style="margin-left:auto;background:var(--accent);color:#fff;border-color:var(--accent)" onclick="submitStage0()">开始 →</button>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(mo);
-  mo.querySelectorAll('.s0q-opts').forEach(group => {
-    group.addEventListener('click', e => {
-      const opt = e.target.closest('.s0opt');
-      if(!opt) return;
-      group.querySelectorAll('.s0opt').forEach(o => o.classList.remove('selected'));
-      opt.classList.add('selected');
-    });
-  });
-}
-function skipStage0(){
-  document.getElementById('stage0Modal')?.remove();
-  S.stage0 = { skipped: true };
-  ls('pc_stage0', S.stage0);
-  if(S.stage < 1) setStage(1);
-  addMsg('ai', '跳过了 STAGE 0 元问询。直接进入 STAGE 1，请描述你的项目。');
-}
-function submitStage0(){
-  const result = {};
-  document.querySelectorAll('#stage0Modal .s0q-opts').forEach(group => {
-    const sel = group.querySelector('.s0opt.selected');
-    if(sel) result[group.dataset.key] = sel.dataset.val;
-  });
-  if(Object.keys(result).length < 4){
-    addSysMsg('请完成全部 4 题（每题选一个选项）');
-    return;
-  }
-  S.stage0 = result;
-  ls('pc_stage0', result);
-  if(result.operator === '我自己用'){
-    S.skipSkill = true;
-    ls('pc_skipSkill', true);
-  } else {
-    S.skipSkill = false;
-    lremove('pc_skipSkill');
-  }
-  document.getElementById('stage0Modal')?.remove();
-  if(S.stage < 1) setStage(1);
-  const summary = `STAGE 0 完成：
-• 项目类型：${result.projectType}
-• 操作用户：${result.operator}
-• skill 来源：${result.skillSource}
-• AI 自主权：${result.autoLevel}
-${result.operator === '我自己用' ? '\n⚠️ 你选择"我自己用"，将自动跳过 STAGE 5（SKILL.md 生成）' : ''}`;
-  addMsg('ai', summary);
-  addMsg('ai', '现在进入 STAGE 1：请描述你的项目。');
-}
-
 function init(){
   // 恢复折叠状态
   const collapsed = ls('csg_providers_collapsed');
@@ -2057,16 +1944,23 @@ function init(){
     if(app) app.classList.add('docs-collapsed');
   }
   addMsg('ai', t('welcome.message'));
-  // v3.1: 首次启动弹 STAGE 0 元问询（除非已填过）
-  if(!ls('pc_stage0')){
-    setTimeout(showStage0, 600);
-  } else {
-    S.stage0 = ls('pc_stage0');
-    S.skipSkill = ls('pc_skipSkill') === true;
-  }
-  // 初始化偏好计数
-  updatePrefsCount();
 }
+// v3.1: 首次启动弹 STAGE 0 元问询（独立函数，window.onload 调用）
+function tryShowStage0(){
+  try{
+    const saved=ls('pc_stage0');
+    if(!saved){
+      setTimeout(showStage0, 600);
+    } else {
+      if(typeof S!=='undefined'){
+        S.stage0 = saved;
+        S.skipSkill = ls('pc_skipSkill') === 'true';
+      }
+    }
+  }catch(e){console.warn('STAGE 0 trigger skipped:',e)}
+}
+if(document.readyState==='complete') tryShowStage0();
+else window.addEventListener('load', tryShowStage0);
 
 function toggleTheme(){
   const cur=document.documentElement.getAttribute('data-theme')||'dark';
@@ -2386,21 +2280,16 @@ function onPrefsChange(){
 }
 function updateLocalMdCard(){
   const lines=S.localMd.split('\n').filter(l=>l.trim()).length;
-  document.getElementById('fcMetaLocal').textContent=lines?t('fileCard.prefCount',{count:lines}):t('fileCard.localMeta');
-  document.getElementById('fcViewLocal').disabled=!lines;
+  const meta=document.getElementById('fcMetaLocal');
+  if(meta) meta.textContent=lines?t('fileCard.prefCount',{count:lines}):t('fileCard.localMeta');
+  const dl=document.getElementById('fcDlLocal');
+  if(dl) dl.disabled=!lines;
 }
 function savePrefs(){
   S.localMd=document.getElementById('prefsInput').value;
   try{ localStorage.setItem('csg_local_md', S.localMd); }catch(e){}
   document.getElementById('prefsStatus').textContent=S.localMd.trim()?t('prefs.savedDone',{count:S.localMd.split('\n').filter(l=>l.trim()).length}):t('prefs.notSet');
-  updatePrefsCount();
   addSysMsg(t('msg.prefsSaved'));
-}
-function updatePrefsCount(){
-  const el=document.getElementById('prefsCount');
-  if(!el) return;
-  const lines=(S.localMd||'').split('\n').filter(l=>l.trim()).length;
-  el.textContent=lines+' 条';
 }
 function generateLocalMd(){
   if(!S.localMd.trim()) return;
@@ -3180,8 +3069,10 @@ function showFeedbackModal(type){
   window.setStarRating = function(n){
     window._feedbackRating = n;
     resetStars();
-    document.getElementById('ratingScore').textContent = `${n} / 5 分`;
-    document.getElementById('feedbackSubmit').disabled = false;
+    const score=document.getElementById('ratingScore');
+    if(score) score.textContent = `${n} / 5 分`;
+    const submit=document.getElementById('feedbackSubmit');
+    if(submit) submit.disabled = false;
   };
 }
 
@@ -4195,8 +4086,8 @@ function resetAll(){
   S._prevClaudeMd='';S._prevSkillMd='';S._pendingClaudeMd=null;S._pendingSkillMd=null;
   S._justGenerated=null;
   document.getElementById('chat').innerHTML='';
-  ['outExport'].forEach(id=>document.getElementById(id).disabled=true);
-  document.getElementById('sendBtn').disabled=false;
+  ['outExport'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=true;});
+  const sb=document.getElementById('sendBtn'); if(sb) sb.disabled=false;
   setStage(0);
   lremove('csg_claude_md');lremove('csg_skill_md');
   updateFileCards();
@@ -4298,6 +4189,7 @@ function onGitHubChange(){
 function updateGitHubStatus(){
   const btn = document.getElementById('outGitHubSync');
   const status = document.getElementById('githubStatus');
+  if(!btn) return;
   const hasFiles = S.claudeMd || S.skillMd;
   const hasConfig = S.githubToken && S.githubRepo;
   btn.disabled = !hasFiles || !hasConfig || S.loading;
@@ -4315,6 +4207,7 @@ async function syncToGitHub(){
   if(!S.claudeMd && !S.skillMd){ addSysMsg(t('github.noFiles')); return; }
   const btn = document.getElementById('outGitHubSync');
   const status = document.getElementById('githubStatus');
+  if(!btn) return;
   btn.disabled = true;
   btn.textContent = t('github.syncing');
   const branch = S.githubBranch || 'main';
@@ -4405,7 +4298,7 @@ function initGitHub(){
   updateGitHubStatus();
 }
 
-/* === STAGE 0 元问询 === */
+/* === v3.1 STAGE 0 元问询 === */
 function showStage0(){
   const mo = document.createElement('div');
   mo.className = 'mo';
@@ -4414,8 +4307,7 @@ function showStage0(){
     <div class="mb" style="width:560px">
       <div class="mh"><div class="mt">开始前，4 个关键问题</div><button class="mc-btn" onclick="skipStage0()">×</button></div>
       <div class="mc" style="font-family:var(--sans);line-height:1.6">
-        <p style="color:var(--text3);font-size:12px;margin-bottom:16px">填完会自动跳到 STAGE 1，项目描述从这里开始。</p>
-
+        <p style="color:var(--text3);font-size:12px;margin-bottom:16px">填完自动进入 STAGE 1，开始描述你的项目。</p>
         <div class="s0q">
           <div class="s0q-label">1. 这个项目主要是哪种？</div>
           <div class="s0q-opts" data-key="projectType">
@@ -4426,7 +4318,6 @@ function showStage0(){
             <div class="s0opt" data-val="模板型">模板型 — 周报、报告、文档生成</div>
           </div>
         </div>
-
         <div class="s0q">
           <div class="s0q-label">2. 平时谁会用？</div>
           <div class="s0q-opts" data-key="operator">
@@ -4436,7 +4327,6 @@ function showStage0(){
             <div class="s0opt" data-val="团队用">团队用 — 其他人也会用到</div>
           </div>
         </div>
-
         <div class="s0q">
           <div class="s0q-label">3. SKILL.md 里的 skill 怎么来？</div>
           <div class="s0q-opts" data-key="skillSource">
@@ -4445,7 +4335,6 @@ function showStage0(){
             <div class="s0opt" data-val="混合" data-recommend="1">混合（推荐）— 先查库，缺啥 AI 补</div>
           </div>
         </div>
-
         <div class="s0q">
           <div class="s0q-label">4. AI 生成时要不要停下来问？</div>
           <div class="s0q-opts" data-key="autoLevel">
@@ -4462,7 +4351,6 @@ function showStage0(){
     </div>
   `;
   document.body.appendChild(mo);
-  // 选项点击高亮
   mo.querySelectorAll('.s0q-opts').forEach(group => {
     group.addEventListener('click', e => {
       const opt = e.target.closest('.s0opt');
@@ -4472,14 +4360,13 @@ function showStage0(){
     });
   });
 }
-
 function skipStage0(){
   document.getElementById('stage0Modal')?.remove();
   S.stage0 = { skipped: true };
+  lset('pc_stage0', S.stage0);
   if(S.stage < 1) setStage(1);
-  appendMsg('ai', '跳过了 STAGE 0 元问询。直接进入 STAGE 1，请描述你的项目。');
+  addMsg('ai', '跳过了 STAGE 0 元问询。直接进入 STAGE 1，请描述你的项目。');
 }
-
 function submitStage0(){
   const result = {};
   document.querySelectorAll('#stage0Modal .s0q-opts').forEach(group => {
@@ -4487,25 +4374,28 @@ function submitStage0(){
     if(sel) result[group.dataset.key] = sel.dataset.val;
   });
   if(Object.keys(result).length < 4){
-    alert('请完成全部 4 题（每题选一个选项）');
+    addSysMsg('请完成全部 4 题（每题选一个选项）');
     return;
   }
   S.stage0 = result;
-  // 如果是"我自己用" → 跳过 STAGE 5
+  lset('pc_stage0', result);
   if(result.operator === '我自己用'){
     S.skipSkill = true;
+    lset('pc_skipSkill', 'true');
+  } else {
+    S.skipSkill = false;
+    lremove('pc_skipSkill');
   }
   document.getElementById('stage0Modal')?.remove();
   if(S.stage < 1) setStage(1);
-  // 在主区显示填好的元数据
   const summary = `STAGE 0 完成：
 • 项目类型：${result.projectType}
 • 操作用户：${result.operator}
 • skill 来源：${result.skillSource}
 • AI 自主权：${result.autoLevel}
 ${result.operator === '我自己用' ? '\n⚠️ 你选择"我自己用"，将自动跳过 STAGE 5（SKILL.md 生成）' : ''}`;
-  appendMsg('ai', summary);
-  appendMsg('ai', '现在进入 STAGE 1：请描述你的项目。');
+  addMsg('ai', summary);
+  addMsg('ai', '现在进入 STAGE 1：请描述你的项目。');
 }
 
 init();
