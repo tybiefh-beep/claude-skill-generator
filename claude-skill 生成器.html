@@ -4364,6 +4364,19 @@ function showStage0(){
       if(!opt) return;
       group.querySelectorAll('.s0opt').forEach(o => o.classList.remove('selected'));
       opt.classList.add('selected');
+      // 自动滚到下一题（iOS 表单 UX）
+      setTimeout(() => {
+        const optGroups = mo.querySelectorAll('.s0q-opts');
+        const idx = Array.from(optGroups).indexOf(group);
+        if(idx >= 0 && idx < optGroups.length - 1){
+          const nextQ = optGroups[idx+1].parentElement; // .s0q
+          const mc = mo.querySelector('.mc');
+          if(mc && nextQ){
+            const nextTop = nextQ.offsetTop - 12;
+            mc.scrollTop = nextTop;
+          }
+        }
+      }, 200);
     });
   });
   // 点背景关闭（点 .mo 本身而非 .mb 时）
