@@ -154,7 +154,9 @@
   .docs-panel{overflow:hidden;transition:width 0.25s,opacity 0.2s}
   .docs-panel.collapsed{width:40px!important}
   .docs-panel.collapsed .docs-scroll{opacity:0;pointer-events:none;width:0;overflow:hidden}
-  .docs-panel.collapsed .logo p{opacity:0}
+  .docs-panel.collapsed .logo{padding:12px 6px;justify-content:center!important}
+  .docs-panel.collapsed .logo p{opacity:0;width:0;height:0;overflow:hidden;margin:0;padding:0}
+  .docs-panel.collapsed .logo button{font-size:14px;padding:4px 8px;flex-shrink:0}
   .docs-panel:not(.collapsed){width:280px!important;overflow:visible}
   .docs-panel:not(.collapsed) .docs-scroll{opacity:1;pointer-events:auto;width:auto;overflow-y:auto}
 
