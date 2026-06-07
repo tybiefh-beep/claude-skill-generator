@@ -2607,6 +2607,12 @@ function newProject(){
   resetAll();setActiveProjId(id);
   document.getElementById('projName').textContent=name.trim();
   addSysMsg(t('msg.projectCreated',{name:name.trim()}));
+  // v3.1: 新建项目重新弹 STAGE 0 元问询
+  lremove('pc_stage0');
+  lremove('pc_skipSkill');
+  S.stage0 = null;
+  S.skipSkill = false;
+  setTimeout(showStage0, 400);
 }
 
 function showProjectList(){
