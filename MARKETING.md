@@ -1,62 +1,79 @@
-# 📚 曝光增长内容库
+# 📚 曝光增长内容库 | 7 大渠道完整文案
 
 ## 1️⃣ 掘金发布文章模板
 
-### 文章标题选项（递进式）
+### 文章标题选项（从弱到强）
 
 ```
-❌ 不够吸引：
-"我做了一个项目文档生成工具"
+❌ 弱："我做了一个项目文档生成工具"
 
-✅ 中等吸引：
-"4 个对话问题自动生成 CLAUDE.md？"
+✅ 中："4 个对话问题自动生成 CLAUDE.md？"
 
-✅✅ 强吸引（推荐）：
-"Claude Code 时代的大坑：怎样让 AI 更懂你的项目？"
+✅✅ 强："Claude Code 时代的大坑：怎样让 AI 更懂你的项目？"
 
-✅✅✅ 最强吸引（文艺范）：
-"从手写 45 分钟文档到 AI 5 分钟自动生成，只差一个「项目罗盘」"
+✅✅✅ 最强："从手写 45 分钟文档到 AI 5 分钟自动生成，只差一个『项目罗盘』"
 ```
 
-### 文章核心框架
+### 文章核心结构
 
-**前言** → **痛点剖析** → **解决方案** → **实际案例** → **技术细节** → **对比分析** → **Call to Action**
+```markdown
+# [选择上面的标题]
 
-关键要点：
-- 用数据说话（45 min vs 5 min）
-- 用真实案例增强说服力
-- 强调"对话式"的独特性
-- 清晰的对比表格
+## 📖 前言（50 字）
+开门见山说痛点：写 CLAUDE.md 的时间成本
+
+## 🎯 痛点分析（300 字）
+1. 不知道写什么
+2. 写完还是不对
+3. 维护成本高
++ 数据支撑（85% 开发者花 30+ 分钟）
+
+## 💡 解决方案（400 字）
+- 对话式引导
+- 7 阶段自动优化
+- 即插即用
+
+## 🎬 真实案例（500 字）
+案例 1：React 开发者
+案例 2：Python CLI 维护者
+案例 3：AI 工作流设计师
+
+## 📊 对比表格（200 字）
+手写 vs 其他工具 vs Project Compass
+
+## 🔗 Call to Action
+在线试用 + GitHub 链接
+```
 
 ---
 
 ## 2️⃣ Product Hunt 发布文案
 
-### Tagline
-
+### Tagline（推荐版）
 ```
-✅ "Project Compass - Conversational CLAUDE.md Generator. 
-   4 questions → Auto-generate docs in 5 minutes. Pure browser, 
-   zero dependencies, supports 8+ models."
+"Project Compass - Conversational CLAUDE.md Generator. 
+4 questions → Production-ready docs in 5 minutes. 
+Pure browser, zero dependencies, 8+ models."
 ```
 
-### 核心描述
-
-- **问题**：写 CLAUDE.md 很难，要 45 分钟
-- **解决**：4 个对话问题，5 分钟自动生成
+### 核心描述框架
+- **问题**：写 CLAUDE.md 需要 45+ 分钟
+- **解决**：4 个对话问题，5 分钟完成
 - **差异**：首个对话式 UI，8+ 模型支持
-- **使用**：在线打开或下载，无需安装
+- **使用**：在线打开无需安装
+- **安全**：完全隐私保护
 
 ---
 
-## 3️⃣ Twitter/X 文案集
+## 3️⃣ Twitter/X 文案集（4 个版本）
 
-### 版本 1：问题对比
+### 版本 1：数据对比
 ```
 😫 手写 CLAUDE.md：45 分钟
 ⚡ 项目罗盘：5 分钟
 
-支持 8+ AI 模型，纯浏览器运行
+支持 8+ AI 模型
+纯浏览器运行
 试试看：[link]
 ```
 
@@ -74,7 +91,7 @@
 ```
 🚀 项目罗盘特性：
 ✅ 4 个对话问题
-✅ AI 7 阶段优化
+✅ 7 阶段 AI 优化
 ✅ CLAUDE.md + SKILL.md
 ✅ 8+ 模型支持
 ✅ 纯本地隐私
@@ -82,44 +99,54 @@
 在线试用：[link]
 ```
 
+### 版本 4：社区互动
+```
+谁还在手写 CLAUDE.md？🙋
+
+我做了个工具让 AI 来写
+5 分钟从想法到生成文件
+支持 Claude、GPT、DeepSeek 等
+
+[link]
+```
+
 ---
 
-## 4️⃣ Reddit 文案模板
+## 4️⃣ Reddit 文案
 
 ### r/ClaudeAI
-
 ```
 Title: Show HN: Project Compass - 5-Minute CLAUDE.md Generator
 
-Hey! Just shipped Project Compass - saves 85% time on project docs.
+[演示截图或 GIF]
 
-Instead of 45 min manual writing:
+Hey! Just shipped Project Compass. 
+Saves 85% time on CLAUDE.md generation.
+
+## How it works
 1. Answer 4 questions about your project
 2. AI generates CLAUDE.md + SKILL.md
-3. Ready for Claude Code
+3. Ready for Claude Code immediately
 
-Key features:
+## Key features
 - Pure HTML, zero dependencies
-- 8+ AI models (Claude, GPT, DeepSeek, etc.)
-- Privacy first (local storage only)
+- 8+ AI models
+- Privacy first
 - Completely free & open source
 
 Try: [link]
 ```
 
 ### r/webdev
-
 ```
 Title: Built a single-file HTML tool for auto-generating project docs
 
-[演示 GIF]
+Just launched Project Compass - conversational tool that generates 
+CLAUDE.md + SKILL.md in 5 minutes (vs 45 min manual).
 
-Just launched Project Compass - a conversational tool that generates 
-CLAUDE.md + SKILL.md in 5 minutes instead of 45.
+Works in pure browser, no npm needed.
 
-Works in pure browser, no npm needed, supports 8+ AI models.
-
-[Link to try]
+[Link]
 ```
 
 ---
@@ -167,15 +194,13 @@ Claude Code 时代的必备工具！
 Title: Show HN: Project Compass – Conversational CLAUDE.md Generator
 
 Just launched Project Compass - generates CLAUDE.md through 
-conversational AI instead of manual writing.
+conversational AI instead of manual writing or CLI setup.
 
-Problem: Writing good CLAUDE.md takes 45+ minutes, existing tools 
-are CLI-based and complex.
-
-Solution: 4 smart questions → 5 minutes → production-ready docs
+Problem: Writing good CLAUDE.md takes 45+ minutes
+Solution: 4 questions → 5 minutes → production-ready docs
 
 Key features:
-- Single HTML file, zero dependencies  
+- Single HTML file, zero dependencies
 - 8+ AI models supported
 - Pure browser (local storage, no server)
 - Fully open source (MIT)
@@ -193,15 +218,15 @@ Feedback welcome!
 ```
 🧭 Excited to announce Project Compass
 
-Just launched a conversational tool that transforms project documentation 
-for Claude Code integration.
+Just launched a conversational tool that transforms how teams 
+define project documentation for Claude Code.
 
 Challenge: Writing CLAUDE.md manually takes 45+ minutes
 Solution: 4 questions → 5 minutes → production-ready docs
 
 Key benefits:
 ✓ 85% time reduction
-✓ Consistent quality  
+✓ Consistent quality
 ✓ Better AI performance
 ✓ Zero setup friction
 ✓ Privacy first
@@ -217,15 +242,15 @@ What features matter most for your team?
 
 ## 📅 发布计划表
 
-| 时间 | 渠道 | 内容 | 优先级 |
-|-----|------|------|-------|
-| 第 1 天 | GitHub | 优化 README + 上传在线版本 | 🔴 高 |
-| 第 2-3 天 | 掘金 | 发布技术文章（2000+ 字） | 🔴 高 |
-| 第 4 天 | Twitter | 发布 3-5 条推文 | 🔴 高 |
-| 第 5 天 | Reddit | r/ClaudeAI + r/webdev | 🟡 中 |
-| 第 6 天 | Product Hunt | 正式发布 | 🔴 高 |
-| 第 7 天 | HackerNews | 发布 | 🟡 中 |
-| 第 1-2 周 | LinkedIn/微博/微信 | 专业版 + 朋友圈 | 🟢 低 |
+| 时间 | 渠道 | 行动 | 优先级 |
+|-----|------|------|--------|
+| 今天 | GitHub | 确认 README 优化 + 启用 Pages | 🔴 高 |
+| 明天 | 掘金 | 发布技术文章 | 🔴 高 |
+| 3 天 | Twitter | 发布 3-5 条推文 | 🔴 高 |
+| 4-5 天 | Reddit | r/ClaudeAI + r/webdev | 🟡 中 |
+| 6 天 | Product Hunt | 正式发布 | 🔴 高 |
+| 7 天 | HackerNews | 发布 | 🟡 中 |
+| 1-2 周 | 微信/微博/LinkedIn | 专业版分发 | 🟢 低 |
 
 ---
 
@@ -233,12 +258,12 @@ What features matter most for your team?
 
 ```
 第 1 周目标：
-✅ 50-100 个 Star
+✅ 50-100 Star
 ✅ 掘金文章 500+ 赞
 ✅ Twitter 300+ 互动
 
 第 2 周目标：
-✅ 200-500 个 Star  
+✅ 200-500 Star
 ✅ Product Hunt 前 5
 ✅ GitHub Trending 榜单
 
@@ -248,4 +273,6 @@ What features matter most for your team?
 ✅ 稳定 GitHub Trending
 ```
 
-所有文案已准备完毕！复制即用 👍
+---
+
+**所有文案已准备完毕，复制即用！** 👍
