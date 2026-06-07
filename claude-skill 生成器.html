@@ -226,7 +226,7 @@
   .msg-retract:hover{color:var(--red)!important;opacity:1!important}
 
   /* Modal */
-  .mo{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(16px)}
+  .mo{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(16px);isolation:isolate;cursor:default}
   .mb{background:var(--bg2);border:1px solid var(--border);border-radius:14px;width:700px;max-width:95vw;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,0.6)}
   .mh{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
   .mt{font-size:14px;font-weight:500;font-family:var(--mono);color:var(--accent)}
